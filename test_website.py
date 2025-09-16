@@ -25,4 +25,16 @@ def close_connection(exception):
         db.close()
 
 if __name__ == '__main__':
-    app.run()
+    get_db()
+    
+    print("🗃️  Starting Flask SQLite App...")
+    print("🏠 Home: http://localhost:5000")
+    print("➕ Add items: http://localhost:5000/add")
+    
+    # Run with custom settings
+    app.run(
+        host='0.0.0.0',    # Listen on all interfaces
+        port=5000,         # Port number
+        debug=True,        # Enable debug mode
+        threaded=True      # Handle multiple requests
+    )
