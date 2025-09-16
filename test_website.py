@@ -1,6 +1,6 @@
 import sqlite3
 import random
-from flask import Flask, sessioon, render_template, request, g
+from flask import Flask, session, render_template, request, g # type: ignore
 
 app = Flask(__name__)
 app.secret_key = "hqauiodhiuashiudiuashdihqwiodhiqw"
