@@ -5,8 +5,8 @@ https://github.com/ar2thur | @ar3thur | wd10088@gmail.com | wrose8@students.kenn
 
 ---
 
-## Objective
-Aspiring Computer Science student at Kennesaw State University with hands-on experience in IT problem-solving, device jailbreaking, and computer building. Seeking opportunities to apply technical skills in the technology industry.  
+## Overview
+Aspiring Computer Science student at Kennesaw State University with some experience in hardware functionality like linux systems and computer orginization, as well as website construction and other things. Seeking opportunities to apply technical skills in the technology industry.  
 
 ---
 
