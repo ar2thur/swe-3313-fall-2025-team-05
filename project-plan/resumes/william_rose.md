@@ -40,5 +40,5 @@ Expected Graduation: 2028
 ---
 
 ## Projects
-- **Personal Coding Projects**: Developed various small-scale coding projects in free time and through coursework.  
-- **Computer Building**: Successfully built a personal computer, managing all aspects from component selection to assembly.  
+- **Personal Coding Projects**: Huge amount of different scaled projects done throughout the FYE program at Kennesaw State University using python and java algorithims. I also run a home server with fully functional game servers and website handling.
+- **Computer Building**: Successfully built a personal computer, managing all aspects from component selection to assembly.
