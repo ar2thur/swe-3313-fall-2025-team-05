@@ -1,5 +1,5 @@
 # Luke Wharton
- 470-357-9079 |  [luwharton@icloud.com](mailto:luwharton@icloud.com) | [LinkedIn](https://linkedin.com/in/lukewhar) | [GitHub](https://github.com/whatonlylue)
+ [lwharto3@students.kennesaw.edu](mailto:lwharto3@students.kennesaw.edu) | [LinkedIn](https://linkedin.com/in/lukewhar) | [GitHub](https://github.com/whatonlylue)
 
 ---
 ## Education
