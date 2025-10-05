@@ -15,4 +15,4 @@
 
 # Project Plan
 See a link to our gantt chart [here](./project-plan/gantt-chart/ganttproject.gan)
-![./project-plan/gantt-chart/ganttproject.png]
+![Gantt Chart Image](./project-plan/gantt-chart/ganttproject.png)
