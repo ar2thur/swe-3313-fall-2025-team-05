@@ -4,10 +4,9 @@
 
 ---
 
-## Technical Skills
-**Languages:** Python, Java, C++ (basic), JavaScript (basic), HTML/CSS (basic), SQL (intro)  
-**Tools & Technologies:** GitHub, PyGame, Excel (data tracking & analytics), Visual Studio Code, IntelliJ IDEA, Windows OS  
-**Core Competencies:** Debugging, Problem Solving, IT Support, Team Collaboration, Continuous Learning  
+## Education
+**Kennesaw State University – Marietta, GA**
+**Major:** Software Engineering*Bachelor of Science in Software Engineering, expected graduation 2028.*
 
 ---
 
@@ -31,13 +30,13 @@
 
 ---
 
-## Education
-**Bachelor of Science in Software Engineering**  
-*Kennesaw State University – Marietta, GA*  
-*Expected Graduation:* 2028  
+## Technical Skills
+**Languages:** Python, Java, C++ (basic), JavaScript (basic), HTML/CSS (basic), SQL (intro)  
+**Tools & Technologies:** GitHub, PyGame, Excel (data tracking & analytics), Visual Studio Code, IntelliJ IDEA, Windows OS  
+**Core Competencies:** Debugging, Problem Solving, IT Support, Team Collaboration, Continuous Learning  
 
 ---
 
 ## Additional Information
 - Bilingual: English & Spanish  
-- Actively building additional projects in Python, Java, and web development to expand technical portfolio.
+- Actively building additional projects in Python, Java, JavaScript, and C++ to strengthen software engineering portfolio.  
