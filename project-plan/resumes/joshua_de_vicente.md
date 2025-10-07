@@ -32,7 +32,7 @@ Bachelor of Software Engineering – Expected May 2028
 
 ## Technical Skills
 **Languages:** Python, Java, C++ (basic), JavaScript (basic), HTML/CSS (basic), SQL (intro)  
-**Tools & Technologies:** GitHub, PyGame, Excel (data tracking & analytics), Visual Studio Code, IntelliJ IDEA, Windows OS  
+**Tools & Technologies:** GitHub, PyGame, Excel (data tracking & analytics), Visual Studio Code, IntelliJ IDEA  
 **Core Competencies:** Debugging, Problem Solving, IT Support, Team Collaboration, Continuous Learning  
 
 ---
