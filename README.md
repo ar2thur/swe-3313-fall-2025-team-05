@@ -1,5 +1,5 @@
 # Introduction
-We’re building a demo e-commerce site using Python, Flask, and SQLite with Jinja2 templates and DaisyUI for styling. The site showcases aerospace (missiles and weapons) that users can browse and add to a cart. The team is focusing on clean routing, secure user authentication, order fulfillment, and a responsive UI
+We’re building a demo e-commerce site using Python, Flask, and SQLite with Jinja2 templates and DaisyUI for styling. The site showcases aerospace (missiles and weapons) that users can browse and add to a cart. The team is focusing on clean routing, secure user authentication, order fulfillment, and a responsive UI.
 
 # Meet our team
 - [William Rose](./project-plan/resumes/william_rose.md)
