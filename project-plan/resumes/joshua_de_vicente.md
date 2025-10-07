@@ -5,8 +5,8 @@
 ---
 
 ## Education
-**Kennesaw State University – Marietta, GA**
-**Major:** Software Engineering* expected graduation 2028.*
+Kennesaw State University – Marietta, GA  
+Bachelor of Software Engineering – Expected May 2028
 
 ---
 
