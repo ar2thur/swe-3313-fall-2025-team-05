@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="ganttproject" company="" webLink="http://" view-date="2025-10-19" view-index="0" gantt-divider-location="378" resource-divider-location="300" version="3.3.3316" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="ganttproject" company="" webLink="http://" view-date="2025-10-19" view-index="0" gantt-divider-location="408" resource-divider-location="300" version="3.3.3316" locale="en_US">
     <description/>
-    <view zooming-state="default:4" id="gantt-chart">
-        <field id="tpd3" name="Name" width="206" order="0"/>
-        <field id="tpd4" name="Begin date" width="78" order="1"/>
-        <field id="tpd5" name="End date" width="78" order="2"/>
+    <view zooming-state="default:5" id="gantt-chart">
+        <field id="tpd3" name="Name" width="222" order="0"/>
+        <field id="tpd4" name="Begin date" width="85" order="1"/>
+        <field id="tpd5" name="End date" width="85" order="2"/>
         <field id="tpd15" name="Notes" width="20" order="3"/>
         <option id="filter.completedTasks" value="false"/>
         <option id="filter.dueTodayTasks" value="false"/>
@@ -53,7 +53,7 @@
                 </task>
                 <task id="10" uid="4012e5afcf9d4b00905659ee7d9be3db" name="List Team Assignments" meeting="false" start="2025-10-03" duration="2" complete="0" expand="true"/>
             </task>
-            <task id="8" uid="eab85aa07c7a4d33abce338fccd7dbb1" name="Video Presentation" meeting="false" start="2025-10-07" duration="1" complete="0" expand="true"/>
+            <task id="8" uid="eab85aa07c7a4d33abce338fccd7dbb1" name="Record Video Presentation" meeting="false" start="2025-10-07" duration="1" complete="0" expand="true"/>
         </task>
         <task id="1" uid="df986a332efe46389053b469acfcb6e4" name="Requirements" color="#000000" meeting="false" start="2025-10-08" duration="7" complete="0" expand="true">
             <depend id="2" type="2" difference="0" hardness="Strong"/>
@@ -83,15 +83,15 @@
             <task id="25" uid="e10faa19cd8b45eeae25ed93d3906eeb" name="Establish Coding Style Guide" meeting="false" start="2025-10-29" duration="4" complete="0" expand="true">
                 <depend id="24" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="27" uid="c0ad7925f7ee4addbc9ff1338c6a9db9" name="List Data Storage Plan" meeting="false" start="2025-11-11" duration="5" complete="0" expand="true">
+            <task id="27" uid="c0ad7925f7ee4addbc9ff1338c6a9db9" name="List Data Storage Plan" meeting="false" start="2025-11-12" duration="4" complete="0" expand="true">
                 <depend id="24" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="23" uid="a14323f27037488292fa4121fa69098d" name="Write-Up Implementation/Framework Selection" meeting="false" start="2025-10-29" duration="7" complete="0" expand="true">
+            <task id="23" uid="a14323f27037488292fa4121fa69098d" name="Write-Up Implementation/Framework Selection" meeting="false" start="2025-10-29" duration="9" complete="0" expand="true">
                 <depend id="24" type="2" difference="0" hardness="Strong"/>
-                <task id="28" uid="360ebf8372d94e0680912e423c37146f" name="List Implementation Selection" meeting="false" start="2025-10-29" duration="3" complete="0" expand="true">
+                <task id="28" uid="360ebf8372d94e0680912e423c37146f" name="List Implementation Selection" meeting="false" start="2025-10-29" duration="4" complete="0" expand="true">
                     <depend id="29" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="29" uid="effda5a164604a92b8e249cad0e9c5e4" name="List Framework Selection" meeting="false" start="2025-11-03" duration="4" complete="0" expand="true"/>
+                <task id="29" uid="effda5a164604a92b8e249cad0e9c5e4" name="List Framework Selection" meeting="false" start="2025-11-04" duration="5" complete="0" expand="true"/>
             </task>
             <task id="26" uid="a59063ee45b54341b18de3b6ec86469b" name="Create Entity Relationship Diagram, Entity/Field Descriptions and Data Examples" meeting="false" start="2025-10-29" duration="14" complete="0" expand="true">
                 <depend id="24" type="2" difference="0" hardness="Strong"/>
@@ -107,7 +107,12 @@
             </task>
             <task id="24" uid="23c4b42a4b274d8dab73b35959e82117" name="Record Video Presentation" meeting="false" start="2025-11-18" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="4" uid="7107c0f2406241e8af1504004517608b" name="Implementation" color="#000000" meeting="false" start="2025-11-11" duration="20" complete="0" expand="true"/>
+        <task id="4" uid="7107c0f2406241e8af1504004517608b" name="Implementation" color="#000000" meeting="false" start="2025-11-10" duration="21" complete="0" expand="true">
+            <task id="35" uid="2bce504e517847e3b0d91886e0adb90d" name="Development" meeting="false" start="2025-11-10" duration="19" complete="0" expand="true">
+                <depend id="34" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="34" uid="628ed944ae9c45e7ac279966a76e088a" name="Record Final Video Presentation" meeting="false" start="2025-12-05" duration="2" complete="0" expand="true"/>
+        </task>
     </tasks>
     <resources/>
     <allocations/>
