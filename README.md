@@ -11,8 +11,8 @@
 
 # Technology Selection
 - For our application, we will be coding in Python and using Flask as our webserver. We will use a SQLite database to store all of our data.
-- See [here](./project-plan/technology-selection/README.md) for a full explination of what we are using and why.
+- See [here](./project-plan/technology-selection/README.md) for a full explanation of what we are using and why.
 
 # Project Plan
-See a link to our gantt chart [here](./project-plan/gantt-chart/ganttproject.gan)
+See a link to our Gantt chart [here](./project-plan/gantt-chart/ganttproject.gan)
 ![Gantt Chart Image](./project-plan/gantt-chart/ganttproject.png)
