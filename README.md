@@ -4,7 +4,7 @@
 - [William Rose](./project-plan/resumes/william_rose.md)
 - [Sawyer Strickland](./project-plan/resumes/sawyer_strickland.md)
 - [Luke Wharton](./project-plan/resumes/luke_wharton.md)
-- [Joshua De Vicente-Reyes] (./project-plan/resumes/joshua_de_vicente.md)
+- [Joshua De Vicente-Reyes](./project-plan/resumes/joshua_de_vicente.md)
 - Hayden Ross (No Resume)
 
 # Team Assignments
