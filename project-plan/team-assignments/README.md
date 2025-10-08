@@ -1,4 +1,4 @@
-# Team Assignements
+# Team Assignments
 - [William Rose](../resumes/william_rose.md) is the back-end developer, supporting development by heading up the implementation of the application's database with SQLite and ensuring that customer data is secure.
 - [Sawyer Strickland](../resumes/sawyer_strickland.md) is the project design manager, supporting development by ensuring the project's deadlines and the customer's requirements are being met through maintaining the design documents. He will also be helping with the coding effort.
 - [Luke Wharton](../resumes/luke_wharton.md) is the technical lead, supporting development through making decisions on the overall project architecture, as well as maintaining quality through code reviews.
