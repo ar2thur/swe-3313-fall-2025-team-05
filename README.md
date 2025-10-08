@@ -9,6 +9,8 @@ We’re building a demo e-commerce site using Python, Flask, and SQLite with Jin
 - Hayden Ross (No Resume)
 
 # Team Assignments
+- Our team is divided into 5 roles: technical lead, project design manager, full-stack developer, front-end developer, and back-end developer.
+- See [here](./project-plan/team-assignments/README.md) for the assignment of these roles.
 
 # Technology Selection
 - For our application, we will be coding in Python and using Flask as our webserver. We will use a SQLite database to store all of our data.
