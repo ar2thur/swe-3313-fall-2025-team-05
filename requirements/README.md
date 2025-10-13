@@ -1,16 +1,187 @@
 # Requirements
-
-_Follow this template *DELETE BEFORE SUBMITTING*_
-- Version 1
-    - Epic name, Unique ID
-        - Story name, Unique ID
-            - Priority
-            - Estimated Effort
-            - Functional or Non-functional
-            - Story description
-
-_Follow this template *DELETE BEFORE SUBMITTING*_
-
 - Version 1
     - T5E1: Account Interactions
-        - T5S1: 
+        - T5S1: Self Registration
+            - Must Have
+            - 1 day
+            - Functional
+            - The system must allow users to create their own account by providing a unique username and password of at least six characters. _Duplicate usernames are not allowed_        
+        - T5S2: User login
+            - Must Have
+            - 0.5 days
+            - Functional
+            - The system must allow registered users to log in with their username and password. If credentials are invalid, an error message must be shown.
+        - T5S3: Admin login and access
+            - Must Have
+            - 0.5 days
+            - Functional
+            - The system must allow administrator users to log in. Admin users cannot self-registered, only can be created by an already admin user elevating the permissions of a registered user.
+        - T5S4: Promote User to Admin
+            - Must Have
+            - 1 day
+            - Functional
+            - The system must allow an existing administrator to promote a registered user to admin status.
+    - T5E2: Inventory Browsing and Search
+        - T5S5: Display Available Inventory
+            - Must Have
+            - 1.5 days
+            - Functional
+            - After login, users must asee a main screen displaying all available (unsold) inventory items, sorted highest to lowest price. Each item must show a name, price, a picture, brief description, and an "Add to cart" button. 
+        - T5S6: Currency Format
+            - Must Have
+            - 0.25 days
+            - Non-functional
+            - All prices must be stored in a base-10 decimal or currency format and displayed in U.S. dollars, including the dollar sign, commas, and two decimal places.
+        - T5S7: Search Inventory
+            - Must Have
+            - 1 day
+            - Functional
+            - The user must be able to search for items by entering keywords that match either the name or description of inventory items
+    - T5E3: Shopping Cart and Checkout
+        - T5S8: Add Items to Cart
+            - Must Have
+            - 1 day
+            - Functional
+            - The user must be able to add multiple items from the inventory list to a shopping cart.
+        - T5S9: Prevent Empty Checkout
+            - Must Have
+            - 0.25 days
+            - Functional
+            - The checkout button must be disabled or hidden when the shopping cart is empty
+        - T5S10: View and Modify Cart
+            - Must Have
+            - 1.5 days
+            - Functional
+            - When the user clicks Checkout, the system must display the list of items in the cart and the subtotal in U.S. dollars. The user can remove items individually. If all items are removed, the system must automatically return the user to the main inventory screen.
+        - T5S11: Enter Payment and Shipping Details
+            - Must Have
+            - 2 days
+            - Functional
+            - The user must enter shipping address, phone number, credit card number, expiration date, CVV code, and select a shipping speed (Overnight $29, 3-Day $19, Ground $0). All fields are required before continuing.
+        - T5S12: Display Confirm Order Page
+            - Must Have
+            - 1 day
+            - Functional
+            - After completing payment details, the Confirm Order page must show a list of all items, subtotal, 6% tax, shipping cost, and total. The user can confirm, go back, or cancel.
+        - T5S13: Complete Order and Generate Receipt
+            - Must Have
+            - 2 days
+            - Functional
+            - After clicking Complete Order, the system must remove purchased items from inventory, display a receipt with the last four digits of the user's credit card and shipping address, and email a copy. (only browser display needed for Version 1)
+        - T5S14: Cart Persistence
+            - Must Have
+            - 0.5 days
+            - Functional
+            - If a user does not complete the checkout process, the shopping cart contents must remain available for the next session until items are purchased or removed.
+    - T5E4: Admin Functions
+        - T5S15: View Sales Report
+            - Must Have
+            - 2 days
+            - Functional
+            - Administrators must be able to view a sales report listing all sold items and their purchasers. Clicking on a sold item must open the corresponding receipt.
+        - T5S16: Export Sales Report
+            - Must Have
+            - 1 day
+            - Functional
+            - Administrators must be able to export sales reports to a CSV file for user in external applications such as Excel
+        - T5S17: Add Inventory
+            - Must Have
+            - 2 days
+            - Functional
+            - Administrators must have a method to add new inventory items, including name, prive, description, and at least one photo. (Manual database entry is acceptable for version 1).
+    - T5E5: User Interface and Design
+        - T5S18: High-Fidelity Mockup
+            - Must Have
+            - 2 days
+            - Non-functional
+            - A high-fidelity mockup of all screens and application flow must be produced and approved before coding begins.
+        - T5S19: Navigation and Usability
+            - Must Have
+            - 1.5 Days
+            - Non-functional
+            - The system must support intuitive navigation, including a clear forward, back, and cancel options on all screens to ensure a friendly and efficient user experience.
+- Version: 2
+    - T5E6: Enhanced User Experience and Features  
+        - T5S20: Support Multiple Item Photos
+            - Needs to Have
+            - 2 days
+            - Functional
+            - Each inventory item must support multiple photos that users can scroll through or view as thumbnails on the product listing or detail page.
+        - T5S21: Improved Search with Filters
+            - Needs to Have
+            - 2.5 days
+            - Functional
+            - The user must be able to filter search results by price range, category, or keyword relevance, in addition to simple text matching.
+        - T5S22: Persistent Login and Session Timeout
+            - Needs to Have
+            - 1.5 days
+            - Non-functional
+            - The system must remember users between sessions using secure persistent login cookies, with automatic logout after a configurable period of inactivity.
+    - T5E7: Advanced Checkout and Payment
+        - T5S23: Integrated Email Sending
+            - Needs to have
+            - 1.5 days
+            - Non-functional
+            - The system must automatically send a confirmation email to the customer's registered email address after an order is completed, using a third-party service such as SendGrid or an SMTP server.
+        - T5S24: Save Payment and Shipping Info
+            - Wants to Have
+            - 2 days
+            - Functional
+            - Returning users must have the option to save their shipping address and preferred payment method for faster future checkouts
+        - T5S25: Order History Page
+            - Needs to Have
+            - 2 days
+            - Functional
+            - Users must have access to a "My Orders" page that lists previous purchases with dates, totals, and links to receipts.
+    - T5E8: Enhanced Administration
+        - T5S26: Admin Dashboard Interface
+            - Needs to Have
+            - 3 days
+            - Functional
+            - The system must provide a dedicated admin dashboard that displays sales summaries, inventory counts, and links to reports, inventory management, and user management sections.
+        - T5S27: Bulk Inventory Upload
+            - Wants to Have
+            - 2 days
+            - Functional
+            - Administrators must be able to upload multiple inventory items at once using a CSV or spreadsheet import feature that includes name, price, description, and image URLs.
+        - T5S28: Inventory Edit and Delete
+            - Needs to Have
+            - 1.5 days
+            - Functional
+            - Administrators must be able to edit existing inventory items or remove them from the system via the admin interface
+    - T5E9: Reporting and Analytics
+        - T5S29: Filtered and Aggregated Sales Reports
+            - Needs to Have
+            - Effort 2.5 days
+            - Functional
+            - Administrators must be able to generate reports filtered by date range, buyer, or item category. The system must also show total revenue and units sold.
+        - T5S30: Graphical Sales Dashboard
+            - Wants to Have
+            - 3 days
+            - Non-functional
+            - The admin dashboard must include visualizations (charts or graphs) of sales trends over time, total revenue, and popular items.
+    - T5E10: Usability, Performance, and Design Enhancements
+        - T5S31: Responsive Mobile Design
+            - Needs to Have
+            - 2 days
+            - Non-functional
+            - The application interface must adapt to mobile devices and tables with responsive layouts that maintain usability and readability.
+        - T5S32: Performance Optimization
+            - Needs to Have
+            - 2 days
+            - Non-functional
+            - The system must load all major screens (main inventory, checkout, admin reports) within three seconds under normal load.
+        - T5S33: User Feedback and Ratings
+            - Wants to Have
+            - 2.5 days
+            - Functional
+            - Users must be able to rate purchased items (1-5 stars) and leave a brief feedback that displays on item listings for other users.
+        - T5S34: Visual Style Guide and Branding
+            - Wants to Have
+            - 1.5 days
+            - Non-functional
+            - The team must create a consistent visual style guide defining colors, typography, and layout rules to ensure design consistency across future releases.
+
+    
+
+        
