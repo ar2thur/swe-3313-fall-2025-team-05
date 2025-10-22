@@ -21,6 +21,8 @@ Each table is shown as an image (visible inline) followed by a short, clearly wr
 ## 2) Checkout Decision Table (Shipping, Tax, Validation)
 ![Checkout Table](./Checkout-table.jpg)
 
+*Figure 2. Checkout Decision table*
+
 **Rules Summary**
 - **R1:** Cart not empty, payment valid, shipping = Overnight → Shipping $29, apply 6% tax, allow Confirm Order.
 - **R2:** Cart not empty, payment valid, shipping = 3-Day → Shipping $19, apply 6% tax, allow Confirm Order.
@@ -32,6 +34,8 @@ Each table is shown as an image (visible inline) followed by a short, clearly wr
 ## 3) Inventory Management Decision Table (Admin)
 ![Inventory Table](./inventory-table.jpg)
 
+*Figure 3. Inventory Management Decision table*
+
 **Rules Summary**
 - **R1:** Admin logged in AND item info complete → Add item to database.
 - **R2:** Not admin → Show “permission denied”.
@@ -41,6 +45,8 @@ Each table is shown as an image (visible inline) followed by a short, clearly wr
 
 ## 4) Sales Report Decision Table (Admin)
 ![Sales Table](./SalesReport-table.jpg)
+
+*Figure 4. Sales Report Decision Table*
 
 **Rules Summary**
 - **R1:** Admin logged in AND report exists → Display report and allow CSV export.
