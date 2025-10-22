@@ -7,7 +7,7 @@ Each table is shown as an image (visible inline) followed by a short, clearly wr
 
 ## 1) Login Decision Table
 ![Login Table](./login-table.jpg)
-Figure 1. Login Decision Table
+*Figure 1. Login Decision Table*
 
 **Rules Summary**
 - **R1:** Username exists AND password valid AND not admin → Log in user.
