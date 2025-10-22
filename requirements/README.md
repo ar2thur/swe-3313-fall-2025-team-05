@@ -26,7 +26,7 @@
             - Must Have
             - 1.5 days
             - Functional
-            - After login, users must asee a main screen displaying all available (unsold) inventory items, sorted highest to lowest price. Each item must show a name, price, a picture, brief description, and an "Add to cart" button. 
+            - After login, users must see a main screen displaying all available (unsold) inventory items, sorted highest to lowest price. Each item must show a name, price, a picture, brief description, and an "Add to cart" button. 
         - T5S6: Currency Format
             - Must Have
             - 0.25 days
@@ -88,7 +88,7 @@
             - Must Have
             - 2 days
             - Functional
-            - Administrators must have a method to add new inventory items, including name, prive, description, and at least one photo. (Manual database entry is acceptable for version 1).
+            - Administrators must have a method to add new inventory items, including name, price, description, and at least one photo. (Manual database entry is acceptable for version 1).
     - T5E5: User Interface and Design
         - T5S18: High-Fidelity Mockup
             - Must Have
