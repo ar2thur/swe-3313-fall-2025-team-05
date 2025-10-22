@@ -28,6 +28,7 @@ Each table is shown as an image (visible inline) followed by a short, clearly wr
 - **R2:** Cart not empty, payment valid, shipping = 3-Day → Shipping $19, apply 6% tax, allow Confirm Order.
 - **R3:** Cart not empty, payment valid, shipping = Ground → Shipping $0, apply 6% tax, allow Confirm Order.
 - **R4:** Cart empty → Block checkout and show “cannot checkout” message.
+- **R5:** Payment invalid → Show “payment invalid” message and block confirm.
 
 ---
 
