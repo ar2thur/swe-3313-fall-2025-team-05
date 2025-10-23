@@ -1,3 +1,3 @@
 # Use Case Diagram
 
-![Use Case Diagram Image](use-case.png)
+![Use Case Diagram Image](./assets/use-case.png)

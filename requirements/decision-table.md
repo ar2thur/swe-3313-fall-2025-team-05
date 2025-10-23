@@ -6,7 +6,7 @@ Each table is shown as an image (visible inline) followed by a short written rul
 ---
 
 ## 1) Login Decision Table
-![Login Table](./login-table.jpg)
+![Login Table](./assets/assets/login-table.jpg)
 
 *Figure 1. Login Decision Table*
 
@@ -19,7 +19,7 @@ Each table is shown as an image (visible inline) followed by a short written rul
 ---
 
 ## 2) Checkout Decision Table (Shipping, Tax, Validation)
-![Checkout Table](./Checkout-table.jpg)
+![Checkout Table](./assets/assets/Checkout-table.jpg)
 
 *Figure 2. Checkout Decision table*
 
@@ -33,7 +33,7 @@ Each table is shown as an image (visible inline) followed by a short written rul
 ---
 
 ## 3) Inventory Management Decision Table (Admin)
-![Inventory Table](./inventory-table.jpg)
+![Inventory Table](./assets/inventory-table.jpg)
 
 *Figure 3. Inventory Management Decision table*
 
@@ -45,7 +45,7 @@ Each table is shown as an image (visible inline) followed by a short written rul
 ---
 
 ## 4) Sales Report Decision Table (Admin)
-![Sales Table](./SalesReport-table.jpg)
+![Sales Table](./assets/SalesReport-table.jpg)
 
 *Figure 4. Sales Report Decision Table*
 
