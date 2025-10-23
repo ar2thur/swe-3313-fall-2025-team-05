@@ -18,7 +18,6 @@ We’re building a demo e-commerce site using Python, Flask, and SQLite with Jin
 
 ### Project Plan
 See [here](./project-plan/gantt-chart/ganttproject.gan) for a link to our Gantt chart.
-![Gantt Chart Image](./project-plan/gantt-chart/ganttproject.png)
 
 ### Presentation
 See [here](https://www.loom.com/share/035f44b930794de89abcdb2d31284970?sid=5c003c39-bdb2-42ed-9245-5ad2640307f7) for a link to the project plan video presentation.
