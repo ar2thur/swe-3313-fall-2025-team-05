@@ -17,15 +17,15 @@ We’re building a demo e-commerce site using Python, Flask, and SQLite with Jin
 - See [here](./project-plan/technology-selection/README.md) for a full explanation of what we are using and why.
 
 ### Project Plan
-See [here](./project-plan/gantt-chart/ganttproject.gan) for a link to our Gantt chart.
+See [here](./project-plan/README.md) for a link to our Gantt chart.
 
 ### Presentation
 See [here](https://www.loom.com/share/035f44b930794de89abcdb2d31284970?sid=5c003c39-bdb2-42ed-9245-5ad2640307f7) for a link to the project plan video presentation.
 
 # Requirements
-TODO: WRITE REQUIREMENTS INTRODUCTION HERE
+After carefully reviewing the customer's notes, we have collected a list of requirements detailing what they expect from the product. We then sorted these into their must haves, needs to haves, and wants to haves. From that, we were able to create a use case diagram, decision table, and sample implementation of each condition.
 
-See [here](./requirements/README.md) for a detailed list of the requirements from the customer for version 1 and version 2.
+See [here](./requirements/README.md) for the detailed list of the requirements from the customer for version 1 and version 2.
 
 ### Use Case Diagram
 See [here](./requirements/use-case.md) for a detailed use case diagram.
