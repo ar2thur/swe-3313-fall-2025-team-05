@@ -1,7 +1,7 @@
 # Decision Table
 
 This page documents the decision rules for Version 1 of our Missile E-Commerce Site.  
-Each table is shown as an image (visible inline) followed by a short, clearly written rules summary.
+Each table is shown as an image (visible inline) followed by a short written rules summary.
 
 ---
 
