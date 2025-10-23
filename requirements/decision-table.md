@@ -6,7 +6,7 @@ Each table is shown as an image (visible inline) followed by a short written rul
 ---
 
 ## 1) Login Decision Table
-![Login Table](./assets/assets/login-table.jpg)
+![Login Table](./assets/login-table.jpg)
 
 *Figure 1. Login Decision Table*
 
@@ -19,7 +19,7 @@ Each table is shown as an image (visible inline) followed by a short written rul
 ---
 
 ## 2) Checkout Decision Table (Shipping, Tax, Validation)
-![Checkout Table](./assets/assets/Checkout-table.jpg)
+![Checkout Table](./assets/Checkout-table.jpg)
 
 *Figure 2. Checkout Decision table*
 
