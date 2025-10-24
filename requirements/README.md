@@ -160,7 +160,7 @@
             - 3 days
             - Non-functional
             - The admin dashboard must include visualizations (charts or graphs) of sales trends over time, total revenue, and popular items.
-          - T5S-31: Admin Promotion Interface
+        - T5S-31: Admin Promotion Interface
             - Wants to Have
             - 1 day
             - Functional
