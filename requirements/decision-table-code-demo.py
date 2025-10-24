@@ -1,127 +1,117 @@
-import random
+"""
+This is an interactive code example for our decision tables
+"""
 
+def login_decision_table() -> None:
+    doesUsernameExist = _input_to_bool(input("Does the username exist? (y/N): "))
 
-def login_decision_table(doesUsernameExist: bool, isPasswordValid: bool, isAdminUser: bool) -> bool:
     if doesUsernameExist:
+        isPasswordValid = _input_to_bool(input("Is the password correct? (y/N): "))
 
         if isPasswordValid:
+            isAdminUser = _input_to_bool(input("Is the user an admin user? (y/N): "))
 
             if isAdminUser:
                 print("Logged in as admin")
-                return True
 
             else:
                 print("Logged in as user")
-                return True
         else:
             print("Invaild Password")
-            return False
     else:
         print("User not found")
-        return False
 
-def test_login_decision_table():
-    assert True == (login_decision_table(True, True, False)) # Log in user True
-    assert True == (login_decision_table(True, True, True)) # Log in admin True
-
-    assert False == (login_decision_table(True, False, False)) # Show invalid password False
-    assert False == (login_decision_table(True, False, True)) # Show invalid password False
-
-    assert False == (login_decision_table(False, False, False)) # Show user does not exist False
-    assert False == (login_decision_table(False, True, False)) # Show user does not exist False
-    assert False == (login_decision_table(False, False, True)) # Show user does not exist False
-    assert False == (login_decision_table(False, True, True)) # Show user does not exist False
-
-
-def checkout_decision_table(isCartNotEmpty: bool, shippingType: str, isValidPayment: bool) -> bool:
+def checkout_decision_table() -> None:
     shipping_cost = None
-    if not isCartNotEmpty:
+    isCartNotEmpty = _input_to_bool(input("Is the shopping cart non-empty? (y/N): "))
+
+    if isCartNotEmpty:
+        shopping_cart_total = float(input("How much was in the shopping cart? (xxx.xx): "))
+        isValidPayment = _input_to_bool(input("Is the payment vaild? (y/N): "))
 
         if isValidPayment:
-            random_shopping_cart_total = random.randint(10, 30)
+            shippingType = input("What is the shipping type? (Overnight, 3-Day, Ground): ").strip().lower()
+
             match shippingType:
-                case "Overnight":
+                case "overnight":
                     shipping_cost = 29
 
-                case "3-Day":
+                case "3-day":
                     shipping_cost = 19
 
                 case _:
                     shipping_cost = 0
 
-            print(f"Items in cart: {random_shopping_cart_total}")
+            print(f"Items in cart: {shopping_cart_total}")
 
-            random_shopping_cart_total *= 1.6 # sales tax
-            print(f"Subtotal with sales tax: {random_shopping_cart_total}")
+            shopping_cart_total *= 1.06 # sales tax
+            print(f"Subtotal with sales tax: {shopping_cart_total}")
 
             print(f"Shipping cost: {shipping_cost}")
 
-            total = random_shopping_cart_total + shipping_cost
+            total = shopping_cart_total + shipping_cost
             print(f"Confirm order for {total}?")
-
-            return True
 
         else:
             print("Payment invalid")
-            return False
 
     else:
         print("Cannot checkout with empty cart")
-        return False
 
+def inventory_management_decision_table() -> None:
+    isAdminLoggedIn = _input_to_bool(input("Is an admin user logged in? (y/N): "))
 
-def test_checkout_decision_table():
-    assert True == checkout_design_table(False, "Overnight", True) #show confirm True
-    assert True == checkout_design_table(False, "3-Day", True) # show confirm True
-    assert True == checkout_design_table(False, "Ground", True) # show confirm True
-
-    assert False == checkout_design_table(True, "Ground", True) # Cart empty False
-    assert False == checkout_design_table(True, "Ground", False) # Cart empty False
-    assert False == checkout_design_table(False, "Ground", False) # Payment invalid False
-
-
-def inventory_management_decision_table(isAdminLoggedIn: bool, isItemInfoComplete: bool) -> bool:
     if isAdminLoggedIn:
+        isItemInfoComplete = _input_to_bool(input("Is the item info completely filled out? (y/N): "))
 
         if isItemInfoComplete:
             print("Item added into the database")
-            return True
 
         else:
             print("item has missing data, cannot complete")
-            return False
 
     else:
         print("Permission Denied")
-        return False
 
+def sales_report_decision_table() -> None:
+    isAdminLoggedIn = _input_to_bool(input("Is an admin user logged in? (y/N): "))
 
-def test_inventory_management_decision_table():
-    assert True == inventory_management_decision_table(True, True)
-
-    assert False == inventory_management_decision_table(True, False)
-    assert False == inventory_management_decision_table(False, True)
-    assert False == inventory_management_decision_table(False, False)
-
-def sales_report_decision_table(isAdminLoggedIn: bool, doesReportExist: bool) -> bool:
     if isAdminLoggedIn:
+        doesReportExist = _input_to_bool(input("Does the report exist? (y/N): "))
 
         if doesReportExist:
-            print("Here is the Report")
-            return True
+            print("Random_Report.csv")
 
         else:
              print("Report not found")
-             return False
 
     else:
         print("Permission Denied")
-        return False
+
+def _input_to_bool(x: str) -> bool:
+    return x.strip().lower() == 'y'
 
 
-def test_sales_report_decision_table():
-    assert True == sales_report_decision_table(True, True)
-    
-    assert False == sales_report_decision_table(True, False)
-    assert False == sales_report_decision_table(False, False)
 
+def main():
+    print("[Desision Table Test]")
+    print()
+    print("1) Login Decision Table")
+    print()
+    login_decision_table()
+    print()
+    print("2) Checkout Decision Table")
+    print()
+    checkout_decision_table()
+    print()
+    print("3) Inventory Management Decision Table")
+    print()
+    inventory_management_decision_table()
+    print()
+    print("4) Sales Report Decision Table")
+    print()
+    sales_report_decision_table()
+    print()
+    print("Test done")
+
+main()
