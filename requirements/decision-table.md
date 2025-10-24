@@ -59,3 +59,7 @@ Each table is shown as an image (visible inline) followed by a short written rul
 - All monetary calculations are base-10 decimals; tax = **6%** of subtotal.
 - Shipping choices: **Overnight $29**, **3-Day $19**, **Ground $0**.
 - Screenshots are stored in `/requirements/` and linked with **relative paths** so they display inline on GitHub.
+
+# Descision Table Code Demo
+Link to the code [here](./decision-table-code-demo.py)
+![Decision Table Code Demo Run](./assets/decision-table-code-demo-picture.png)
