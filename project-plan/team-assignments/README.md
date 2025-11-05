@@ -3,4 +3,3 @@
 - [Sawyer Strickland](../resumes/sawyer_strickland.md) is the project design manager, supporting development by ensuring the project's deadlines and the customer's requirements are being met through maintaining the design documents. He will also be helping with the coding effort.
 - [Luke Wharton](../resumes/luke_wharton.md) is the technical lead, supporting development through making decisions on the overall project architecture, as well as maintaining quality through code reviews.
 - [Joshua De Vicente-Reyes](../resumes/joshua_de_vicente.md) is the front-end developer, supporting development by leading the design and implementation of an easy to use and responsive user interface.
-- [Hayden Ross](../resumes/hayden_ross.md) is the full-stack developer, supporting development by ensuring the proper integration of both the UI and database along with reviewing the code.

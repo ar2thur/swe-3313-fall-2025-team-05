@@ -6,7 +6,6 @@ We’re building a demo e-commerce site using Python, Flask, and SQLite with Jin
 - [Sawyer Strickland](./project-plan/resumes/sawyer_strickland.md)
 - [Luke Wharton](./project-plan/resumes/luke_wharton.md)
 - [Joshua De Vicente-Reyes](./project-plan/resumes/joshua_de_vicente.md)
-- [Hayden Ross](./project-plan/resumes/hayden_ross.md)
 
 ### Team Assignments
 - Our team is divided into 5 roles: technical lead, project design manager, full-stack developer, front-end developer, and back-end developer.
