@@ -39,4 +39,4 @@ See [here](https://www.loom.com/share/367c25877ac74d68a796d195728a936c?sid=6fb6a
 [High Fidelity User Interface Design (Marvel)](https://marvelapp.com/prototype/74c0hjh)
 
 ### Presentation
-See [here]() for a link to the video presentation with a walkthrough of the user interface design.
+See [here](https://www.loom.com/share/6c69f67ea4a14b8083d366630647e675) for a link to the video presentation with a walkthrough of the user interface design.
