@@ -40,3 +40,9 @@ See [here](https://www.loom.com/share/367c25877ac74d68a796d195728a936c?sid=6fb6a
 
 ### Presentation
 See [here](https://www.loom.com/share/6c69f67ea4a14b8083d366630647e675) for a link to the video presentation with a walkthrough of the user interface design.
+
+# Technical Design
+
+TO DO: technical design introduction
+
+[Techincal Design](technical-design/README.md)
