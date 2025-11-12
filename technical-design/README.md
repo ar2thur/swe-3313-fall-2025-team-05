@@ -15,33 +15,33 @@
 <a id="a"></a>
 ## A. Implementation Language(s)
 For our languages we have chosen to develop our project in:
-    - Python3.12:
-        - All team members have more experience with Python than Java or C#
-        - Simple syntax significantly increase development and prototyping speed
-        - Significant amount of quailty of life packages for building web applications
-    - HTML5:
-        - All browsers natively understand and know how to render HTML
-        - Simple syntax, easy to pick up for members of our group that haven't used it before
-    - CSS:
-        - We will be using CSS vicariously through DaisyUI
-    - Javascript:
-        - Allows website to have interactive buttons and dynamic content
-        - Supported in all major web browsers
+- Python3.12:
+    - All team members have more experience with Python than Java or C#
+    - Simple syntax significantly increase development and prototyping speed
+    - Significant amount of quailty of life packages for building web applications
+- HTML5:
+    - All browsers natively understand and know how to render HTML
+    - Simple syntax, easy to pick up for members of our group that haven't used it before
+- CSS:
+    - We will be using CSS vicariously through DaisyUI
+- Javascript:
+    - Allows website to have interactive buttons and dynamic content
+    - Supported in all major web browsers
 
 <a id="b"></a>
 ## B. Implementation Framework(s)
 For our implementation frameworks and libraires we have chosen:
-    - (framework) Flask:
-        - Really popular and easy to follow web application framework for Python
-        - Comes with out of the box SQLite support, which is our database of choice
-        - Amazing Documentation
-    - (TailwindCSS Component Library) DaisyUI:
-        - Pure CSS prebuilt components, works on any browser
-        - Has a rich component library and detailed documentation
-        - Supports all TailwindCSS modifiers as well
-    - (ORM) SQL_Alchemy:
-        - Converts SQL tables and queries into pythonic class objects in our code base
-        - Makes working with SQLite intuitive and easy to use for team members without SQL experience
+- (framework) Flask:
+    - Really popular and easy to follow web application framework for Python
+    - Comes with out of the box SQLite support, which is our database of choice
+    - Amazing Documentation
+- (TailwindCSS Component Library) DaisyUI:
+    - Pure CSS prebuilt components, works on any browser
+    - Has a rich component library and detailed documentation
+    - Supports all TailwindCSS modifiers as well
+- (ORM) SQL_Alchemy:
+    - Converts SQL tables and queries into pythonic class objects in our code base
+    - Makes working with SQLite intuitive and easy to use for team members without SQL experience
 
 <a id="c"></a>
 ## C. Data Storage Plan
