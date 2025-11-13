@@ -76,7 +76,7 @@ persisting SQLite databases, this was the natural choice. TODO: Got stuck here
 | Property           | Type                 | Default | Nullable | Relationship     | Notes |
 |:----------:|:----------------------:|:---------:|:----------:|:--------------:|-------:|
 | shopping_cart_item_id  | Integer, Primary Key |         | No       |                                |       |
-| shopping_cart_id      | UUID, Forigen Key    |         | No       | Relates to ShoppingCart.shopping_cart_id |       |
+| shopping_cart_id      | UUID (Text), Forigen Key    |         | No       | Relates to ShoppingCart.shopping_cart_id |       |
 | inventory_item_id     | Integer, Forigen Key |         | No       | Relates to InventoryItem.inventory_item_id |       |
 | added_to_cart         | Text                 | Now     | No       |                                | Timestamp "YYYY-MM-DDTHH:MM:SSZ" |
 ### InventoryItem Table
