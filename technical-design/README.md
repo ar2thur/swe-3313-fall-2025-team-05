@@ -70,6 +70,18 @@ persisting SQLite databases, this was the natural choice. TODO: Got stuck here
 
 <a id="i"></a>
 ## I. Coding Style Guide
+- All code in the project will follow the [PEP 8](https://peps.python.org/pep-0008/) style guide because:
+    1. It is the style that all of our team defaults to when writing Python code.
+    2. It is the official style guide for Python.
+
+- All code written should have high cohesion and low coupling.
+
+- All code written should be readable and use proper commenting so it can be understood by other developers. 
+"Proper commenting" in this case means concisely explaining complex or non-obvious logic, possibly including reasoning behind it. 
+
+- All commits to the project repository during development will follow the [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) branch management strategy because:
+    1. The implementation of pull requests encourage code reviews. This practice will help us maintain a clean and cohesive codebase, along with ensuring that it meets the standards of the style guide.
+    2. The use of branching helps protect the stability of the *main* branch by isolating the work of each developer.
 
 
 <a id="j"></a>
