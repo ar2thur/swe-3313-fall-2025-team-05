@@ -54,6 +54,40 @@ persisting SQLite databases, this was the natural choice. TODO: Got stuck here
 
 <a id="e"></a>
 ## E. Entity/Field Descriptions
+### User Table
+| Property | Type                | Default | Nullable | Relationship | Notes |
+|:----------:|:----------------------:|:---------:|:----------:|:--------------:|-------:|
+| user_id   | Integer, Primary Key |         | No       |              | SQLite autoincrements this, should never enter this manually |
+| name     | Text                |         | No       |              |       |
+| password | Text                |         | No       |              | This is hashed and then stored in database |
+| email    | Text                |         | No       |              |       |
+| is_admin  | Boolean             | FALSE   | No       |              |       |
+### ShoppingCart Table
+| Property        | Type               | Default | Nullable | Relationship       | Notes |
+|:----------:|:----------------------:|:---------:|:----------:|:--------------:|-------:|
+| shopping_cart_id    | UUID (Text), Primary Key  |         | No       |                    | UUID as shopping carts are unique; once purchased, isBought flips to yes, null data is filled, and the user receives a new UUID |
+| user_id           | Integer, Forigen Key |         | No       | Relates to user.user_id | Used to tell whose shopping cart this item is in |
+| is_checked_out     | Boolean            | FALSE   | No       |                    | Used to track carts; not deleted—checked-out carts remain for records |
+| date_checked_out   | Text               | NULL    | Yes      |                    | Timestamp string "YYYY-MM-DDTHH:MM:SSZ" |
+| sub_total         | Integer            | NULL    | Yes      |                    |       |
+| tax              | Integer            | NULL    | Yes      |                    |       |
+| total_cost        | Integer            | NULL    | Yes      |                    | Stored as integer cents (divide by 100 for display) |
+### ShoppingCartItem Table
+| Property           | Type                 | Default | Nullable | Relationship     | Notes |
+|:----------:|:----------------------:|:---------:|:----------:|:--------------:|-------:|
+| shopping_cart_item_id  | Integer, Primary Key |         | No       |                                |       |
+| shopping_cart_id      | UUID, Forigen Key    |         | No       | Relates to ShoppingCart.shopping_cart_id |       |
+| inventory_item_id     | Integer, Forigen Key |         | No       | Relates to InventoryItem.inventory_item_id |       |
+| added_to_cart         | Text                 | Now     | No       |                                | Timestamp "YYYY-MM-DDTHH:MM:SSZ" |
+### InventoryItem Table
+| Property        | Type                 | Default | Nullable | Relationship | Notes |
+|:----------:|:----------------------:|:---------:|:----------:|:--------------:|-------:|
+| inventory_item_id   | Integer, Primary Key |         | No       |              |       |
+| is_available       | Boolean             | TRUE    | No       |              | Marked false when bought; hidden from store |
+| name              | Text                |         | No       |              |       |
+| description       | Text                |         | No       |              |       |
+| cost              | Integer             |         | No       |              | Stored as integer cents (divide by 100 for display) |
+| picture_path       | Text                | ~/static/images/no_picture_added.png | No | | Path to stored image; default is placeholder |
 
 
 <a id="f"></a>
