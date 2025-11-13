@@ -50,7 +50,7 @@ persisting SQLite databases, this was the natural choice. TODO: Got stuck here
 
 <a id="d"></a>
 ## D. Entity Relationship Diagram
-<img src="./assets/entity-relationship-diagram.png" style="height:50%;width:50%">
+<img src="./assets/entity-relationship-diagram.png" style="height:20%;width:20%">
 
 <a id="e"></a>
 ## E. Entity/Field Descriptions
