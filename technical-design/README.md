@@ -50,7 +50,7 @@ persisting SQLite databases, this was the natural choice. TODO: Got stuck here
 
 <a id="d"></a>
 ## D. Entity Relationship Diagram
-![erdiagram](./erdiagram.png)
+![erdiagram](./assets/entity-relationship-diagram.png)
 
 <a id="e"></a>
 ## E. Entity/Field Descriptions
