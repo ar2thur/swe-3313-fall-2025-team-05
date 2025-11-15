@@ -101,6 +101,16 @@ persisting SQLite databases, this was the natural choice. TODO: Got stuck here
 <a id="h"></a>
 ## H. Authentication and Authorization Plan
 
+### H.1 Overview and Responsibilities
+
+Our system separates:
+
+- **Authentication** – verifying *who* is logging in.
+- **Authorization** – checking *what* that authenticated user is allowed to do.
+We use a single login screen for all users. The user’s role (regular user vs administrator) is determined **after** login by checking the `is_admin` field in the `User` table.
+
+  
+
 
 <a id="i"></a>
 ## I. Coding Style Guide
