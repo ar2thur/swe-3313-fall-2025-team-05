@@ -195,8 +195,18 @@ Once authenticated, authorization is enforced at two levels:
 - Regular users will be redirected or receive 403 Forbidden when trying to hit admin-only endpoints.
 - Even if a route is accessible to all authenticated users, we still need to restrict access to specific database rows. Example: a user should only see their own shopping cart unless they are an admin.
 
-
-
+### H.5 Session Managment
+We will use Flask’s built-in session management, which stores session data in a secure, signed cookie.
+- On successful authentication, we establish a session and persist key user information:
+    - `session["user_id"] = user.user_id`
+    - `session["is_admin"] = user.is_admin`
+- Protected routes will:
+    - Use `@login_required` to verify that `session["user_id"]` exists before granting access.
+    - Redirect to the login page if the user is not authenticated.
+- Session Termination:
+    - When the user logs out, session.clear() is called to remove all stored credentials and invalidate the current session. 
+Error messages are kept generic (“Invalid email or password”) to avoid leaking whether a given email exists.  
+Will come back later to recheck.
 
 <a id="i"></a>
 ## I. Coding Style Guide
