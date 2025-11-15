@@ -204,8 +204,9 @@ We will use Flask’s built-in session management, which stores session data in 
     - Use `@login_required` to verify that `session["user_id"]` exists before granting access.
     - Redirect to the login page if the user is not authenticated.
 - Session Termination:
-    - When the user logs out, session.clear() is called to remove all stored credentials and invalidate the current session. 
-Error messages are kept generic (“Invalid email or password”) to avoid leaking whether a given email exists.  
+    - When the user logs out, `session.clear()` is called to remove all stored credentials and invalidate the current session. 
+
+Error messages are kept generic (“Invalid email or password”) to avoid leaking whether a given email exists.
 Will come back later to recheck.
 
 <a id="i"></a>
