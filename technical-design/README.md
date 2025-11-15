@@ -164,7 +164,30 @@ Our system separates:
 - **Authorization** – checking *what* that authenticated user is allowed to do.
 We use a single login screen for all users. The user’s role (regular user vs administrator) is determined **after** login by checking the `is_admin` field in the `User` table.
 
-  
+### H.2 User Model and Role Storage
+We represent users and their roles with a single SQLAlchemy model:
+
+```python
+class User(db.Model):
+    __tablename__ = "user"
+
+    user_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    password_hash = db.Column(db.String, nullable=False)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
+```
+- `password_hash` stores a hashed password (PBKDF2 via Werkzeug).
+- `is_admin` is `True` for Administrator and `False` for regular users.
+
+### H.3 Authentication Design (Identify Who Is Logging In)
+Authentication is handled in a dedicated login route. The steps are:
+1. Read credentials from the login form (`email`, `password`).
+2. Look up the `user` row by `email`
+3. Verify the sumbitted password with `User.password_hash`
+4. If valid, store the user's identity and role in session.
+
+## H.4 Authorization Design (Control What Actions a User Can Perform)  
 
 
 <a id="i"></a>
