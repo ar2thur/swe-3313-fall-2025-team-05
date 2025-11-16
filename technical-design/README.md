@@ -143,9 +143,9 @@ is used to seed the database.
 | 3               | TRUE        | F35 Lightning II | A cutting-edge multirole stealth aircraft built for strike, intelligence, and electronic warfare missions. Integrates next-generation sensors, networked data sharing, and short-takeoff capabilities depending on variant.           | 8,250,000,000  | ~~/static/images/no_picture_added.png |
 | 4               | TRUE        | C17 Globemaster  | A strategic transport aircraft built to carry large payloads across intercontinental distances. Capable of rapid deployments, airdrops, and operations on short or unprepared runways.           | 900,000,000    | ~~/static/images/c17_globemaster.png  |
 | 5               | TRUE        | F15 Strike Eagle | A twin-engine, long-range, all-weather fighter that delivers exceptional speed and payload capacity. Optimized for deep-strike missions while maintaining strong air-to-air capability.           | 870,000,000    | ~~/static/images/f15_strike_eagle.png |
-| 6               | FALSE       | ATACMS           | A long-range, precision-guided surface-to-surface missile capable of neutralizing high-value targets at extended distances. Known for its speed, accuracy, and destructive payload.           | 100,000,000    | ~~/static/images/atacms.png           |
-| 7               | FALSE       | PrSM             | A next-generation long-range strike missile offering extended reach and advanced guidance. Designed to provide precision engagement against strategic ground targets with improved lethality and flexibility.           | 1,100,000,000  | ~~/static/images/no_picture_added.png |
-| 8               | FALSE       | UH-60 Black Hawk       | A versatile, highly durable utility helicopter used for troop transport, medevac, and cargo missions. Recognized for its reliability, maneuverability, and performance in demanding environments.          | 1,000,000,000  | ~~/static/images/no_picture_added.png |
+| 6               | TRUE       | ATACMS           | A long-range, precision-guided surface-to-surface missile capable of neutralizing high-value targets at extended distances. Known for its speed, accuracy, and destructive payload.           | 100,000,000    | ~~/static/images/atacms.png           |
+| 7               | TRUE       | PrSM             | A next-generation long-range strike missile offering extended reach and advanced guidance. Designed to provide precision engagement against strategic ground targets with improved lethality and flexibility.           | 1,100,000,000  | ~~/static/images/no_picture_added.png |
+| 8               | TRUE       | UH-60 Black Hawk       | A versatile, highly durable utility helicopter used for troop transport, medevac, and cargo missions. Recognized for its reliability, maneuverability, and performance in demanding environments.          | 1,000,000,000  | ~~/static/images/no_picture_added.png |
 
 #Logistics Table
 | id | overnight_shipping (cents) | 3_day_shipping (cents) | ground_shipping | tax (%) |
@@ -174,17 +174,17 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
-    password_hash = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
 ```
-- `password_hash` stores a hashed password (PBKDF2 via Werkzeug).
+- `password` stores a hashed password (PBKDF2 via Werkzeug).
 - `is_admin` is `True` for Administrator and `False` for regular users.
 
 ### H.3 Authentication Design (Identify Who Is Logging In)
 Authentication is handled in a dedicated login route. The steps are:
 1. Read credentials from the login form (`email`, `password`).
 2. Look up the `user` row by `email`
-3. Verify the sumbitted password with `User.password_hash`
+3. Verify the sumbitted password with `User.password`
 4. If valid, store the user's identity and role in session.
 
 ### H.4 Authorization Design (Control What Actions a User Can Perform)
