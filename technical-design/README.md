@@ -171,7 +171,7 @@ We represent users and their roles with a single SQLAlchemy model:
 class User(db.Model):
     __tablename__ = "user"
 
-    user_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
@@ -184,7 +184,7 @@ class User(db.Model):
 Authentication is handled in a dedicated login route. The steps are:
 1. Read credentials from the login form (`email`, `password`).
 2. Look up the `user` row by `email`
-3. Verify the sumbitted password with `User.password`
+3. Verify the sumbitted password with `user.password`
 4. If valid, store the user's identity and role in session.
 
 ### H.4 Authorization Design (Control What Actions a User Can Perform)
@@ -198,7 +198,7 @@ Once authenticated, authorization is enforced at two levels:
 ### H.5 Session Managment
 We will use Flask’s built-in session management, which stores session data in a secure, signed cookie.
 - On successful authentication, we establish a session and persist key user information:
-    - `session["user_id"] = user.user_id`
+    - `session["user_id"] = user.id`
     - `session["is_admin"] = user.is_admin`
 - Protected routes will:
     - Use `@login_required` or `@admin_required` to verify that `session["user_id"]` exists before granting access.
