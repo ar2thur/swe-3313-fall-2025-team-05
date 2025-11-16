@@ -50,6 +50,15 @@ class InventoryItem(db.Model):
     def __repr__(self):
         return f'Inventory Item: {self.name}, cost: {self.cost}, picture at: {self.picture_path}'
 
+class Logistics(db.Model):
+    __tablename__ = "logistics"
+    
+    id = Column(Integer, primary_key=True)
+    overnight_shipping = Column(Integer, nullable=False, default=2900)
+    three_day_shipping = Column(Integer, nullable=False, default=1900)
+    ground_shipping = Column(Integer, nullable=False, default=0)
+    tax = Column(Integer, nullable=False, default=7)
+
 
 
 

@@ -1,11 +1,6 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-# this initializes a SQLAlchemy connection to our database
-# you must import this into every file that needs database access. 
-# refer to here: https://flask-sqlalchemy.readthedocs.io/en/stable/quickstart/
-db = SQLAlchemy()
+from webapp.db import db, init_db, seed_db
 
 def create_app(test_config=None):
     # Creates and intializes the app
@@ -15,10 +10,12 @@ def create_app(test_config=None):
 
     # Creates the sql database
     db.init_app(app)
-
+    
     with app.app_context():
         from . import models
         db.create_all()
+
+    add_cli_commands(app)
 
     # Makes sure the apps instance folder exists
     try:
@@ -30,4 +27,7 @@ def create_app(test_config=None):
     return app
 
 
+def add_cli_commands(app):
+    app.cli.add_command(seed_db)
+    app.cli.add_command(init_db)
 
