@@ -19,6 +19,15 @@ make sure you are in our projects root directory when running this. Upon
 your first run, it should create a folder called instance/ this is where our
 database is. 
 
+# Intializing the Database
+After setting up the flask app, you should be able to run the following commands:
+```bash
+# This will ensure your database has all the correct tables
+flask --app webapp init-db
+# This will add all our seed data to your instance db
+flask --app webapp seed-db
+```
+
 # Making changes
 When you make changes to our depedencies or install new packages, please run:
 ```bash
