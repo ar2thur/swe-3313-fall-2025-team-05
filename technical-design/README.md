@@ -187,7 +187,7 @@ Authentication is handled in a dedicated login route. The steps are:
 3. Verify the sumbitted password with `User.password_hash`
 4. If valid, store the user's identity and role in session.
 
-## H.4 Authorization Design (Control What Actions a User Can Perform)
+### H.4 Authorization Design (Control What Actions a User Can Perform)
 Once authenticated, authorization is enforced at two levels:
 1. Route-Level authorization (role-based)
 2. Data-Level authorization (ownership checks on entities, such as carts)
