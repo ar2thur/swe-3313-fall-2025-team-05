@@ -1,7 +1,8 @@
 import uuid
 from sqlalchemy import String, Integer, Boolean
 from sqlalchemy import ForeignKey, Column
-from webapp import db
+from werkzeug.security import generate_password_hash, check_password_hash
+from .db import db
 
 
 class User(db.Model):
@@ -11,6 +12,14 @@ class User(db.Model):
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     is_admin = Column(Boolean, nullable=False, default=False)
+
+    def set_password(self, raw_password: str):
+        # Store a HASHED password in the password column.
+        self.password = generate_password_hash(raw_password)
+
+    def check_password(self, raw_password: str):
+        # Check a raw password against the stored hashed password.
+        return check_password_hash(self.password, raw_password)    
 
     def __repr__(self):
         return f'User: {self.name}, ID: {self.id}'

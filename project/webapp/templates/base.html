@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Lockheed Martin{% endblock %}</title>
+</head>
+
+<body>
+
+<nav>
+  {% if g.user %}
+    <p>Logged in as: {{ g.user.name }}</p>
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
+  {% else %}
+    <a href="{{ url_for('auth.login') }}">Login</a>
+    <a href="{{ url_for('auth.register') }}">Register</a>
+  {% endif %}
+</nav>
+
+<hr>
+
+<!-- Every page will insert its own content here -->
+{% block content %}{% endblock %}
+
+</body>
+</html>
