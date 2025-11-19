@@ -143,9 +143,9 @@ is used to seed the database.
 | 3               | TRUE        | F35 Lightning II | A cutting-edge multirole stealth aircraft built for strike, intelligence, and electronic warfare missions. Integrates next-generation sensors, networked data sharing, and short-takeoff capabilities depending on variant.           | 8,250,000,000  | ~~/static/images/no_picture_added.png |
 | 4               | TRUE        | C17 Globemaster  | A strategic transport aircraft built to carry large payloads across intercontinental distances. Capable of rapid deployments, airdrops, and operations on short or unprepared runways.           | 900,000,000    | ~~/static/images/c17_globemaster.png  |
 | 5               | TRUE        | F15 Strike Eagle | A twin-engine, long-range, all-weather fighter that delivers exceptional speed and payload capacity. Optimized for deep-strike missions while maintaining strong air-to-air capability.           | 870,000,000    | ~~/static/images/f15_strike_eagle.png |
-| 6               | FALSE       | ATACMS           | A long-range, precision-guided surface-to-surface missile capable of neutralizing high-value targets at extended distances. Known for its speed, accuracy, and destructive payload.           | 100,000,000    | ~~/static/images/atacms.png           |
-| 7               | FALSE       | PrSM             | A next-generation long-range strike missile offering extended reach and advanced guidance. Designed to provide precision engagement against strategic ground targets with improved lethality and flexibility.           | 1,100,000,000  | ~~/static/images/no_picture_added.png |
-| 8               | FALSE       | UH-60 Black Hawk       | A versatile, highly durable utility helicopter used for troop transport, medevac, and cargo missions. Recognized for its reliability, maneuverability, and performance in demanding environments.          | 1,000,000,000  | ~~/static/images/no_picture_added.png |
+| 6               | TRUE       | ATACMS           | A long-range, precision-guided surface-to-surface missile capable of neutralizing high-value targets at extended distances. Known for its speed, accuracy, and destructive payload.           | 100,000,000    | ~~/static/images/atacms.png           |
+| 7               | TRUE       | PrSM             | A next-generation long-range strike missile offering extended reach and advanced guidance. Designed to provide precision engagement against strategic ground targets with improved lethality and flexibility.           | 1,100,000,000  | ~~/static/images/no_picture_added.png |
+| 8               | TRUE       | UH-60 Black Hawk       | A versatile, highly durable utility helicopter used for troop transport, medevac, and cargo missions. Recognized for its reliability, maneuverability, and performance in demanding environments.          | 1,000,000,000  | ~~/static/images/no_picture_added.png |
 
 #Logistics Table
 | id | overnight_shipping (cents) | 3_day_shipping (cents) | ground_shipping | tax (%) |
@@ -164,8 +164,49 @@ Our system separates:
 - **Authorization** – checking *what* that authenticated user is allowed to do.
 We use a single login screen for all users. The user’s role (regular user vs administrator) is determined **after** login by checking the `is_admin` field in the `User` table.
 
-  
+### H.2 User Model and Role Storage
+We represent users and their roles with a single SQLAlchemy model:
 
+```python
+class User(db.Model):
+    __tablename__ = "user"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
+```
+- `password` stores a hashed password (PBKDF2 via Werkzeug).
+- `is_admin` is `True` for Administrator and `False` for regular users.
+
+### H.3 Authentication Design (Identify Who Is Logging In)
+Authentication is handled in a dedicated login route. The steps are:
+1. Read credentials from the login form (`email`, `password`).
+2. Look up the `user` row by `email`
+3. Verify the sumbitted password with `user.password`
+4. If valid, store the user's identity and role in session.
+
+### H.4 Authorization Design (Control What Actions a User Can Perform)
+Once authenticated, authorization is enforced at two levels:
+1. Route-Level authorization (role-based)
+2. Data-Level authorization (ownership checks on entities, such as carts)
+
+- Regular users will be redirected or receive 403 Forbidden when trying to hit admin-only endpoints.
+- Even if a route is accessible to all authenticated users, we still need to restrict access to specific database rows. Example: a user should only see their own shopping cart unless they are an admin.
+
+### H.5 Session Managment
+We will use Flask’s built-in session management, which stores session data in a secure, signed cookie.
+- On successful authentication, we establish a session and persist key user information:
+    - `session["user_id"] = user.id`
+    - `session["is_admin"] = user.is_admin`
+- Protected routes will:
+    - Use `@login_required` or `@admin_required` to verify that `session["user_id"]` exists before granting access.
+    - Redirect to the login page if the user is not authenticated.
+- Session Termination:
+    - When the user logs out, `session.clear()` is called to remove all stored credentials and invalidate the current session. 
+
+Error messages are kept generic (“Invalid email or password”) to avoid leaking whether a given email exists.
 
 <a id="i"></a>
 ## I. Coding Style Guide
