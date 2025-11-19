@@ -3,7 +3,7 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div>
+<div class="flex flex-col items-center mt-16">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
@@ -15,9 +15,10 @@
         </ul>
       {% endif %}
     {% endwith %}
-    <div class="card bg-base-100 w-lg shadow-sm mt-4">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Lockheed Martin" style="width:405px;height:98px;"/>
+    <div class="card bg-base-100 w-lg shadow-sm mt-8">
         <div class="card-body">
-            <h2 class="card-title">Login</h2>
+            <h2 class="card-title justify-center text-center">Login</h2>
             <form method="post">
             <fieldset class="fieldset">
                 <label>Email</label>

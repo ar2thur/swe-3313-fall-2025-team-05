@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="nord">
 <head>
     <title>{% block title %}Lockheed Martin{% endblock %}</title>
-    <!-- DaisUI CDN, do not delete -->
+    <!-- DaisyUI CDN, do not delete -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+
+    <!-- DaisyUI theme color overrides -->
+    <style>
+        html[data-theme="nord"] {
+            color-scheme: light;
+
+            --color-primary: oklch(0.4937 0.1402 256.77);
+            --color-primary-content: white;
+            --color-secondary: oklch(0.9612 0 0);
+            --color-base-100: white;
+        }
+    </style>
 </head>
 
 <body>
 
 <nav>
 <div class="navbar bg-base-100 shadow-sm">
-  <div class="flex-1">
-    <a class="btn btn-ghost text-xl">Lockheed Martin</a>
-  </div>
   {% if g.user %}
   <div class="flex-none">
     <div class="dropdown dropdown-end">
