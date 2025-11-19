@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from .db import db, init_db, seed_db
+from webapp.db import db, init_db, seed_db
 
 def create_app(test_config=None):
     # Creates and intializes the app

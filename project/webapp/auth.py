@@ -5,8 +5,8 @@ from flask import (
     redirect, url_for, flash, session, g
 )
 
-from .db import db
-from .models import User
+from webapp.db import db
+from webapp.models import User
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 

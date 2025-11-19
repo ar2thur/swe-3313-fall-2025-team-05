@@ -10,8 +10,8 @@ def init_db():
     """Create all database tables, if they do not exist."""
 
     # This must be imported here to prevent circular imports
-    from . import create_app
-    from . import models
+    from webapp import create_app
+    import webapp.models
 
     app = create_app()
 
@@ -25,8 +25,8 @@ def init_db():
 def seed_db():
     """Adds seed data to database after its initialized."""
 
-    from . import create_app
-    from .models import User, InventoryItem, Logistics
+    from webapp import create_app
+    from webapp.models import User, InventoryItem, Logistics
 
     app = create_app()
 
