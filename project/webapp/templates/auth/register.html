@@ -3,7 +3,6 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<h1>Register</h1>
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -15,23 +14,40 @@
   {% endif %}
 {% endwith %}
 
-<form method="post">
+<div class="card bg-base-100 w-lg shadow-sm mt-4">
+    <div class="card-body">
+        <h2 class="card-title">Register</h2>
+        <form method="post">
+        <fieldset class="fieldset">
+            <label>Name</label>
+            <input class="input w-full" name="name" required placeholder="John Doe"/>
 
-  <label>Name</label><br>
-  <input name="name" required><br><br>
+            <label>Email</label>
+            <input class="input w-full validator" name="email" type="email" required placeholder="johndoe@example.com">
+            <p class="validator-hint hidden">Enter vaild email address</p>
+                
 
-  <label>Email</label><br>
-  <input name="email" type="email" required><br><br>
+            <label>Password</label>
+            <input class="input w-full validator" name="password" type="password" required placeholder="password"
+                                                                  minlength="6"
+                                                                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                                                  title="Must be atleast 6 characters, including number, lowercase letter, uppercase letter"/>
+            <p class="validator-hint hidden">
+                Must be more than 6 characters, including
+                <br/>At least one number
+                <br/>At least one lowercase letter
+                <br/>At least one uppercase letter
+            </p>
 
-  <label>Password</label><br>
-  <input name="password" type="password" required><br><br>
-
-  <button type="submit">Create Account</button>
-</form>
-
-<p>
-  Already have an account?
-  <a href="{{ url_for('auth.login') }}">Login</a>
-</p>
+            <button class="btn btn-primary" type="submit">Create Account</button>
+            </form>
+        </fieldset>
+        <div class="text-center">
+            <p>
+                Already have an account?
+                <a class="link link-primary" href="{{ url_for('auth.login') }}">Login</a>
+            </p>
+        </div>
+</div>
 
 {% endblock %}
