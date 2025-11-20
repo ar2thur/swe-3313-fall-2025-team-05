@@ -2,20 +2,21 @@
 First things first you need to create a vitrual environment, this is done by:
 ```bash
 # Creates a new virtual python environemnt
-python3 -m vnev [name_of_venv]
+python3 -m venv [name_of_venv]
 # Activates this environment
-source venv/bin/activate
+source venv/bin/activate # for Mac/Linux
+venv\Scripts\activate # for Windows
 # Installs all requirements from requirements.txt
 pip install -r requirements.txt
 ```
 This will then install all the neccesary packages for our project. 
 
 # Starting a Flask app
-once you've finished setting up, you can now run it, this is done with:
+Once you've finished setting up, you can now run it. This is done with:
 ```bash
 flask --app webapp run
 ```
-make sure you are in our projects root directory when running this. Upon
+Make sure you are in our projects root directory when running this. Upon
 your first run, it should create a folder called instance/ this is where our
 database is. 
 

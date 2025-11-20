@@ -35,8 +35,8 @@ def seed_db():
         if not User.query.filter_by(email="ronsemail@example.com").first():
             ron = User(
                 name="Ron Swanson",
-                password="36e230203d860d1d34654e0c3ece4b3b9a26c22aec43648256adf57dbbdbaede",
-                email="ronsemail@example.org",
+                password="scrypt:32768:8:1$QBXy6yedGVGRQXxW$3a4b5b08972cf711ff17c8245a7464733089213392b0e56a1222a1ce328ff5a2984e128174a912171270d3242e4a4b4b10dc7f7b4957ac22c17a96a25c481c51",
+                email="ronsemail@example.com",
                 is_admin=True
             )
 

@@ -7,14 +7,21 @@ def create_app(test_config=None):
     app = Flask(__name__)
     app.config["SECRET_KEY"] = 'dev'
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Creates the sql database
     db.init_app(app)
+
+    # Create the database tables if they do not exist
+    from . import models
     
     with app.app_context():
-        from . import models
         db.create_all()
 
+    # Register blueprints
+    from .auth import bp as auth_bp
+    app.register_blueprint(auth_bp)
+    
     add_cli_commands(app)
 
     # Makes sure the apps instance folder exists
