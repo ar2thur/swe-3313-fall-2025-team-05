@@ -99,6 +99,11 @@ def load_logged_in_user():
     else:
         g.user = User.query.get(user_id)
 
+@bp.before_app_request
+def load_admin_status():
+    # Loads g.is_admin from the session.
+    g.is_admin = bool(session.get("is_admin", False))
+
 
 def login_required(view):
     # Decorator to protect routes that require login.
