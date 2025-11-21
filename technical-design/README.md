@@ -15,31 +15,31 @@
 <a id="a"></a>
 ## A. Implementation Language(s)
 For our languages we have chosen to develop our project in:
-- Python 3.12
+- [Python](https://docs.python.org/3/)
     1. All team members have more experience with Python than Java or C#.
     2. Simple syntax significantly increases development and prototyping speed.
     3. Significant amount of quality of life packages for building web applications.
-- HTML5
+- [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
     1. All browsers natively understand and know how to render HTML.
     2. Simple syntax, easy to pick up for members of our group that haven't used it before.
-- CSS
+- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
     1. We will be using CSS vicariously through DaisyUI.
-- JavaScript
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
     1. Allows website to have interactive buttons and dynamic content.
     2. Supported in all major web browsers.
 
 <a id="b"></a>
 ## B. Implementation Framework(s)
 For our implementation frameworks and libraries we have chosen:
-- Framework - Flask
+- [Flask](https://flask.palletsprojects.com/en/stable/)
     1. Really popular and easy to follow web application framework for Python.
     2. Comes with out of the box SQLite support, which is our database of choice.
     3. Amazing documentation.
-- TailwindCSS Component Library - DaisyUI
+- [DaisyUI](https://daisyui.com/)
     1. Pure CSS prebuilt components, works on any browser.
     2. Has a rich component library and detailed documentation.
     3. Supports all TailwindCSS modifiers as well.
-- ORM - SQLAlchemy
+- [SQLAlchemy](https://www.sqlalchemy.org/)
     1. Converts SQL tables and queries into pythonic class objects in our codebase.
     2. Makes working with SQLite intuitive and easy to use for team members without SQL experience.
 
@@ -47,7 +47,7 @@ For our implementation frameworks and libraries we have chosen:
 ## C. Data Storage Plan
 We plan to use SQLite for data storage. Since Flask offers native support for connecting and 
 persisting SQLite databases, this was the natural choice. On apps first run it will create an 
-instance folder where our database is stored, Flask also offers a CLI command `init_db` that
+instance folder where our database is stored, Flask also offers (via [click](https://click.palletsprojects.com/en/stable/)) a CLI command `init_db` that
 is used to seed the database.
 
 <a id="d"></a>
@@ -62,7 +62,7 @@ is used to seed the database.
 | id   | Integer, Primary Key |         | No       |              | SQLite autoincrements this, should never enter this manually |
 | name     | Text                |         | No       |              |       |
 | password | Text                |         | No       |              | This is hashed and then stored in database |
-| email    | Text                |         | No       |              |       |
+| email    | Text                |         | No       |              | Unique      |
 | is_admin  | Boolean             | FALSE   | No       |              |       |
 ### ShoppingCart Table
 | Property        | Type               | Default | Nullable | Relationship       | Notes |
