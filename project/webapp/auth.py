@@ -99,6 +99,11 @@ def load_logged_in_user():
     else:
         g.user = User.query.get(user_id)
 
+@bp.before_app_request
+def load_admin_status():
+    # Loads g.is_admin from the session.
+    g.is_admin = bool(session.get("is_admin", False))
+
 
 def login_required(view):
     # Decorator to protect routes that require login.
@@ -106,6 +111,20 @@ def login_required(view):
     def wrapped_view(**kwargs):
         if g.user is None:
             return redirect(url_for("auth.login"))
+        return view(**kwargs)
+
+    return wrapped_view
+
+def admin_required(view):
+    # Decorator to protect routes that require admin privileges.
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for("auth.login"))
+
+        if not g.is_admin:
+            flash("Admin access required.")
+            return redirect(url_for("index"))
         return view(**kwargs)
 
     return wrapped_view
