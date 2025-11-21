@@ -225,4 +225,4 @@ Error messages are kept generic (“Invalid email or password”) to avoid leaki
 
 <a id="j"></a>
 ## Technical Design Presentation
-See [here]() for a link to the technical design video presentation.
+See [here](https://www.loom.com/share/9250fe20a83d41dfb764eebf23a48fbf) for a link to the technical design video presentation.
