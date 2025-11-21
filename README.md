@@ -42,7 +42,8 @@ See [here](https://www.loom.com/share/367c25877ac74d68a796d195728a936c?sid=6fb6a
 See [here](https://www.loom.com/share/6c69f67ea4a14b8083d366630647e675) for a link to the video presentation with a walkthrough of the user interface design.
 
 # Technical Design
-
-TO DO: technical design introduction
+See our technical design document for precise details on the execution of the product's implementation. 
+This includes descriptions of each entity and their relationship with one another,
+as well as reasoning behind the chosen languages, frameworks, and data storage plans.
 
 [Techincal Design](technical-design/README.md)
