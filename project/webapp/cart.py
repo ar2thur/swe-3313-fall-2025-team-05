@@ -19,6 +19,17 @@ def view_cart():
     return render_template("cart/view_cart.html", items=items)
 
 
+@bp.route("/view/<int:item_id>", methods=["GET"])
+@login_required
+def view_item(item_id):
+    # View details of a specific item in the cart
+    item = InventoryItem.query.get(item_id)
+    if item is None:
+        return "Item not found", 404
+
+    return render_template("cart/view_item.html", item=item)
+
+
 @bp.route("/add/<int:item_id>", methods=["POST"])
 @login_required
 def add_to_cart(item_id):
