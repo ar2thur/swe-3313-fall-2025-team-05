@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    <h1 class="text-3xl font-bold mb-4">{{ item.name }}</h1>
+    <p class="text-xl font-semibold mb-2">${{ item.cost }}</p>
+    <p>{{ item.description }}</p>
+
+    <form method="post" action="{{ url_for('cart.add_to_cart', item_id=item.id) }}">
+        <button class="btn btn-primary mt-4" type="submit">Add to Cart</button>
+    </form>
+</div>
+{% endblock %}
