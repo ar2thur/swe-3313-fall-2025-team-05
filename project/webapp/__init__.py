@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from webapp.db import db, init_db, seed_db
+from .db import db, init_db, seed_db
 
 def create_app(test_config=None):
     # Creates and intializes the app
@@ -22,6 +22,10 @@ def create_app(test_config=None):
     from .auth import bp as auth_bp
     app.register_blueprint(auth_bp)
     
+    from .home import bp as home_bp
+    app.register_blueprint(home_bp)
+    app.add_url_rule("/", endpoint="index")
+
     add_cli_commands(app)
 
     # Makes sure the apps instance folder exists
