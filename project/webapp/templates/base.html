@@ -5,77 +5,150 @@
     <!-- DaisyUI CDN, do not delete -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
 
     <!-- DaisyUI theme color overrides -->
     <style>
-        html[data-theme="nord"] {
+        :root {
             color-scheme: light;
 
             --color-primary: oklch(0.4937 0.1402 256.77);
             --color-primary-content: white;
             --color-secondary: oklch(0.9612 0 0);
             --color-base-100: white;
+            --color-accent: oklch(0.8672 0.177256 90.8474);
+            --color-accent-content: white;
         }
     </style>
 </head>
 
 <body>
+    {% if g.user %}
+    <nav class="navbar bg-primary shadow-sm fixed top-0 z-50">
 
-<nav>
-<div class="navbar bg-base-100 shadow-sm">
-  {% if g.user %}
-  <div class="flex-none">
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-        <div class="indicator">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /> </svg>
-          <span class="badge badge-sm indicator-item">8</span>
-        </div>
+      <div class="navbar-start">
+          <div class="px-3">
+            <img src="{{ url_for('static', filename="images/white_logo.png") }}" class="h-10 w-auto"/>
+          </div>
       </div>
-      <div
-        tabindex="0"
-        class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
-        <div class="card-body">
-          <span class="text-lg font-bold">8 Items</span>
-          <span class="text-info">Subtotal: $999</span>
-          <div class="card-actions">
-            <button class="btn btn-primary btn-block">View cart</button>
+      <div class="navbar-center">
+          <label class="input input-bordered w-120">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search"/>
+      </div>
+      <div class="navbar-end gap-3 items-center">
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <div class="indicator">
+              <i class="fa-solid fa-cart-shopping text-2xl text-white"></i> 
+              <span class="badge badge-xs indicator-item badge-accent text-black">8</span>
+            </div>
+          </div>
+          <div
+            tabindex="0"
+            class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
+            <div class="card-body">
+              <span class="text-lg font-bold">8 Items</span>
+              <span class="text-info">Subtotal: $999</span>
+              <div class="card-actions">
+                <button class="btn btn-primary btn-block">View cart</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-        <div class="w-10 rounded-full">
-          <img
-            alt="Tailwind CSS Navbar component"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+            <div class="w-10 rounded-full">
+              <img
+                alt="Tailwind CSS Navbar component"
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            </div>
+          </div>
+          <ul
+            tabindex="-1"
+            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+            <li>
+              <a class="justify-between">
+                Profile
+              </a>
+            </li>
+            <li><a>Settings</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+          </ul>
         </div>
       </div>
-      <ul
-        tabindex="-1"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li>
-          <a class="justify-between">
-            Profile
-            <span class="badge">New</span>
-          </a>
-        </li>
-        <li><a>Settings</a></li>
-        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-      </ul>
+      {% endif %}
+    </nav>
+
+    <div class="drawer lg:drawer-open">
+        <input id="tdrawer" type="checkbox" class="drawer-toggle"/>
+        <div class="drawer-content">
+            
+            <!-- page content -->
+            <div class="flex justify-center bg-base-100 ml-6 mr-6" tabindex="0">
+                <!-- Every page will insert its own content here -->
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <div class="drawer-side h-[calc(100vh-4rem)] top-16 is-drawer-close:overflow-visible">
+            <label for="tdrawer" aria-label="close sidebar" class="drawer-overlay"></label>
+            <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64">
+            <!-- Sidebar content here -->
+              <ul class="menu w-full grow">
+                <!-- List item -->
+                <li>
+                    <p class="text-white">Sort by</p>
+                    <select class="select w-full">
+                        <option selected></option>
+                        <option>Price: High to Low</option>
+                        <option>Price: Low to High</option>
+                        <option>Name: A-Z</option>
+                        <option>Name: Z-A</option>
+                    </select>
+                </li>
+                <li>
+                    <p class="text-white">Categories</p>
+                </li>
+                <li>
+                  <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Aircraft">
+                    <!-- Home icon -->
+                    <i class="fa-solid fa-plane-up text-2xl text-white"></i> 
+                    <span class="is-drawer-close:hidden text-white">Aircraft</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Missiles">
+                    <!-- Home icon -->
+                    <i class="fa-solid fa-space-shuttle text-2xl text-white"></i> 
+                    <span class="is-drawer-close:hidden text-white">Missiles</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Rotary">
+                    <!-- Home icon -->
+                    <i class="fa-solid fa-helicopter text-2xl text-white"></i> 
+                    <span class="is-drawer-close:hidden text-white">Rotary</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Space-Systems">
+                    <!-- Home icon -->
+                    <i class="fa-solid fa-satellite text-2xl text-white"></i> 
+                    <span class="is-drawer-close:hidden text-white">Space Systems</span>
+                  </button>
+                </li>
+
+                <li>
+                    <p class="text-white">Price</p>
+                    <div>
+                        <input class="input input-sm w-25" placeholder="min"/>
+                        <p class="text-white">to</p>
+                        <input class="input input-sm w-25" placeholder="max"/>
+                    </div>
+                </li>
+              </ul>
+            </div>
+        </div>
     </div>
-  </div>
-  {% endif %}
-</div>
-
-</nav>
-
-<div class="flex justify-center" tabindex="0">
-    <!-- Every page will insert its own content here -->
-    {% block content %}{% endblock %}
-</div>
-
 </body>
 </html>
