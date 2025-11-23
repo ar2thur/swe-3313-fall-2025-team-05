@@ -21,6 +21,9 @@ def create_app(test_config=None):
     # Register blueprints
     from .auth import bp as auth_bp
     app.register_blueprint(auth_bp)
+
+    from .payment import bp as payment_bp
+    app.register_blueprint(payment_bp)
     
     add_cli_commands(app)
 
