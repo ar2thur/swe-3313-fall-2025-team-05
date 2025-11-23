@@ -1,0 +1,20 @@
+<dialog id="_{{name}}" class="modal">
+    <div class="modal-box max-w-full max-h-full card card-side bg-base-100 card-border shadow-sm p-0">
+        <figure class="w-full h-full">
+            <img src="{{ url_for('static', filename=prod.picture_path) }}" class="object-cover" alt="{{ product.name }}"/>
+        </figure>
+        <div class="card-body flex flex-col justify-between">
+            <h2 class="card-title text-2xl">{{ prod.name }}</h2>
+            <div class=" w-100 text-wrap">
+                <p>{{ prod.description }}</p>
+            </div>
+            <div class="card-actions justify-between items-center">
+                <h4 class="card-title">${{ prod.cost / 100.0 }}0</h4>
+                <button class="btn btn-primary">Add to cart</button>
+            </div>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
