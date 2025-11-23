@@ -1,274 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lockheed Martin - Defense Products</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'lm-blue': '#2563a8',
-                        'lm-dark-blue': '#1e3a5f',
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-gray-100">
-    <div class="bg-lm-blue text-white px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-lg">
-        <div class="flex items-center gap-2">
-            <span class="text-xl font-bold">LOCKHEED MARTIN (Placeholder)</span>
-            <span class="text-2xl">✦</span>
-        </div>
-        <div class="flex-1 max-w-2xl mx-12">
-            <div class="relative">
-                <input type="text" placeholder="🔍 Search" 
-                       class="input input-bordered w-full bg-white text-gray-800 rounded-full px-6" />
+{% extends "base.html" %}
+
+{% block content %}
+    
+
+    <div class="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-22">
+        {% for product in products %}
+        <div class="card w-full bg-base-100 card-border shadow-md hover:shadow-xl transition-shadow overflow-hidden" onclick="_{{loop.index}}.showModal()">
+
+            {% with prod=product, name=loop.index|string %}
+                {% include "modal.html" %}
+            {% endwith %}
+
+            <figure class="w-full h-full">
+                <img src="{{ url_for('static', filename=product.picture_path) }}" class="w-full h-full object-cover" alt="{{ product.name }}"/>
+            </figure>
+            <div class="card-body">
+                <div class="card-title justify-between">
+                    <h2>{{ product.name }}</h2>
+                    <h4>${{ product.cost / 100.0 }}0</h4>
+                </div>
+                <div class="card-actions justify-start">
+                    <label class="label text-ellipsis line-clamp-1">{{ product.description }}</label>
+                </div>
             </div>
         </div>
-        <div class="flex items-center gap-4">
-            <button class="btn btn-ghost btn-circle text-white hover:bg-white/10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-            </button>
-            <button class="btn btn-ghost btn-circle text-white hover:bg-white/10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-            </button>
-        </div>
+
+        {% endfor %}
     </div>
 
-    <div class="flex min-h-screen">
-        <div class="w-56 bg-lm-dark-blue text-white p-6">
-            <div class="mb-8">
-                <h3 class="text-lg font-bold mb-3">Sort by</h3>
-                <select class="select select-sm select-bordered w-full bg-lm-blue border-white/20 text-white text-xs">
-                    <option disabled selected>Choose sorting</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Name: A-Z</option>
-                    <option>Name: Z-A</option>
-                </select>
-            </div>
-
-            <div class="mb-8">
-                <h3 class="text-lg font-bold mb-4">Category</h3>
-                <div class="space-y-3">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" class="checkbox checkbox-sm border-white/40 checked:border-white [--chkbg:theme(colors.white)] [--chkfg:theme(colors.lm-dark-blue)]" id="defence" />
-                        <span class="text-sm">Defence</span>
-                    </label>
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" class="checkbox checkbox-sm border-white/40 checked:border-white [--chkbg:theme(colors.white)] [--chkfg:theme(colors.lm-dark-blue)]" id="missiles" />
-                        <span class="text-sm">Missiles</span>
-                    </label>
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" class="checkbox checkbox-sm border-white/40 checked:border-white [--chkbg:theme(colors.white)] [--chkfg:theme(colors.lm-dark-blue)]" id="rotary" />
-                        <span class="text-sm">Rotary and Propeller</span>
-                    </label>
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" class="checkbox checkbox-sm border-white/40 checked:border-white [--chkbg:theme(colors.white)] [--chkfg:theme(colors.lm-dark-blue)]" id="space" />
-                        <span class="text-sm">Space Systems</span>
-                    </label>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="text-lg font-bold mb-4">Price ($)</h3>
-                <div class="flex items-center gap-2 mb-3">
-                    <input type="text" placeholder="Min" 
-                           class="input input-sm input-bordered w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 text-xs" />
-                    <span class="text-sm">to</span>
-                    <input type="text" placeholder="Max" 
-                           class="input input-sm input-bordered w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 text-xs" />
-                </div>
-            </div>
-        </div>
-
-        <div class="flex-1 p-8 bg-gray-100">
-            <div class="bg-white rounded-lg px-6 py-4 mb-8 shadow-sm">
-                <h2 class="text-xl font-bold text-lm-dark-blue">
-                    Hello, <span class="text-lm-blue">username</span>! Check out today's recommendations...
-                </h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                <!-- HELLFIRE -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="HELLFIRE" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">HELLFIRE</h2>
-                        <p class="text-lg font-bold text-lm-blue">$115,000,000.00</p>
-                        <p class="text-xs text-gray-600">A long-trusted and battle-tested AGM system...</p>
-                    </div>
-                </div>
-
-                <!-- F22 Raptor -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="F22 Raptor" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">F22 Raptor</h2>
-                        <p class="text-lg font-bold text-lm-blue">$350,000,000.00</p>
-                        <p class="text-xs text-gray-600">Unrivaled stealth fighter jet for air dominance...</p>
-                    </div>
-                </div>
-
-                <!-- F35 Lightning -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="F35 Lightning" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">F35 Lightning</h2>
-                        <p class="text-lg font-bold text-lm-blue">$82,500,000.00</p>
-                        <p class="text-xs text-gray-600">The ultimate multi-role fighter for modern warfare...</p>
-                    </div>
-                </div>
-
-                <!-- BLACK HAWK -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="BLACK HAWK" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">BLACK HAWK</h2>
-                        <p class="text-lg font-bold text-lm-blue">$10,000,000.00</p>
-                        <p class="text-xs text-gray-600">Reliable utility helicopter for combat and transport...</p>
-                    </div>
-                </div>
-
-                <!-- F16 Viper -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="F16 Viper" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">F16 Viper</h2>
-                        <p class="text-lg font-bold text-lm-blue">$279,000,000.00</p>
-                        <p class="text-xs text-gray-600">Proven versatile fighter for your everyday combat...</p>
-                    </div>
-                </div>
-
-                <!-- ATACMS -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="ATACMS" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">ATACMS</h2>
-                        <p class="text-lg font-bold text-lm-blue">$1,000,000.00</p>
-                        <p class="text-xs text-gray-600">Long-range guided missile system for precision strikes...</p>
-                    </div>
-                </div>
-
-                <!-- PrSM -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="PrSM" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">PrSM</h2>
-                        <p class="text-lg font-bold text-lm-blue">$1,100,000.00</p>
-                        <p class="text-xs text-gray-600">Next-generation long-range precision strike missile...</p>
-                    </div>
-                </div>
-
-                <!-- Juno -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="Juno" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">Juno</h2>
-                        <p class="text-lg font-bold text-lm-blue">$361,000,000.00</p>
-                        <p class="text-xs text-gray-600">Advanced orbital satellite system for space operations...</p>
-                    </div>
-                </div>
-
-                <!-- THAAD -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="THAAD" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">THAAD</h2>
-                        <p class="text-lg font-bold text-lm-blue">$3,000,000,000.00</p>
-                        <p class="text-xs text-gray-600">Terminal High Altitude Area Defense system...</p>
-                    </div>
-                </div>
-
-                <!-- C-130 Hercules -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="C-130" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">C-130 Hercules</h2>
-                        <p class="text-lg font-bold text-lm-blue">$67,000,000.00</p>
-                        <p class="text-xs text-gray-600">Versatile tactical transport aircraft for all missions...</p>
-                    </div>
-                </div>
-
-                <!-- PAC-3 -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="PAC-3" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">PAC-3</h2>
-                        <p class="text-lg font-bold text-lm-blue">$4,100,000.00</p>
-                        <p class="text-xs text-gray-600">Patriot Advanced Capability missile defense...</p>
-                    </div>
-                </div>
-
-                <!-- GPS III -->
-                <div class="card bg-white shadow-md hover:shadow-xl transition-shadow">
-                    <figure class="px-4 pt-4">
-                        <div class="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
-                            <img src="" alt="GPS III" class="w-full h-full object-contain">
-                        </div>
-                    </figure>
-                    <div class="card-body p-4">
-                        <h2 class="card-title text-base text-lm-dark-blue font-bold">GPS III</h2>
-                        <p class="text-lg font-bold text-lm-blue">$577,000,000.00</p>
-                        <p class="text-xs text-gray-600">Next-generation GPS satellite for global positioning...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+{% endblock %}
