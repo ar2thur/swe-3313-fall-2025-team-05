@@ -3,6 +3,9 @@
         <figure class="w-full h-full">
             <img src="{{ url_for('static', filename=prod.picture_path) }}" class="object-cover" alt="{{ product.name }}"/>
         </figure>
+        <form method="dialog">
+            <button class="btn btn-ghost btn-circle btn-sm absolute top-2 right-2">x</button>
+        </form>
         <div class="card-body flex flex-col justify-between">
             <h2 class="card-title text-2xl">{{ prod.name }}</h2>
             <div class=" w-100 text-wrap">
@@ -14,7 +17,5 @@
             </div>
         </div>
     </div>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
+    
 </dialog>
