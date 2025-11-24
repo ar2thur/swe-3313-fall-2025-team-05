@@ -115,6 +115,7 @@ def login_required(view):
 
     return wrapped_view
 
+
 def admin_required(view):
     # Decorator to protect routes that require admin privileges.
     @functools.wraps(view)

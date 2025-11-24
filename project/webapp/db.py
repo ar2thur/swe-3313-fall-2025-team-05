@@ -53,7 +53,7 @@ def seed_db():
                         """
                     ),
                     cost=27_000_000_000,
-                    picture_path="NULL"
+                    picture_path="inventory_pictures/f16_viper.jpg"
                 ),
                 InventoryItem(
                     is_available=True,
@@ -67,7 +67,7 @@ def seed_db():
                         """
                     ),
                     cost=35_000_000_000,
-                    picture_path="NULL"
+                    picture_path="inventory_pictures/f22_raptor.jpg"
                 ),
                 InventoryItem(
                     is_available=True,
@@ -81,7 +81,7 @@ def seed_db():
                         """
                     ),
                     cost=8_250_000_000,
-                    picture_path="NULL"
+                    picture_path="inventory_pictures/f35_lightning.jpg"
                 ),
                 InventoryItem(
                     is_available=True,
@@ -95,7 +95,7 @@ def seed_db():
                         """
                     ),
                     cost=900_000_000,
-                    picture_path="NULL"
+                    picture_path="inventory_pictures/c17_globemaster.jpg"
                 ),
                 InventoryItem(
                     is_available=True,
@@ -109,7 +109,7 @@ def seed_db():
                         """
                     ),
                     cost=870_000_000,
-                    picture_path="NULL"
+                    picture_path="inventory_pictures/f15_strike_eagle.jpg"
                 ),
                 InventoryItem(
                     is_available=True,
@@ -122,7 +122,7 @@ def seed_db():
                         """
                     ),
                     cost=100_000_000,
-                    picture_path="NULL"
+                    picture_path="inventory_pictures/atacms.jpg"
                 ),
                 InventoryItem(
                     is_available=True,
@@ -135,7 +135,7 @@ def seed_db():
                         """
                     ),
                     cost=1_100_000_000,
-                    picture_path="NULL"
+                    picture_path="inventory_pictures/prsm.jpg"
                 ),
                 InventoryItem(
                     is_available=True,
@@ -148,7 +148,7 @@ def seed_db():
                         """
                     ),
                     cost=1_000_000_000,
-                    picture_path="NULL"
+                    picture_path="inventory_pictures/uh_60_blackhawk.jpg"
                 )
             ]
 

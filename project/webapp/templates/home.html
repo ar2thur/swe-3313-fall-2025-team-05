@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+
+    <div class="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-22">
+        {% for product in products %}
+        <div class="card w-full bg-base-100 card-border shadow-md hover:shadow-xl transition-shadow overflow-hidden" onclick="_{{loop.index}}.showModal()">
+
+            {% with prod=product, name=loop.index|string %}
+                {% include "modal.html" %}
+            {% endwith %}
+
+            <figure class="w-full h-full">
+                <img src="{{ url_for('static', filename=product.picture_path) }}" class="w-full h-full object-cover" alt="{{ product.name }}"/>
+            </figure>
+            <div class="card-body">
+                <div class="card-title justify-between">
+                    <h2>{{ product.name }}</h2>
+                    <h4>${{ product.cost / 100.0 }}0</h4>
+                </div>
+                <div class="card-actions justify-start">
+                    <label class="label text-ellipsis line-clamp-1">{{ product.description }}</label>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}
