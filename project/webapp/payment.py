@@ -10,7 +10,6 @@ bp = Blueprint("payment", __name__, url_prefix="/payment")
 @bp.route("/", methods=["GET", "POST"])
 @login_required
 def pay():
-    address = apt = zip_code = city = state = phone = ""
     card = expiration = cvv = shipping = ""
     if request.method == "POST":
         # Shipping information.
@@ -51,7 +50,6 @@ def pay():
             error = "Shipping option selection is required."
 
         if error is None: # All required fields filled. Can confirm order.
-
             return redirect(url_for("payment.confirm"))
 
         flash(error)
@@ -59,8 +57,15 @@ def pay():
     return render_template("payment/pay.html")
 
 # Confirm order button is pressed on pay now page.
-@bp.route("/confirm", methods=["POST"])
+@bp.route("/confirm", methods=["GET", "POST"])
 @login_required
 def confirm():
     if request.method == "POST":
-        return
+        return redirect(url_for("payment.receipt"))
+
+    return render_template("payment/confirm.html")
+
+@bp.route("/receipt/<int:cart_id>", methods=["GET"])
+@login_required
+def view_receipt():
+    return

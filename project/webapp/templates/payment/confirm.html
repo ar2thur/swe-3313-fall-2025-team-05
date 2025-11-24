@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Order?{% endblock %}
+
+{% block content %}
+<div class="flex gap-4 items-center mt-16 mb-24">
+    <form method="post">
+    <h1 class="text-5xl font-bold mt-16 mb-6">Order Summary</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <div role="alert" class="alert alert-error alert-soft w-full mt-4">
+              <li><span class="">{{ message }}</span></li>
+          </div>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    </form>
+</div>
+{% endblock %}
