@@ -95,6 +95,8 @@ def confirm():
         if action == "complete": # Pressed complete order button.
             cart.tax = tax
             cart.total_cost = total
+            for item in items:
+                item.is_available = False
             cart.is_checked_out = True
             cart.date_checked_out = datetime.datetime.now()
 
@@ -110,6 +112,7 @@ def confirm():
 @login_required
 def view_receipt(cart_id):
     cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
+    shipping_info = session.get("shipping_info", {})
     if cart is None:
         return redirect(url_for("home.index"))
 
@@ -122,7 +125,7 @@ def view_receipt(cart_id):
     if request.method == "POST":
         return redirect(url_for("home"))
 
-    return render_template("payment/receipt.html", cart_id=cart_id, items=items)
+    return render_template("payment/receipt.html", cart=cart, items=items, shipping_info=shipping_info)
 
 # Get the corresponding inventory items from cart items.
 def get_items(cart_items):
