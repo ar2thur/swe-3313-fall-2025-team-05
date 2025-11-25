@@ -17,7 +17,27 @@
         </ul>
       {% endif %}
     {% endwith %}
-
+    <div class="overflow-x-auto">
+        <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>${{ item.cost / 100.0 }}0</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <button class="btn btn-error" type="submit" value="cancel">Cancel order</button>
+    <button class="btn btn-primary" type="submit" value="complete">Complete order</button>
     </form>
 </div>
 {% endblock %}

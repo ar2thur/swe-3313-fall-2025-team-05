@@ -74,9 +74,9 @@
             <fieldset class="fieldset">
                 <select class="select" name="shipping" required>
                     <option disabled selected value="">Make a selection</option>
-                    <option value="overnight">Overnight (+$29)</option>
-                    <option value="3_day">3-Day (+$19)</option>
-                    <option value="ground">Ground (+$0)</option>
+                    <option value="overnight">Overnight (+${{ logistics.overnight_shipping / 100 }}0)</option>
+                    <option value="three_day">3-Day (+${{ logistics.three_day_shipping / 100 }}0)</option>
+                    <option value="ground">Ground (+${{ logistics.ground_shipping / 100 }}0)</option>
                 </select>
             </fieldset>
             </div>
