@@ -13,7 +13,9 @@
             </div>
             <div class="card-actions justify-between items-center">
                 <h4 class="card-title">${{ prod.cost / 100.0 }}0</h4>
-                <button class="btn btn-primary">Add to cart</button>
+                <form action="/cart/add/{{ prod.id }}" method="POST">
+                    <button type="submit" class="btn btn-primary">Add to cart</button>
+                </form>
             </div>
         </div>
     </div>
