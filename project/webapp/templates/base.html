@@ -55,9 +55,9 @@
             class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
             <div class="card-body">
                 <span class="text-lg font-bold">{{ item_count }} Items</span>
-                <span class="text-info">Subtotal: ${{ sub_total | default(0) }}</span>
+                <span class="text-info">Subtotal: ${{ "{:,}".format(sub_total) | default(0, True) }}</span>
               <div class="card-actions">
-                <button class="btn btn-primary btn-block">View cart</button>
+                  <button href="{{ url_for('cart.view_cart') }}" class="btn btn-primary btn-block">View cart</button>
               </div>
             </div>
           </div>

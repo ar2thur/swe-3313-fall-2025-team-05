@@ -12,7 +12,7 @@
                 <p>{{ prod.description }}</p>
             </div>
             <div class="card-actions justify-between items-center">
-                <h4 class="card-title">${{ prod.cost / 100.0 }}0</h4>
+                <h4 class="card-title">${{ "{:,}".format(prod.cost / 100.0) }}0</h4>
                 <form action="/cart/add/{{ prod.id }}" method="POST">
                     <button type="submit" class="btn btn-primary">Add to cart</button>
                 </form>
