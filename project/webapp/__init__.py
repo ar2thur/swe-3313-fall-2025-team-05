@@ -29,6 +29,9 @@ def create_app(test_config=None):
     app.register_blueprint(home_bp)
     app.add_url_rule("/", endpoint="index")
 
+    from .cart import bp as cart_bp
+    app.register_blueprint(cart_bp)
+
     add_cli_commands(app)
 
     # Makes sure the apps instance folder exists
