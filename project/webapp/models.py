@@ -27,7 +27,7 @@ class User(db.Model):
 class ShoppingCart(db.Model):
     __tablename__ ="shoppingcarts"
     id = Column(String, primary_key=True, nullable=False, default=str(uuid.uuid4()))
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     is_checked_out = Column(Boolean, nullable=False, default=False)
     date_checked_out = Column(String, nullable=True, default=None)
     sub_total = Column(Integer, nullable=True, default=None)
