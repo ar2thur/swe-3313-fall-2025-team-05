@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from .db import db, init_db, seed_db
+from .db import db, init_db, seed_db, reset_db
 
 def create_app(test_config=None):
     # Creates and intializes the app
@@ -47,4 +47,4 @@ def create_app(test_config=None):
 def add_cli_commands(app):
     app.cli.add_command(seed_db)
     app.cli.add_command(init_db)
-
+    app.cli.add_command(reset_db)
