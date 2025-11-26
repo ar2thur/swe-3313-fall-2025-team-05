@@ -57,7 +57,9 @@
                 <span class="text-lg font-bold">{{ item_count }} Items</span>
                 <span class="text-info">Subtotal: ${{ sub_total | default(0) }}</span>
               <div class="card-actions">
-                <button class="btn btn-primary btn-block">View cart</button>
+                <a href="{{ url_for('cart.view_cart') }}" class="btn btn-primary btn-block">
+                    View cart
+                </a>
               </div>
             </div>
           </div>
