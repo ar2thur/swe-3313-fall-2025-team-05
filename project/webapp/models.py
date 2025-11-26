@@ -41,7 +41,7 @@ class ShoppingCartItem(db.Model):
     __tablename__ = "shoppingcartitems"
     id = Column(Integer, primary_key=True)
     shopping_cart_id = Column(String, ForeignKey('shoppingcarts.id'))
-    inventory_item_id = Column(String, ForeignKey('inventoryitems.id'))
+    inventory_item_id = Column(Integer, ForeignKey('inventoryitems.id'))
     added_to_cart = Column(String, nullable=False)
 
     def __repr__(self):
