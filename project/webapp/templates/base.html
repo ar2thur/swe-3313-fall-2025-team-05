@@ -28,9 +28,11 @@
     <nav class="navbar bg-primary shadow-sm fixed top-0 z-50">
 
       <div class="navbar-start">
-          <div class="px-3">
-            <img src="{{ url_for('static', filename="images/white_logo.png") }}" class="h-10 w-auto"/>
-          </div>
+          <a href="{{ url_for("index") }}">
+            <div class="px-3">
+                <img src="{{ url_for('static', filename="images/white_logo.png") }}" class="h-10 w-auto"/>
+            </div>
+          </a>
       </div>
       <div class="navbar-center">
           <label class="input input-bordered w-120">
@@ -55,7 +57,12 @@
             class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
             <div class="card-body">
                 <span class="text-lg font-bold">{{ item_count }} Items</span>
-                <span class="text-info">Subtotal: ${{ "{:,}".format(sub_total) | default(0, True) }}</span>
+                {% if sub_total is not defined %}
+                    {% set sub_total = 0 %}
+                {% else %}
+                    {% set sub_total = "{:,}".format(sub_total) %}
+                {% endif %}
+                <span class="text-info">Subtotal: ${{ sub_total }}</span>
               <div class="card-actions">
                   <a href="{{ url_for('cart.view_cart') }}" class="btn btn-primary btn-block">View cart</a>
               </div>
