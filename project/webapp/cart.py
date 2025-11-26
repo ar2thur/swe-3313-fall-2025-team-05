@@ -12,10 +12,15 @@ def view_cart():
     cart_id = session.get("cart_id")
     if not cart_id:
         items = []
+        total_items = 0
+        subtotal_cents = 0
     else:
         items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart_id).all()
 
-    return render_template("view_cart.html", items=items)
+        total_items = len(items) # Quantity is always 1 per ShoppingCartItem
+        subtotal_cents = sum(item.inventory_item.cost for item in items)
+
+    return render_template("view_cart.html", items=items, total_items=total_items, subtotal_cents=subtotal_cents)
 
 
 @bp.route("/view/<int:item_id>", methods=["GET"])
