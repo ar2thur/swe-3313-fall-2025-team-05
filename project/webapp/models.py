@@ -44,6 +44,8 @@ class ShoppingCartItem(db.Model):
     inventory_item_id = Column(Integer, ForeignKey('inventoryitems.id'))
     added_to_cart = Column(String, nullable=False)
 
+    inventory_item = db.relationship("InventoryItem")
+
     def __repr__(self):
         return f'Shopping cart item: {self.id}, relates to inventory item: {self.inventory_item_id}'
 
