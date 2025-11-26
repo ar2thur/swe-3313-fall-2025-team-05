@@ -26,7 +26,7 @@ class User(db.Model):
 
 class ShoppingCart(db.Model):
     __tablename__ ="shoppingcarts"
-    id = Column(String, primary_key=True, nullable=False, default=uuid.uuid4())
+    id = Column(String, primary_key=True, nullable=False, default=str(uuid.uuid4()))
     user_id = Column(Integer, ForeignKey('users.id'))
     is_checked_out = Column(Boolean, nullable=False, default=False)
     date_checked_out = Column(String, nullable=True, default=None)
@@ -41,7 +41,7 @@ class ShoppingCartItem(db.Model):
     __tablename__ = "shoppingcartitems"
     id = Column(Integer, primary_key=True)
     shopping_cart_id = Column(String, ForeignKey('shoppingcarts.id'))
-    inventory_item_id = Column(String, ForeignKey('inventoryitems.id'))
+    inventory_item_id = Column(Integer, ForeignKey('inventoryitems.id'))
     added_to_cart = Column(String, nullable=False)
 
     def __repr__(self):
