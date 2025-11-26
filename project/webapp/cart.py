@@ -1,22 +1,21 @@
-from flask import Blueprint, flash, render_template, redirect, url_for, g
+from flask import Blueprint, flash, render_template, redirect, session, url_for, g
 from .auth import login_required
 from .db import ShoppingCart, ShoppingCartItem, InventoryItem, db
 
 bp = Blueprint("cart", __name__, url_prefix="/cart")
 
 
-@bp.route("/")
+@bp.route("/view", methods=["GET"])
 @login_required
 def view_cart():
     # View the contents of the shopping cart
-    cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
-
-    if cart is None:
+    cart_id = session.get("cart_id")
+    if not cart_id:
         items = []
     else:
-        items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+        items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart_id).all()
 
-    return render_template("cart/view_cart.html", items=items)
+    return render_template("view_cart.html", items=items)
 
 
 @bp.route("/view/<int:item_id>", methods=["GET"])
