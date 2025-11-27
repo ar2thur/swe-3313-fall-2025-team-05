@@ -27,8 +27,16 @@
                             <div class="text-sm text-gray-600 line-clamp-2">
                                 {{ item.inventory_item.description }}
                             </div>   
-                        </div>   
+
+                        {# Qty + price row #}
+                        <div class="mt-2 flex items-center gap-4 text-sm text-gray-700">
+                            <span>Qty: 1</span>
+                            <span class="font-semibold">
+                                ${{ '{:,.2f}'.format(item.inventory_item.cost / 100) }}
+                            </span>
+                        </div>
                     </div>
+                </div>
                     
                     {# Remove button #}
                     <form method="post" action="{{ url_for('cart.remove_from_cart', item_id=item.inventory_item_id) }}">
