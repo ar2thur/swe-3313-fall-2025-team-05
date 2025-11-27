@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Order?{% endblock %}
+
+{% block content %}
+<div class="flex gap-4 items-center mt-16 mb-24">
+    <form method="post">
+    <h1 class="text-5xl font-bold mt-16 mb-6">Order Summary</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <div role="alert" class="alert alert-error alert-soft w-full mt-4">
+              <li><span class="">{{ message }}</span></li>
+          </div>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <div class="overflow-x-auto">
+        <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>${{ item.cost / 100.0 }}0</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <button class="btn btn-error" type="submit" value="cancel">Cancel order</button>
+    <button class="btn btn-primary" type="submit" value="complete">Complete order</button>
+    </form>
+</div>
+{% endblock %}

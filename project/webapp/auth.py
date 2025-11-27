@@ -6,7 +6,7 @@ from flask import (
 )
 
 from webapp.db import db
-from webapp.models import User
+from webapp.models import User, ShoppingCart
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -39,6 +39,10 @@ def register():
             user.set_password(password)
 
             db.session.add(user)
+            db.session.commit()
+
+            new_cart = ShoppingCart(user_id=user.id)
+            db.session.add(new_cart)
             db.session.commit()
 
             flash("Registration successful. Please log in.")
