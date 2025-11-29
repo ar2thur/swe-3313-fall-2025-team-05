@@ -1,7 +1,8 @@
 from datetime import datetime
 from flask import Blueprint, flash, render_template, redirect, session, url_for, g
-from .auth import login_required
-from .db import ShoppingCart, ShoppingCartItem, InventoryItem, db
+from webapp.auth import login_required
+from webapp.db import db
+from webapp.models import ShoppingCart, ShoppingCartItem, InventoryItem, db
 
 bp = Blueprint("cart", __name__, url_prefix="/cart")
 
