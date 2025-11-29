@@ -17,7 +17,7 @@
             <div class="card-body">
                 <div class="card-title justify-between">
                     <h2>{{ product.name }}</h2>
-                    <h4>${{ product.cost / 100.0 }}0</h4>
+                    <h4>${{ "{:,}".format(product.cost / 100.0) }}0</h4>
                 </div>
                 <div class="card-actions justify-start">
                     <label class="label text-ellipsis line-clamp-1">{{ product.description }}</label>

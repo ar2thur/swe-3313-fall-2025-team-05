@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, flash, render_template, redirect, session, url_for, g
 from .auth import login_required
 from .db import ShoppingCart, ShoppingCartItem, InventoryItem, db
@@ -10,13 +11,13 @@ bp = Blueprint("cart", __name__, url_prefix="/cart")
 def view_cart():
     # View the contents of the shopping cart
     cart_id = session.get("cart_id")
+    
     if not cart_id:
         items = []
         total_items = 0
         subtotal_cents = 0
     else:
         items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart_id).all()
-
         total_items = len(items) # Quantity is always 1 per ShoppingCartItem
         subtotal_cents = sum(item.inventory_item.cost for item in items)
 
@@ -41,24 +42,21 @@ def add_to_cart(item_id):
     item = InventoryItem.query.get(item_id)
     if item is None or not item.is_available:
         return "Item not available", 404
+    
+    item.is_available = False
 
     cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
-    
-    if cart is None:
-        cart = ShoppingCart(user_id=g.user.id)
-        db.session.add(cart)
-        db.session.commit()
 
     new_item = ShoppingCartItem(
         shopping_cart_id=cart.id,
         inventory_item_id=item.id,
-        added_to_cart="Just now"  # later, use actual timestamp
+        added_to_cart=datetime.now()
     )
     db.session.add(new_item)
     db.session.commit()
 
     flash("Item added to cart.")
-    return redirect(url_for("cart.view_cart"))        
+    return redirect(url_for("index"))        
 
 
 @bp.route("/checkout", methods=["POST"])
@@ -89,6 +87,10 @@ def remove_from_cart(item_id):
         shopping_cart_id=cart.id,
         inventory_item_id=item_id
     ).first()
+
+    # Marks item as available again
+    item = InventoryItem.query.filter_by(id=item_id).first()
+    item.is_available = True
 
     if cart_item:
         db.session.delete(cart_item)
