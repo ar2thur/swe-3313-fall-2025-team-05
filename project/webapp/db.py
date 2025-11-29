@@ -3,7 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 db = SQLAlchemy()
+@click.command("reset-db")
+@click.pass_context
+def reset_db(ctx):
+    """Deletes instance/ folder and rebuilds/reseeds database"""
+    from webapp import create_app
 
+    app = create_app()
+    with app.app_context():
+        db.drop_all()
+        click.echo("Database wiped clean")
+    ctx.invoke(init_db)
+    ctx.invoke(seed_db)    
 
 @click.command("init-db")
 def init_db():
