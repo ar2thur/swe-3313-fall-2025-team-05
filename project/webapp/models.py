@@ -31,9 +31,9 @@ class ShoppingCart(db.Model):
     user_id = Column(Integer, ForeignKey('users.id'))
     is_checked_out = Column(Boolean, nullable=False, default=False)
     date_checked_out = Column(DateTime, nullable=True, default=None)
-    sub_total = Column(Integer, nullable=True, default=None)
-    tax = Column(Integer, nullable=True, default=None)
-    total_cost = Column(Integer, nullable=True, default=None)
+    sub_total = Column(Integer, nullable=False, default=0)
+    tax = Column(Integer, nullable=False, default=0)
+    total_cost = Column(Integer, nullable=False, default=0)
 
     def __repr__(self):
         return f'ShoppingCart for {self.user_id}, total: {self.total_cost}'
