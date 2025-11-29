@@ -38,13 +38,12 @@ def register():
             )
             user.set_password(password)
 
-            new_cart = ShoppingCart(user_id=user.id)
-
             db.session.add(user)
-            db.session.add(new_cart)
             db.session.commit()
 
-            print(new_cart)
+            new_cart = ShoppingCart(user_id=user.id)
+            db.session.add(new_cart)
+            db.session.commit()
         
             flash("Registration successful. Please log in.")
             return redirect(url_for("auth.login"))
