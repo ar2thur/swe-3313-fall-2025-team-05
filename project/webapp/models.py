@@ -27,7 +27,7 @@ class User(db.Model):
 
 class ShoppingCart(db.Model):
     __tablename__ ="shoppingcarts"
-    id = Column(Uuid, primary_key=True, nullable=False, default=str(uuid.uuid4()))
+    id = Column(Uuid, primary_key=True, nullable=False, default=uuid.uuid4)
     user_id = Column(Integer, ForeignKey('users.id'))
     is_checked_out = Column(Boolean, nullable=False, default=False)
     date_checked_out = Column(DateTime, nullable=True, default=None)
