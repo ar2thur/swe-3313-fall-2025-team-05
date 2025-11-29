@@ -22,7 +22,7 @@ def view_cart():
         total_items = len(items) # Quantity is always 1 per ShoppingCartItem
         subtotal_cents = sum(item.inventory_item.cost for item in items)
 
-    return render_template("view_cart.html", items=items, total_items=total_items, subtotal_cents=subtotal_cents)
+    return render_template("cart/view_cart.html", items=items, total_items=total_items, subtotal_cents=subtotal_cents)
 
 
 @bp.route("/view/<int:item_id>", methods=["GET"])
