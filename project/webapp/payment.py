@@ -88,7 +88,7 @@ def confirm():
     sub_total = 0
     for item in items: # Add up cost of all items in cart.
         sub_total += item.cost
-    tax = sub_total * logistics.tax
+    tax = int(sub_total * (logistics.tax / 100))
     shipping_info = session.get("shipping_info", {})
     shipping_cost = shipping_info.get("shipping_cost")
     total = sub_total + shipping_cost + tax
@@ -103,35 +103,34 @@ def confirm():
         if action == "complete": # Pressed complete order button.
             for item in items:
                 item.is_available = False
+
             cart.is_checked_out = True
             cart.date_checked_out = datetime.datetime.now()
-
             db.session.commit()
 
             return redirect(url_for("payment.receipt", cart_id=cart.id))
         elif action == "cancel": # Pressed cancel order button.
             return redirect(url_for("home.index"))
-
     return render_template("payment/confirm.html", items=items, cart=cart, shipping_cost=shipping_cost, tax_percent=logistics.tax)
+
 
 @bp.route("/receipt/<int:cart_id>", methods=["GET", "POST"])
 @login_required
 def receipt(cart_id):
-    cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
+    cart = ShoppingCart.query.filter_by(id=cart_id, user_id=g.user.id).first()
     shipping_info = session.get("shipping_info", {})
     if cart is None:
         return redirect(url_for("home.index"))
-
     if not cart.is_checked_out:
         return redirect(url_for("home.index"))
 
     cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
     items = get_items(cart_items)
 
-    if request.method == "POST":
-        return redirect(url_for("home"))
+    if request.method == "POST": # Continue shopping button is pressed.
+        return redirect(url_for("home.index"))
 
-    return render_template("payment/receipt.html", cart=cart, items=items, shipping_info=shipping_info)
+    return render_template("payment/receipt.html", cart_id=cart.id, cart=cart, items=items, shipping_info=shipping_info)
 
 # Get the corresponding inventory items from cart items.
 def get_items(cart_items):

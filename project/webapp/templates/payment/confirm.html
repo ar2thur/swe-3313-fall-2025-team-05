@@ -44,7 +44,7 @@
     <div class="w-1/2">
         <div class="flex gap-16 mb-8">
             <h2 class="text-2xl font-bold mb-4">Subtotal:</h2>
-            <h2 class="text-2xl">${{ "{:,}".format(cart.sub_total / 100.0) }}0</h2>
+            <h2 class="text-2xl">${{ "{:,.2f}".format(cart.sub_total / 100.0) }}0</h2>
         </div>
         <div class="flex gap-16 mb-8">
             <h2 class="text-2xl font-bold mb-4">Tax ({{ tax_percent }}%):</h2>
@@ -58,7 +58,7 @@
     </div>
     <div class="flex gap-8 border-t pt-4">
         <h2 class="text-3xl font-bold">Total: </h2>
-        <h2 class="text-left text-3xl">${{ "{:,}".format(cart.total_cost / 100.0) }}0</h2>
+        <h2 class="text-left text-3xl">${{ "{:,.2f}".format(cart.total_cost / 100) }}</h2>
     </div>
     <div class="flex gap-4">
         <button class="btn btn-error ml-auto" type="submit" name="action" value="cancel">Cancel order</button>
