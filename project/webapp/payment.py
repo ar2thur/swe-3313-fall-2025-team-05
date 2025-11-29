@@ -7,6 +7,7 @@ from flask import (
 from .auth import login_required
 from .models import ShoppingCart, ShoppingCartItem, InventoryItem, Logistics
 from .db import db
+from .cart import remove_from_cart
 
 bp = Blueprint("payment", __name__, url_prefix="/payment")
 
@@ -80,21 +81,26 @@ def confirm():
     if cart is None:
         return redirect(url_for("home.index"))
 
-    logistics = Logistics.query.first()
-    tax = cart.sub_total * logistics.tax
-    shipping_info = session.get("shipping_info", {})
-    shipping_cost = shipping_info.get("shipping_cost")
-    total = cart.sub_total + shipping_cost + tax
-
     cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
     items = get_items(cart_items)
+
+    logistics = Logistics.query.first()
+    sub_total = 0
+    for item in items: # Add up cost of all items in cart.
+        sub_total += item.cost
+    tax = sub_total * logistics.tax
+    shipping_info = session.get("shipping_info", {})
+    shipping_cost = shipping_info.get("shipping_cost")
+    total = sub_total + shipping_cost + tax
+
+    cart.sub_total = sub_total
+    cart.tax = tax
+    cart.total_cost = total
 
     if request.method == "POST": # Payment confirmed.
         action = request.form.get("action")
 
         if action == "complete": # Pressed complete order button.
-            cart.tax = tax
-            cart.total_cost = total
             for item in items:
                 item.is_available = False
             cart.is_checked_out = True
@@ -106,11 +112,11 @@ def confirm():
         elif action == "cancel": # Pressed cancel order button.
             return redirect(url_for("home.index"))
 
-    return render_template("payment/confirm.html",items=items)
+    return render_template("payment/confirm.html", items=items, cart=cart, shipping_cost=shipping_cost, tax_percent=logistics.tax)
 
 @bp.route("/receipt/<int:cart_id>", methods=["GET", "POST"])
 @login_required
-def view_receipt(cart_id):
+def receipt(cart_id):
     cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
     shipping_info = session.get("shipping_info", {})
     if cart is None:
@@ -133,5 +139,5 @@ def get_items(cart_items):
     for cart_item in cart_items:
         item = InventoryItem.query.get(cart_item.inventory_item_id)
         if item:
-            items.append(cart_item)
+            items.append(item)
     return items
