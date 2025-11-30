@@ -107,14 +107,21 @@ def confirm():
             cart.is_checked_out = True
             cart.date_checked_out = datetime.datetime.now()
             db.session.commit()
-
             return redirect(url_for("payment.receipt", cart_id=cart.id))
         elif action == "cancel": # Pressed cancel order button.
+            for cart_item in cart_items:
+                item = InventoryItem.query.filter_by(id=cart_item.inventory_item_id).first()
+                item.is_available = True
+
+                if cart_item:
+                    db.session.delete(cart_item)
+            db.session.commit()
+            flash("Order cancelled successfully.")
             return redirect(url_for("home.index"))
     return render_template("payment/confirm.html", items=items, cart=cart, shipping_cost=shipping_cost, tax_percent=logistics.tax)
 
 
-@bp.route("/receipt/<int:cart_id>", methods=["GET", "POST"])
+@bp.route("/receipt/<uuid:cart_id>", methods=["GET", "POST"])
 @login_required
 def receipt(cart_id):
     cart = ShoppingCart.query.filter_by(id=cart_id, user_id=g.user.id).first()
@@ -127,9 +134,12 @@ def receipt(cart_id):
     cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
     items = get_items(cart_items)
 
+    new_cart = ShoppingCart(user_id=g.user.id)
+    db.session.add(new_cart)
+    db.session.commit()
+
     if request.method == "POST": # Continue shopping button is pressed.
         return redirect(url_for("home.index"))
-
     return render_template("payment/receipt.html", cart_id=cart.id, cart=cart, items=items, shipping_info=shipping_info)
 
 # Get the corresponding inventory items from cart items.

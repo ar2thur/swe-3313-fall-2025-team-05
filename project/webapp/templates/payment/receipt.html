@@ -6,37 +6,28 @@
 <div class="flex gap-4 items-center mt-16 mb-24">
     <form method="post">
     <h1 class="text-5xl font-bold mt-16 mb-6">Receipt</h1>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <div role="alert" class="alert alert-error alert-soft w-full mt-4">
-              <li><span class="">{{ message }}</span></li>
-          </div>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
     <div class="card w-lg mt-8 mb-6 bg-secondary text-secondary-content">
         <div class="card-body">
-            <div class="text-center">
-                <h2 class="card-title">Order #0 Confirmation</h2>
+            <div class="justify-center text-center">
+                <h2 class="card-title">Order Confirmation</h2>
                 <h2 class="card-title">Payment Successful</h2>
             </div>
             <h2 class="card-title">Order Summary:</h2>
             {% for item in items %}
                 <p>{{ item.name }} - ${{ item.cost / 100.0 }}0</p>
             {% endfor %}
-            <p>Paid with: </p>
-            <p>Shipping to: {{ shipping_info.address }}</p>
+            <p class="mt-8">Paid with: </p>
+            <p>{{ shipping_info.card }}</p>
+            <p>Shipping to:</p>
+            <p>{{ shipping_info.address }}</p>
             <p>{{ shipping_info.city }}, {{ shipping_info.state }} {{ shipping_info.zip_code }}</p>
             <p>Order date: {{ cart.date_checked_out }}</p>
-            <div class="text-center">
+            <div class="justify-center text-center">
                 <h2 class="card-title">Thank you for shopping with us!</h2>
             </div>
         </div>
     </div>
-    <button class="btn btn-primary fixed bottom-5 right-5" type="submit">Continue shopping</button>
+    <button class="btn btn-primary ml-auto" type="submit">Continue shopping</button>
     </form>
 </div>
 {% endblock %}

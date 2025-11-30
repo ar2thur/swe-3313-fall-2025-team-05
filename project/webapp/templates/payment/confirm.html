@@ -11,17 +11,6 @@
         </form>
     </div>
     <form method="post" class="w-full">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <div role="alert" class="alert alert-error alert-soft w-full mt-4">
-              <li><span class="">{{ message }}</span></li>
-          </div>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
     <div class="flex gap-6 mt-16 mb-8">
     <div class="w-1/2 overflow-y-auto border rounded-box h-96">
         <table class="table table-zebra">
@@ -44,11 +33,11 @@
     <div class="w-1/2">
         <div class="flex gap-16 mb-8">
             <h2 class="text-2xl font-bold mb-4">Subtotal:</h2>
-            <h2 class="text-2xl">${{ "{:,.2f}".format(cart.sub_total / 100.0) }}0</h2>
+            <h2 class="text-2xl">${{ "{:,.2f}".format(cart.sub_total / 100.0) }}</h2>
         </div>
         <div class="flex gap-16 mb-8">
             <h2 class="text-2xl font-bold mb-4">Tax ({{ tax_percent }}%):</h2>
-            <h2 class="text-2xl">${{ "{:,}".format(cart.tax / 100.0) }}0</h2>
+            <h2 class="text-2xl">${{ "{:,.2f}".format(cart.tax / 100.0) }}</h2>
         </div>
         <div class="flex gap-16 mb-8">
             <h2 class="text-2xl font-bold mb-4">Shipping Cost:</h2>
