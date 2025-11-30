@@ -13,8 +13,8 @@ bp = Blueprint("home", __name__)
 @login_required
 def index():
     # Load all products
-    user_shopping_cart_uuid = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
-    users_shopping_cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=user_shopping_cart_uuid).all()
+    user_shopping_cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
+    users_shopping_cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=user_shopping_cart.id).all()
     
     total = 0
     for cart_item in users_shopping_cart_items:
