@@ -28,6 +28,12 @@ def pay():
 
         # Payment information.
         card = request.form.get("card", "").strip()
+        formatted_card = card
+        if len(card) > 4: # Only show the last 4 digits of the card number.
+            mask_size = len(card) - 4
+            last_digits = card[-4:]
+            formatted_card = ("*" * mask_size) + last_digits
+
         expiration = request.form.get("expiration", "").strip()
         cvv = request.form.get("cvv", "").strip()
 
@@ -65,7 +71,7 @@ def pay():
 
             session["shipping_info"] = {"address":address,"zip_code":zip_code,
                                         "city":city,"state":state,"phone":phone,
-                                        "card":card,"shipping_cost":shipping_cost}
+                                        "card":formatted_card,"shipping_cost":shipping_cost}
 
             return redirect(url_for("payment.confirm"))
 
@@ -140,7 +146,7 @@ def receipt(cart_id):
 
     if request.method == "POST": # Continue shopping button is pressed.
         return redirect(url_for("home.index"))
-    return render_template("payment/receipt.html", cart_id=cart.id, cart=cart, items=items, shipping_info=shipping_info)
+    return render_template("payment/receipt.html", cart=cart, items=items, shipping_info=shipping_info)
 
 # Get the corresponding inventory items from cart items.
 def get_items(cart_items):

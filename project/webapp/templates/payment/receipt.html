@@ -3,31 +3,30 @@
 {% block title %}Receipt{% endblock %}
 
 {% block content %}
-<div class="flex gap-4 items-center mt-16 mb-24">
+<div class="flex gap-4 flex-col items-center mt-16 mb-24">
     <form method="post">
     <h1 class="text-5xl font-bold mt-16 mb-6">Receipt</h1>
     <div class="card w-lg mt-8 mb-6 bg-secondary text-secondary-content">
         <div class="card-body">
-            <div class="justify-center text-center">
-                <h2 class="card-title">Order Confirmation</h2>
-                <h2 class="card-title">Payment Successful</h2>
-            </div>
+            <h2 class="card-title block text-center">Order Confirmation</h2>
+            <h2 class="card-title block text-center">Payment Successful</h2>
             <h2 class="card-title">Order Summary:</h2>
             {% for item in items %}
                 <p>{{ item.name }} - ${{ item.cost / 100.0 }}0</p>
             {% endfor %}
-            <p class="mt-8">Paid with: </p>
-            <p>{{ shipping_info.card }}</p>
+            <p class="mt-8">Subtotal: ${{ cart.sub_total / 100.0 }}0</p>
+            <p>Tax: ${{ cart.tax / 100.0 }}0</p>
+            <p>Shipping Cost: ${{ shipping_info.shipping_cost / 100.0 }}0</p>
+            <p>Total: ${{ cart.total_cost / 100.0 }}0</p>
+            <p class="mt-8">Paid with: Card {{ shipping_info.card }}</p>
             <p>Shipping to:</p>
             <p>{{ shipping_info.address }}</p>
             <p>{{ shipping_info.city }}, {{ shipping_info.state }} {{ shipping_info.zip_code }}</p>
             <p>Order date: {{ cart.date_checked_out }}</p>
-            <div class="justify-center text-center">
-                <h2 class="card-title">Thank you for shopping with us!</h2>
-            </div>
+            <h2 class="card-title block text-center">Thank you for shopping with us!</h2>
         </div>
     </div>
-    <button class="btn btn-primary ml-auto" type="submit">Continue shopping</button>
+    <button class="btn btn-primary fixed bottom-5 right-5 mt-8" type="submit">Continue shopping</button>
     </form>
 </div>
 {% endblock %}
