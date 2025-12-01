@@ -7,7 +7,6 @@ from flask import (
 from .auth import login_required
 from .models import ShoppingCart, ShoppingCartItem, InventoryItem, Logistics
 from .db import db
-from .cart import remove_from_cart
 
 bp = Blueprint("payment", __name__, url_prefix="/payment")
 
