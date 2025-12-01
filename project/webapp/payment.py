@@ -116,9 +116,9 @@ def confirm():
             return redirect(url_for("payment.receipt", cart_id=cart.id))
         elif action == "cancel": # Pressed cancel order button.
             # Empty out cart.
-            cart.sub_total = 0
-            cart.tax = 0
-            cart.total_cost = 0
+            cart.sub_total = None
+            cart.tax = None
+            cart.total_cost = None
 
             for cart_item in cart_items:
                 item = InventoryItem.query.filter_by(id=cart_item.inventory_item_id).first()
