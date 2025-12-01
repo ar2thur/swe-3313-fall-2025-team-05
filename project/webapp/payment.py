@@ -20,6 +20,8 @@ def pay():
         # Shipping information.
         address = request.form.get("address", "").strip()
         apt = request.form.get("apt", "").strip() # optional
+        if apt:
+            address += " #" + apt
         zip_code = request.form.get("zip_code", "").strip()
         city = request.form.get("city", "").strip()
         state = request.form.get("state", "").strip()
@@ -95,9 +97,10 @@ def confirm():
         sub_total += item.cost
     tax = int(sub_total * (logistics.tax / 100))
     shipping_info = session.get("shipping_info", {})
+    if shipping_info is None: # Prevent from error if no shipping info found.
+        return redirect(url_for("payment.pay"))
     shipping_cost = shipping_info.get("shipping_cost")
     total = sub_total + shipping_cost + tax
-
     cart.sub_total = sub_total
     cart.tax = tax
     cart.total_cost = total
@@ -106,14 +109,17 @@ def confirm():
         action = request.form.get("action")
 
         if action == "complete": # Pressed complete order button.
-            for item in items:
-                item.is_available = False
-
             cart.is_checked_out = True
             cart.date_checked_out = datetime.datetime.now()
+
             db.session.commit()
             return redirect(url_for("payment.receipt", cart_id=cart.id))
         elif action == "cancel": # Pressed cancel order button.
+            # Empty out cart.
+            cart.sub_total = 0
+            cart.tax = 0
+            cart.total_cost = 0
+
             for cart_item in cart_items:
                 item = InventoryItem.query.filter_by(id=cart_item.inventory_item_id).first()
                 item.is_available = True
@@ -125,12 +131,13 @@ def confirm():
             return redirect(url_for("home.index"))
     return render_template("payment/confirm.html", items=items, cart=cart, shipping_cost=shipping_cost, tax_percent=logistics.tax)
 
-
 @bp.route("/receipt/<uuid:cart_id>", methods=["GET", "POST"])
 @login_required
 def receipt(cart_id):
     cart = ShoppingCart.query.filter_by(id=cart_id, user_id=g.user.id).first()
     shipping_info = session.get("shipping_info", {})
+    if shipping_info is None: # Prevent from error if no shipping info found.
+        return redirect(url_for("payment.pay"))
     if cart is None:
         return redirect(url_for("home.index"))
     if not cart.is_checked_out:
