@@ -24,15 +24,35 @@ def dashboard():
                            )
 
 def get_dashboard_data():
-
+    """Loads all dashboard data from our SQLite database"""
     amount_of_users = db.session.query(User).count()
     items_in_cart = db.session.query(ShoppingCartItem).count()
     bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
     sales_made = len(bought_carts)
     total_revenue = sum(cart.total_cost for cart in bought_carts)
 
+    return (
+            amount_of_users,
+            items_in_cart,
+            sales_made,
+            total_revenue,
+            bought_carts
+            )
 
+@bp.route("/orders")
+@admin_required
+def orders():
 
-    return (amount_of_users, items_in_cart, sales_made, total_revenue, bought_carts)
+    bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
 
+    return render_template("admin/orders.html", recent_sales=bought_carts)
 
+@bp.route("/products")
+@admin_required
+def products():
+    pass
+
+@bp.route("/user-management")
+@admin_required
+def user_management():
+    pass
