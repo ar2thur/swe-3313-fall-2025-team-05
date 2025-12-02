@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="flex">
+<div class="flex flex-col">
     <div class="stats shadow">
-        <div class="stat">
+        <div class="stat w-full">
             <div class="stat-figure text-primary text-5xl">
                 <i class="fa-solid fa-arrow-up-right-dots"></i>
             </div>
@@ -29,13 +29,39 @@
         </div>
         <div class="stat">
             <div class="stat-figure text-primary text-5xl">
-                <i class="fa-solid fa-arrow-up-right-dots"></i>
+                <i class="fa-solid fa-shopping-cart"></i>
             </div>
-            <div class="stat-title">Total Sales</div>
-            <div class="stat-value text-primary">$300,000,000</div>
+            <div class="stat-title">Items in Cart</div>
+            <div class="stat-value text-primary">2</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
     </div>
-
+    <div class="card card-border shadow-sm w-full flex-1">
+        <div class="card-body h-full">
+            <h2 class="card-title">Recent Sales</h2>
+            <div class="overflow-x-auto flex-1">
+                <table class="table table-zebra w-full h-full">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Date Bought</th>
+                            <th>Amount Paid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in range(5) %}
+                        <tr>
+                            <th>{{ i }}</th>
+                            <th>Jet</th>
+                            <th>Dec 1, 2025</th>
+                            <th>$270,000,000</th>
+                        </tr>
+                        {% endfor %}
+                    <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
