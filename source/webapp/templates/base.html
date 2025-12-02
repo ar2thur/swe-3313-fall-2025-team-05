@@ -115,6 +115,23 @@
             <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64 pt-16">
             <!-- Sidebar content here -->
               <ul class="menu w-full grow">
+                {% if g.user.is_admin %}
+                <li>
+                    <h2 id="dashboard" class="text-white">Dashboard</h2>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <h2 id="orders" class="text-white">Orders</h2>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <h2 id="products" class="text-white">Products</h2>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <h2 id="user_management" class="text-white">User Management</h2>
+                </li>
+                {% else %}
                 <!-- List item -->
                 <li>
                     <p class="text-white">Sort by</p>
@@ -166,9 +183,22 @@
                         <input class="input input-sm w-25" placeholder="max"/>
                     </div>
                 </li>
+                {% endif %}
               </ul>
             </div>
         </div>
     </div>
 </body>
 </html>
+<script>
+    // This code determines which drawer-side element to bold based on the route
+    const route = window.location.pathname;
+    const elementsWithId = document.querySelectorAll('[id]');
+    elementsWithId.forEach(element => {
+        if (route.includes(element.id)) {
+            element.classList.add("font-bold");
+        } else {
+            element.classList.remove("font-bold");
+        }
+    });
+</script>
