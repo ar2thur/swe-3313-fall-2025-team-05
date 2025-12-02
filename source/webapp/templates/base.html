@@ -40,6 +40,13 @@
               <input type="text" placeholder="Search"/>
       </div>
       <div class="navbar-end gap-3 items-center">
+        {% if g.user.is_admin %}
+        <div tabindex="0" role="anchor" class="btn btn-ghost btn-circle">
+            <a href="{{ url_for('admin.dashboard') }}">
+                <i class="fa-solid fa-gear text-2xl text-accent"></i>
+            </a>
+        </div>
+        {% endif %}
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
             <div class="indicator">
@@ -95,17 +102,17 @@
 
     <div class="drawer lg:drawer-open">
         <input id="tdrawer" type="checkbox" class="drawer-toggle"/>
-        <div class="drawer-content">
+        <div class="drawer-content pt-16">
             
             <!-- page content -->
-            <div class="flex justify-center bg-base-100 ml-6 mr-6" tabindex="0">
+            <div class="flex justify-center bg-base-100 ml-6 mr-6 mt-6" tabindex="0">
                 <!-- Every page will insert its own content here -->
                 {% block content %}{% endblock %}
             </div>
         </div>
-        <div class="drawer-side h-[calc(100vh-4rem)] top-16 is-drawer-close:overflow-visible">
+        <div class="drawer-side is-drawer-close:overflow-visible">
             <label for="tdrawer" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64">
+            <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64 pt-16">
             <!-- Sidebar content here -->
               <ul class="menu w-full grow">
                 <!-- List item -->
