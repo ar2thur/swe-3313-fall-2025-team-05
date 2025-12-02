@@ -8,7 +8,7 @@
                 <i class="fa-solid fa-arrow-up-right-dots"></i>
             </div>
             <div class="stat-title">Total Sales</div>
-            <div class="stat-value text-primary">$300,000,000</div>
+            <div class="stat-value text-primary">{{ "{:,}".format(nrevenue / 100.0)}}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
         <div class="stat">
@@ -16,7 +16,7 @@
                 <i class="fa-solid fa-box"></i>
             </div>
             <div class="stat-title">Total Orders</div>
-            <div class="stat-value text-primary">23</div>
+            <div class="stat-value text-primary">{{ nsales }}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
         <div class="stat">
@@ -24,7 +24,7 @@
                 <i class="fa-solid fa-circle-user"></i>
             </div>
             <div class="stat-title">Total Customers</div>
-            <div class="stat-value text-primary">4</div>
+            <div class="stat-value text-primary">{{ nusers }}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
         <div class="stat">
@@ -32,7 +32,7 @@
                 <i class="fa-solid fa-shopping-cart"></i>
             </div>
             <div class="stat-title">Items in Cart</div>
-            <div class="stat-value text-primary">2</div>
+            <div class="stat-value text-primary">{{ ncarts }}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
     </div>
@@ -44,18 +44,18 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Name</th>
+                            <th>Cart Id</th>
                             <th>Date Bought</th>
                             <th>Amount Paid</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for i in range(5) %}
+                        {% for cart in recent_sales %}
                         <tr>
-                            <th>{{ i }}</th>
-                            <th>Jet</th>
-                            <th>Dec 1, 2025</th>
-                            <th>$270,000,000</th>
+                            <th>{{ loop.index }}</th>
+                            <th>{{ cart.id }}</th>
+                            <th>{{ cart.date_checked_out }}</th>
+                            <th>{{ "{:,}".format( cart.total_cost / 100.0) }}</th>
                         </tr>
                         {% endfor %}
                     <tbody>
