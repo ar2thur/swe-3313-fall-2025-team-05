@@ -117,19 +117,27 @@
               <ul class="menu w-full grow">
                 {% if g.user.is_admin %}
                 <li>
-                    <h2 id="dashboard" class="text-white">Dashboard</h2>
+                    <a href="{{ url_for('admin.dashboard') }}">
+                        <h2 id="dashboard" class="text-white">Dashboard</h2>
+                    </a>
                 </li>
                 <div class="divider divider-accent m-1"></div>
                 <li>
-                    <h2 id="orders" class="text-white">Orders</h2>
+                    <a href="{{ url_for('admin.orders') }}">
+                        <h2 id="orders" class="text-white">Orders</h2>
+                    </a>
                 </li>
                 <div class="divider divider-accent m-1"></div>
                 <li>
-                    <h2 id="products" class="text-white">Products</h2>
+                    <a href="{{ url_for('admin.products') }}">
+                        <h2 id="products" class="text-white">Products</h2>
+                    </a>
                 </li>
                 <div class="divider divider-accent m-1"></div>
                 <li>
-                    <h2 id="user_management" class="text-white">User Management</h2>
+                    <a href="{{ url_for('admin.user_management') }}">
+                        <h2 id="user-management" class="text-white">User Management</h2>
+                    </a>
                 </li>
                 {% else %}
                 <!-- List item -->
