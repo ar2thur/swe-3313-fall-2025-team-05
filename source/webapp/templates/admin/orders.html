@@ -2,29 +2,47 @@
 
 {% block content %}
 <div class="flex">
-    <div class="card card-border shadow-sm w-full flex-1">
+    <div class="card card-border shadow-sm w-full flex-1 h-full">
         <div class="card-body h-full">
             <h2 class="card-title">Recent Sales</h2>
             <div class="overflow-x-auto flex-1">
                 <table class="table table-zebra w-full h-full">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Cart Id</th>
-                            <th>Date Bought</th>
-                            <th>Amount Paid</th>
+                            <th class="w-1/12">#</th>
+                            <th class="w-3/12">Cart Id</th>
+                            <th class="w-2/12">Date Bought</th>
+                            <th class="w-2/12">Sub Total</th>
+                            <th class="w-2/12">Tax</th>
+                            <th class="w-2/12">Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for cart in recent_sales %}
+                    {% for cart, sub_items in recent_sales %}
                         <tr>
-                            <th>{{ loop.index }}</th>
-                            <th>{{ cart.id }}</th>
-                            <th>{{ cart.date_checked_out }}</th>
-                            <th>{{ "{:,}".format( cart.total_cost / 100.0) }}</th>
+                            <td colspan="6" class="p-0 border-none">
+                                <div class="collapse collapse-arrow rounded-none">
+                                    <input type="checkbox" />
+                                    <label class="collapse-title p-0 min-h-0">
+                                        <table class="table w-full table-fixed mb-0">
+                                            <tr>
+                                                <td class="w-1/12">{{ loop.index }}</td>
+                                                <td class="w-3/12">{{ cart.id }}</td>
+                                                <td class="w-2/12">{{ cart.date_checked_out }}</td>
+                                                <td class="w-2/12">{{ "{:,}".format(cart.sub_total / 100.0) }}</td>
+                                                <td class="w-2/12">{{ "{:,}".format(cart.tax / 100.0) }}</td>
+                                                <td class="w-2/12">{{ "{:,}".format(cart.total_cost / 100.0) }}</td>
+                                            </tr>
+                                        </table>
+                                    </label>
+                                    <div class="collapse-content">
+                                        {% include "admin/table_modal.html" %}
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
-                        {% endfor %}
-                    <tbody>
+                    {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
