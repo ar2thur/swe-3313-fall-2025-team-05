@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex">
+    <button class="btn btn-accent">Edit</button>
+    <button class="btn btn-error">Delete</button>
+    <button class="btn btn-outline">Add</button>
+</div>
+<div class="flex"> 
+    <div class="card card-border shadow-sm w-full flex-1 h-full">
+        <div class="card-body h-full">
+            <h2 class="card-title">Inventory</h2>
+            <div class="overflow-x-auto flex-1">
+                <table class="table table-zebra w-full h-full">
+                    <thead>
+                        <tr>
+                            <th>
+                                <label>
+                                    <input type="checkbox" class="checkbox"/>
+                                </label>
+                            </th>
+                            <th>Item Id</th>
+                            <th>Is Available</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in inventory %}
+                        <tr>
+                            <th>
+                                <label>
+                                    <input type="checkbox" class="checkbox"/>
+                                </label>
+                            </th>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.is_available }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ "{:,}".format( item.cost / 100.0 )}}</td>
+                            
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
