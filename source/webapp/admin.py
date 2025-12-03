@@ -42,15 +42,32 @@ def get_dashboard_data():
 @bp.route("/orders")
 @admin_required
 def orders():
+    """Sends a list in format [(ShoppingCart, [(InventoryItems,date_added])]"""
+
+    cart_and_items = []
 
     bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
 
-    return render_template("admin/orders.html", recent_sales=bought_carts)
+    # Please find a better way to do this, this hurts
+    for cart in bought_carts:
+
+        items_in_cart = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+        inventory_list = []
+
+        for item in items_in_cart:
+            inventory_item = InventoryItem.query.filter_by(id=item.inventory_item_id).first()
+            inventory_list.append((inventory_item, item.added_to_cart))
+
+        cart_and_items.append((cart, inventory_list))
+
+    return render_template("admin/orders.html", recent_sales=cart_and_items)
 
 @bp.route("/products")
 @admin_required
 def products():
-    pass
+    all_items = InventoryItem.query.all()
+    return render_template("admin/products.html", inventory=all_items)
+
 
 @bp.route("/user-management")
 @admin_required
