@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="flex">
-    <button class="btn btn-accent">Edit</button>
-    <button class="btn btn-error">Delete</button>
-    <button class="btn btn-outline">Add</button>
-</div>
-<div class="flex"> 
-    <div class="card card-border shadow-sm w-full flex-1 h-full">
+<div class="flex-1 w-full">
+    <div class="flex w-full justify-end pb-4 gap-4">
+        <button id="edit" class="btn btn-accent" disabled>Edit</button>
+        <button id="delete" class="btn btn-error" disabled>Delete</button>
+        <button id="add" class="btn btn-outline">Add</button>
+    </div>
+    <div class="card card-border shadow-sm w-full h-full">
         <div class="card-body h-full">
             <h2 class="card-title">Inventory</h2>
-            <div class="overflow-x-auto flex-1">
+            <div class="overflow-x-auto">
                 <table class="table table-zebra w-full h-full">
                     <thead>
                         <tr>
                             <th>
                                 <label>
-                                    <input type="checkbox" class="checkbox"/>
+                                    <input id="all" type="checkbox" class="checkbox"/>
                                 </label>
                             </th>
                             <th>Item Id</th>
@@ -31,7 +31,7 @@
                         <tr>
                             <th>
                                 <label>
-                                    <input type="checkbox" class="checkbox"/>
+                                    <input id="product-{{ item.id }}" type="checkbox" class="checkbox"/>
                                 </label>
                             </th>
                             <td>{{ item.id }}</td>
@@ -48,4 +48,47 @@
         </div>
     </div>
 </div>
+<script>
+    const select_all = document.getElementById('all');
+    const checkboxes = document.querySelectorAll('[id^="product-"]');
+    const add_button = document.getElementById('add');
+    const edit_button = document.getElementById('edit');
+    const delete_button = document.getElementById('delete');
+
+    select_all.addEventListener('change', function(event) {
+        if (event.target.checked) {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        } else {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+    });
+
+    document.addEventListener('change', function(event) {
+        if (event.target.type == 'checkbox') {
+            // turn checkboxes NodeList to array
+            const checked_checkboxes = document.querySelectorAll('input[id^="product-"]:checked');
+            change_buttons(checked_checkboxes);
+        }
+    });
+    
+    function change_buttons(isCheck) {
+        if (isCheck.length != 0) {
+            delete_button.disabled = false;
+            if (isCheck.length > 1) {
+                edit_button.disabled = true;
+            } else {
+                edit_button.disabled = false;
+            }
+        } else {
+            edit_button.disabled = true;
+            delete_button.disabled = true;
+        }
+    }
+
+
+</script>
 {% endblock %}
