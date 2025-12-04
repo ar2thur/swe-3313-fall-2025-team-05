@@ -3,9 +3,10 @@
 {% block content %}
 <div class="flex-1 w-full">
     <div class="flex w-full justify-end pb-4 gap-4">
-        <button id="edit" class="btn btn-accent" disabled>Edit</button>
-        <button id="delete" class="btn btn-error" disabled>Delete</button>
-        <button id="add" class="btn btn-outline">Add</button>
+        <!-- 0 is a dummy placeholder for the javascript function -->
+        <a href="{{ url_for('admin.edit_item', item_id=0)}}" id="edit"  class="btn btn-accent btn-disabled">Edit</button>
+        <a id="delete" class="btn btn-error btn-disabled">Delete</a>
+        <a href="{{ url_for('admin.add_item', action='add') }}" id="add" class="btn btn-outline">Add</a>
     </div>
     <div class="card card-border shadow-sm w-full h-full">
         <div class="card-body h-full">
@@ -72,23 +73,27 @@
             // turn checkboxes NodeList to array
             const checked_checkboxes = document.querySelectorAll('input[id^="product-"]:checked');
             change_buttons(checked_checkboxes);
+            update_edit(event.target);
         }
     });
     
     function change_buttons(isCheck) {
         if (isCheck.length != 0) {
-            delete_button.disabled = false;
+            delete_button.classList.remove("btn-disabled");
             if (isCheck.length > 1) {
-                edit_button.disabled = true;
+                edit_button.classList.add("btn-disabled");
             } else {
-                edit_button.disabled = false;
+                edit_button.classList.remove("btn-disabled");
             }
         } else {
-            edit_button.disabled = true;
-            delete_button.disabled = true;
+            edit_button.classList.add("btn-disabled");
+            delete_button.classList.add("btn-disabled")
         }
     }
 
-
+    function update_edit(target) {
+        const cleaned_id = target.id.replace("product-","");
+        edit_button.href = "products/edit/"+cleaned_id;
+    }
 </script>
 {% endblock %}
