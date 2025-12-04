@@ -68,6 +68,20 @@ def products():
     all_items = InventoryItem.query.all()
     return render_template("admin/products.html", inventory=all_items)
 
+@bp.route("/products/add", methods=["GET", "POST"])
+@admin_required
+def add_item():
+    # TODO: Add POST action
+
+    return render_template("admin/product_handling/product_add.html")
+
+@bp.route("/products/edit/<int:item_id>", methods=["GET", "POST"])
+@admin_required
+def edit_item(item_id: int):
+    item = InventoryItem.query.filter_by(id=item_id).first()
+    # TODO: POST action
+    return render_template("admin/product_handling/product_edit.html", prod=item)
+
 
 @bp.route("/user-management")
 @admin_required
