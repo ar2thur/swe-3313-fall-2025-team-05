@@ -12,9 +12,9 @@ def reset_db(ctx):
     app = create_app()
     with app.app_context():
         db.drop_all()
-        click.echo("database wiped clean")
+        click.echo("Database wiped clean")
     ctx.invoke(init_db)
-    ctx.invoke(seed_db)
+    ctx.invoke(seed_db)    
 
 @click.command("init-db")
 def init_db():
@@ -176,7 +176,4 @@ def seed_db():
             db.session.commit()
 
             click.echo("Added all seed data to database.")
-
-
-
-
+            

@@ -42,7 +42,7 @@ class ShoppingCartItem(db.Model):
     __tablename__ = "shoppingcartitems"
     id = Column(Integer, primary_key=True)
     shopping_cart_id = Column(Uuid, ForeignKey('shoppingcarts.id'), nullable=False)
-    inventory_item_id = Column(String, ForeignKey('inventoryitems.id'), nullable=False)
+    inventory_item_id = Column(Integer, ForeignKey('inventoryitems.id'), nullable=False)
     added_to_cart = Column(DateTime, nullable=False, default=datetime.now)
 
     def __repr__(self):

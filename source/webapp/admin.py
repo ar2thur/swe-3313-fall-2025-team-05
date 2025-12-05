@@ -1,6 +1,6 @@
 from flask import (
     Blueprint, render_template, request,
-    redirect, url_for, flash, session, g, jsonify
+    redirect, url_for, flash, session, g
 )
 import pathlib
 
@@ -13,33 +13,28 @@ bp = Blueprint("admin", __name__)
 @bp.route("/dashboard")
 @admin_required
 def dashboard():
-
+    # Admin dashboard view
     data = get_dashboard_data()
 
     return render_template("admin/dashboard.html",
-                           nusers=data[0],
-                           ncarts=data[1],
-                           nsales=data[2],
-                           nrevenue=data[3],
-                           recent_sales=data[4]
+                           data=data
                            )
 
 def get_dashboard_data():
-    """Loads all dashboard data from our SQLite database"""
-    amount_of_users = db.session.query(User).count()
-    items_in_cart = db.session.query(ShoppingCartItem).count()
-    bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
-    sales_made = len(bought_carts)
-    total_revenue = sum(cart.total_cost for cart in bought_carts)
+    # Loads all dashbaord data from our SQL database
+    amount_of_users = db.session.query(User).count() # Total customers
+    total_cart_items = db.session.query(ShoppingCartItem).count() # All items ever added to carts
+    orders = ShoppingCart.query.filter_by(is_checked_out=True).all() # Total orders completed (list)
+    total_orders = len(orders) # Total number of orders
+    total_revenue = sum(order.total_cost for order in orders) # Total revenue from all orders (sales)
 
-    return (
-            amount_of_users,
-            items_in_cart,
-            sales_made,
-            total_revenue,
-            bought_carts
-            )
-
+    return  {
+            "amount_of_users": amount_of_users, 
+            "total_cart_items": total_cart_items, 
+            "total_orders": total_orders, 
+            "total_revenue": total_revenue,
+            "orders": orders
+            }
 @bp.route("/orders")
 @admin_required
 def orders():
@@ -62,13 +57,13 @@ def orders():
         cart_and_items.append((cart, inventory_list))
 
     return render_template("admin/orders.html", recent_sales=cart_and_items)
-
+  
 @bp.route("/products")
 @admin_required
 def products():
     all_items = InventoryItem.query.all()
     return render_template("admin/products.html", inventory=all_items)
-
+  
 @bp.route("/products/add", methods=["GET", "POST"])
 @admin_required
 def add_item():
@@ -90,14 +85,20 @@ def add_item():
         # Relative paths like this are bad ...
         file.save(f"webapp/static/{file_path}")
 
-        new_item = InventoryItem(is_available=avail, name=name, cost=cost, description=desc, picture_path=file_path)
+        new_item = InventoryItem(
+                    is_available=avail, 
+                    name=name, 
+                    cost=cost, 
+                    description=desc, 
+                    picture_path=file_path
+                )
         db.session.add(new_item)
         db.session.commit()
         return redirect(url_for('admin.products'))
 
     return render_template("admin/product_handling/product_add.html")
 
-@bp.route("/products/edit/<int:item_id>", methods=["GET", "POST"])
+  @bp.route("/products/edit/<int:item_id>", methods=["GET", "POST"])
 @admin_required
 def edit_item(item_id: int):
     item = InventoryItem.query.filter_by(id=item_id).first()
