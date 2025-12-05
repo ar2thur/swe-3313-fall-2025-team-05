@@ -4,13 +4,13 @@
 <div class="flex-1 w-full">
     <div class="flex w-full justify-end pb-4 gap-4">
         <!-- 0 is a dummy placeholder for the javascript function -->
-        <a href="{{ url_for('admin.edit_item', item_id=0)}}" id="edit"  class="btn btn-accent btn-disabled">Edit</a>
+        <a href="{{ url_for('admin.edit_item', item_id=0)}}" id="promote"  class="btn btn-accent btn-disabled">Promote</a>
         <button onclick="send_delete_list()" id="delete" type="submit" class="btn btn-error btn-disabled">Delete</button>
         <a href="{{ url_for('admin.add_item', action='add') }}" id="add" class="btn btn-outline">Add</a>
     </div>
     <div class="card card-border shadow-sm w-full h-full">
         <div class="card-body h-full">
-            <h2 class="card-title">Inventory</h2>
+            <h2 class="card-title">User Management</h2>
             <div class="overflow-x-auto">
                 <table class="table table-zebra w-full h-full">
                     <thead>
@@ -20,30 +20,26 @@
                                     <input id="all" type="checkbox" class="checkbox"/>
                                 </label>
                             </th>
-                            <th>Item Id</th>
-                            <th>Is Available</th>
+                            <th>User Id</th>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>Cost</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Admin</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for item in inventory %}
+                    {% for user in users %}
                         <tr>
                             <th>
                                 <label>
-                                    <input id="product-{{ item.id }}" type="checkbox" class="checkbox"/>
+                                    <input id="user-{{ user.id }}" type="checkbox" class="checkbox"/>
                                 </label>
                             </th>
-                            <td>{{ item.id }}</td>
-                            {% if item.is_available %}
-                            <td><span class="badge badge-outline badge-success">True</span></td>
-                            {% else %}
-                            <td><span class="badge badge-outline badge-error">False</span></td>
-                            {% endif %}
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.description }}</td>
-                            <td>{{ "{:,}".format( item.cost / 100.0 )}}</td>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.password[:50] }}...</td>
+                            <td>{{ user.is_admin }}</td>
                             
                         </tr>
                     {% endfor %}
@@ -55,9 +51,9 @@
 </div>
 <script>
     const select_all = document.getElementById('all');
-    const checkboxes = document.querySelectorAll('[id^="product-"]');
+    const checkboxes = document.querySelectorAll('[id^="user-"]');
     const add_button = document.getElementById('add');
-    const edit_button = document.getElementById('edit');
+    const edit_button = document.getElementById('promote');
     const delete_button = document.getElementById('delete');
 
     select_all.addEventListener('change', function(event) {
@@ -75,7 +71,7 @@
     document.addEventListener('change', function(event) {
         if (event.target.type == 'checkbox') {
             // turn checkboxes NodeList to array
-            const checked_checkboxes = document.querySelectorAll('input[id^="product-"]:checked');
+            const checked_checkboxes = document.querySelectorAll('input[id^="user-"]:checked');
             change_buttons(checked_checkboxes);
             update_edit(event.target);
         }
@@ -101,10 +97,10 @@
     }
 
     function send_delete_list() {
-        const checked_checkboxes = document.querySelectorAll('input[id^="product-"]:checked');
+        const checked_checkboxes = document.querySelectorAll('input[id^="user-"]:checked');
         const data = [];
         checked_checkboxes.forEach(checkbox => {
-            const item_id = checkbox.id.replace("product-", "");
+            const item_id = checkbox.id.replace("user-", "");
             data.push(item_id);
         });
         
