@@ -19,13 +19,10 @@ def index():
     total = 0
     for cart_item in users_shopping_cart_items:
         total += InventoryItem.query.filter_by(id=cart_item.inventory_item_id).first().cost
-    
-    total /= 100.0
 
-    users_shopping_cart_length = len(users_shopping_cart_items)
+    total /= 100  # Convert cents to dollars
 
+    user_shopping_cart_length = len(users_shopping_cart_items)
 
     products = InventoryItem.query.filter_by(is_available=True).all()
-    return render_template("home.html", products=products, item_count=users_shopping_cart_length, sub_total=total)
-
-
+    return render_template("home.html", products=products, item_count=user_shopping_cart_length, sub_total=total)

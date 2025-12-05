@@ -4,9 +4,9 @@ from flask import (
     Blueprint, render_template, request,
     redirect, url_for, flash, session, g
 )
-from .auth import login_required
-from .models import ShoppingCart, ShoppingCartItem, InventoryItem, Logistics
-from .db import db
+from webapp.auth import login_required
+from webapp.models import ShoppingCart, ShoppingCartItem, InventoryItem, Logistics
+from webapp.db import db
 
 bp = Blueprint("payment", __name__, url_prefix="/payment")
 
