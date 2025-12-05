@@ -98,3 +98,30 @@ def add_product():
         return redirect(url_for("admin.manage_products"))
 
     return render_template("admin/add_product.html")
+
+@bp.route("/products/edit/<int:product_id>", methods=["GET", "POST"])
+@admin_required
+def edit_product(product_id):
+    # Edit an existing product in the inventory
+    product = InventoryItem.query.get(product_id)
+
+    if request.method == "POST":
+        model_name = request.form["model_name"]
+        cost = int(request.form["cost"])
+        description = request.form["description"]
+        upload_picture = request.files.get("static/inventory_pictures")
+        #category = request.form["type"] ?include this?
+
+        product.name = model_name
+        product.cost = cost
+        product.description = description
+        
+        if upload_picture and upload_picture.filename:
+            # i'll come back to this later- i'm lost
+            picture_path = f"static/inventory_pictures/{upload_picture.filename}"
+    
+        db.session.commit()
+        flash("Product updated successfully.")
+        return redirect(url_for("admin.manage_products"))
+    
+    return render_template("admin/edit_product.html", product=product)
