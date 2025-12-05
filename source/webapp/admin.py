@@ -11,4 +11,59 @@ bp = Blueprint("admin", __name__)
 
 @bp.route("/dashboard")
 @admin_required
-# def dashboard():
+def dashboard():
+    # Admin dashboard view
+    data = get_dashboard_data()
+
+    return render_template("admin/dashboard.html",
+                           data=data
+                           )
+
+def get_dashboard_data():
+    # Loads all dashbaord data from our SQL database
+    amount_of_users = db.session.query(User).count() # Total customers
+    total_cart_items = db.session.query(ShoppingCartItem).count() # All items ever added to carts
+    orders = ShoppingCart.query.filter_by(is_checked_out=True).all() # Total orders completed (list)
+    total_orders = len(orders) # Total number of orders
+    total_revenue = sum(order.total_cost for order in orders) # Total revenue from all orders (sales)
+
+    return  {
+            "amount_of_users": amount_of_users, 
+            "total_cart_items": total_cart_items, 
+            "total_orders": total_orders, 
+            "total_revenue": total_revenue,
+            "orders": orders
+            }
+
+@bp.route("/orders")
+@admin_required
+def view_orders():
+    # View all orders placed by customers
+    carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
+
+    orders = []
+
+    for cart in carts:
+        user = User.query.get(cart.user_id)
+
+        cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+
+        for cart_item in cart_items:
+            inventory_item = InventoryItem.query.get(cart_item.inventory_item_id)
+
+            orders.append({
+                "order_id": cart.id,
+                "user_name": user.name,
+                "model_name": inventory_item.name,
+                "date": cart.date_checked_out,
+                "cost": inventory_item.cost
+                # Might need more fields here later. Do we add 'Type'??
+            })
+
+    return render_template("admin/orders.html", orders=orders)
+
+@bp.route("/products")
+@admin_required
+def manage_products():
+    # View and manage all products in inventory
+    products = InventoryItem.query.all()
