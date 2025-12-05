@@ -32,6 +32,9 @@ def create_app(test_config=None):
     from .cart import bp as cart_bp
     app.register_blueprint(cart_bp)
 
+    from .admin import bp as admin_bp
+    app.register_blueprint(admin_bp)
+
     add_cli_commands(app)
 
     # Makes sure the apps instance folder exists
