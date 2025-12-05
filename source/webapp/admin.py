@@ -1,6 +1,6 @@
 from flask import (
     Blueprint, render_template, request,
-    redirect, url_for, flash, session, g
+    redirect, url_for, flash, session, g, jsonify
 )
 
 from webapp.auth import admin_required
@@ -82,6 +82,15 @@ def edit_item(item_id: int):
     # TODO: POST action
     return render_template("admin/product_handling/product_edit.html", prod=item)
 
+@bp.route("/products/delete", methods=["POST"])
+@admin_required
+def delete():
+    for item_id in request.json:
+        item = InventoryItem.query.filter_by(id=item_id).delete()
+    db.session.commit()
+
+    # Returns a success code to tell the page to reload
+    return '', 204
 
 @bp.route("/user-management")
 @admin_required
