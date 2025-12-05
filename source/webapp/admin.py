@@ -57,7 +57,7 @@ def view_orders():
                 "model_name": inventory_item.name,
                 "date": cart.date_checked_out,
                 "cost": inventory_item.cost
-                # Might need more fields here later. Do we add 'Type'??
+                # Might need more fields here later. Do we add 'Type/ category'??
             })
 
     return render_template("admin/orders.html", orders=orders)
@@ -67,3 +67,34 @@ def view_orders():
 def manage_products():
     # View and manage all products in inventory
     products = InventoryItem.query.all()
+
+    return render_template("admin/products.html", products=products)
+
+@bp.route("/products/add", methods=["GET", "POST"])
+@admin_required
+def add_product():
+    # Add a new product to the inventory
+    if request.method == "POST":
+        model_name = request.form["model_name"]
+        cost = int(request.form["cost"])
+        description = request.form["description"]
+        upload_picture = request.files.get("static/inventory_pictures")
+        #category = request.form["type"] ?include this?
+
+        new_product = InventoryItem(
+            name = model_name,
+            cost = cost,
+            description = description,
+            is_available = True)
+        
+        if upload_picture and upload_picture.filename:
+            # i'll come back to this later- i'm lost
+            picture_path = f"static/inventory_pictures/{upload_picture.filename}"
+        
+        
+        db.session.add(new_product)
+        db.session.commit()
+        flash("Product added successfully.")
+        return redirect(url_for("admin.manage_products"))
+
+    return render_template("admin/add_product.html")
