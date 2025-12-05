@@ -36,7 +36,11 @@
                                 </label>
                             </th>
                             <td>{{ item.id }}</td>
-                            <td>{{ item.is_available }}</td>
+                            {% if item.is_available %}
+                            <td><span class="badge badge-outline badge-success">True</span></td>
+                            {% else %}
+                            <td><span class="badge badge-outline badge-error">False</span></td>
+                            {% endif %}
                             <td>{{ item.name }}</td>
                             <td>{{ item.description }}</td>
                             <td>{{ "{:,}".format( item.cost / 100.0 )}}</td>
