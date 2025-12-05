@@ -139,3 +139,44 @@ def delete_product(product_id):
         return redirect(url_for("admin.manage_products"))
     
     return render_template("admin/delete_product.html", product=product)
+
+@bp.route("/user-management", methods=["GET", "POST"])
+@admin_required
+def user_management():
+    # View and manage all users
+    users = User.query.all()
+
+    if request.method == "POST":
+        user_id = request.form.get("user_id")
+        action = request.form.get("action")
+
+        if not user_id:
+            flash("No user selected.")
+            return redirect(url_for("admin.user_management"))
+
+        user = User.query.get_or_404(int(user_id))
+
+        if action == "Demote" and user.is_admin: # must be the same string in user_management.html
+            admin_count = User.query.filter_by(is_admin=True).count()
+            if admin_count == 1:
+                flash("Cannot demote the last admin user.")
+                return redirect(url_for("admin.user_management"))
+        
+        if action == "Make Admin": # must be the same string in user_management.html
+            if user.is_admin:
+                flash(f"{user.name} is already an admin.")
+            else:
+                user.is_admin = True
+                flash(f"{user.name} promoted to admin.")
+
+        elif action == "Demote":
+            if not user.is_admin:
+                flash(f"{user.name} is already a regular user.")
+            else:
+                user.is_admin = False
+                flash(f"{user.name} demoted to regular user.")
+
+        db.session.commit()
+        return redirect(url_for("admin.user_management"))
+
+    return render_template("admin/user_management.html", users=users)
