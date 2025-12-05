@@ -103,7 +103,7 @@ def add_product():
 @admin_required
 def edit_product(product_id):
     # Edit an existing product in the inventory
-    product = InventoryItem.query.get(product_id)
+    product = InventoryItem.query.get_or_404(product_id) # added get_or_404 for safety
 
     if request.method == "POST":
         model_name = request.form["model_name"]
@@ -125,3 +125,17 @@ def edit_product(product_id):
         return redirect(url_for("admin.manage_products"))
     
     return render_template("admin/edit_product.html", product=product)
+
+@bp.route("/products/delete/<int:product_id>", methods=["GET","POST"])
+@admin_required
+def delete_product(product_id):
+    # Delete a product from the inventory
+    product = InventoryItem.query.get_or_404(product_id) # added get_or_404 for safety
+
+    if request.method == "POST":
+        db.session.delete(product)
+        db.session.commit()
+        flash("Product deleted successfully.")
+        return redirect(url_for("admin.manage_products"))
+    
+    return render_template("admin/delete_product.html", product=product)
