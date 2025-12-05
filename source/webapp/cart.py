@@ -1,28 +1,24 @@
 from datetime import datetime
-from flask import Blueprint, flash, render_template, redirect, session, url_for, g
+from flask import Blueprint, flash, render_template, redirect, url_for, g
 from webapp.auth import login_required
 from webapp.db import db
-from webapp.models import ShoppingCart, ShoppingCartItem, InventoryItem, db
+from webapp.models import ShoppingCart, ShoppingCartItem, InventoryItem
 
 bp = Blueprint("cart", __name__, url_prefix="/cart")
 
 
-@bp.route("/view", methods=["GET"])
+@bp.route("/")
 @login_required
 def view_cart():
     # View the contents of the shopping cart
-    cart_id = session.get("cart_id")
-    
-    if not cart_id:
-        items = []
-        total_items = 0
-        subtotal_cents = 0
-    else:
-        items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart_id).all()
-        total_items = len(items) # Quantity is always 1 per ShoppingCartItem
-        subtotal_cents = sum(item.inventory_item.cost for item in items)
+    cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
 
-    return render_template("cart/view_cart.html", items=items, total_items=total_items, subtotal_cents=subtotal_cents)
+    if cart is None:
+        items = []
+    else:
+        items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+
+    return render_template("cart/view_cart.html", items=items)
 
 
 @bp.route("/view/<int:item_id>", methods=["GET"])

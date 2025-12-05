@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <div class="max-w-full max-h-full card bg-base-100 card-border shadow-sm p-0">
+    <div class="card-body flex flex-col justify-between w-full">
+        <h2 class="card-title text-2xl">Edit Product</h2>
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend">Name</legend>
+            <input class="input w-full" type="text" placeholder="{{ prod.name }}"/>
+        </fieldset>
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend">Cost (cents)</legend>
+            <input class="input w-full" type="number" placeholder="{{ prod.cost }}"/>
+        </fieldset>
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend">Description</legend>
+            <textarea class="textarea w-full" type="text" placeholder="{{ prod.description }}"></textarea>
+        </fieldset>
+        {% if prod.is_available %}
+            {% set avail = "checked" %}
+        {% else %}
+            {% set avail = "unchecked" %}
+        {% endif %}
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend">Availabilty</legend>
+            <input class="checkbox" type="checkbox" checked="{{ avail }}"/>
+        </fieldset>
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend">Picture</legend>
+            <input class="file-input w-full" type="file" placeholder="{{ prod.picture_path }}"/>
+        </fieldset>
+        <div class="card-actions justify-end">
+            <a href="{{ url_for('admin.products') }}" class="btn btn-error">Cancel</a>
+            <a href="{{ url_for('admin.products') }}" class="btn btn-primary">Save</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

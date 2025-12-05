@@ -2,6 +2,7 @@ from flask import (
     Blueprint, render_template, request,
     redirect, url_for, flash, session, g
 )
+import pathlib
 
 from webapp.auth import admin_required
 from webapp.db import db
@@ -34,111 +35,85 @@ def get_dashboard_data():
             "total_revenue": total_revenue,
             "orders": orders
             }
-
 @bp.route("/orders")
 @admin_required
-def view_orders():
-    # View all orders placed by customers
-    carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
+def orders():
+    """Sends a list in format [(ShoppingCart, [(InventoryItems,date_added])]"""
 
-    orders = []
+    cart_and_items = []
 
-    for cart in carts:
-        user = User.query.get(cart.user_id)
+    bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
 
-        cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+    # Please find a better way to do this, this hurts
+    for cart in bought_carts:
 
-        for cart_item in cart_items:
-            inventory_item = InventoryItem.query.get(cart_item.inventory_item_id)
+        items_in_cart = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+        inventory_list = []
 
-            orders.append({
-                "order_id": cart.id,
-                "user_name": user.name,
-                "model_name": inventory_item.name,
-                "date": cart.date_checked_out,
-                "cost": inventory_item.cost
-                # Might need more fields here later. Do we add 'Type/ category'??
-            })
+        for item in items_in_cart:
+            inventory_item = InventoryItem.query.filter_by(id=item.inventory_item_id).first()
+            inventory_list.append((inventory_item, item.added_to_cart))
 
-    return render_template("admin/orders.html", orders=orders)
+        cart_and_items.append((cart, inventory_list))
 
+    return render_template("admin/orders.html", recent_sales=cart_and_items)
+  
 @bp.route("/products")
 @admin_required
-def manage_products():
-    # View and manage all products in inventory
-    products = InventoryItem.query.all()
-
-    return render_template("admin/products.html", products=products)
-
+def products():
+    all_items = InventoryItem.query.all()
+    return render_template("admin/products.html", inventory=all_items)
+  
 @bp.route("/products/add", methods=["GET", "POST"])
 @admin_required
-def add_product():
-    # Add a new product to the inventory
+def add_item():
     if request.method == "POST":
-        model_name = request.form["model_name"]
-        cost = int(request.form["cost"])
-        description = request.form["description"]
-        upload_picture = request.files.get("static/inventory_pictures")
-        #category = request.form["type"] ?include this?
+        name = request.form.get("name")
+        cost = request.form.get("cost")
+        desc = request.form.get("desc")
+        avail = request.form.get("avail")
+        if (avail == 'on'):
+            avail = True
+        else:
+            avail = False
 
-        new_product = InventoryItem(
-            name = model_name,
-            cost = cost,
-            description = description,
-            is_available = True)
-        
-        if upload_picture and upload_picture.filename:
-            # i'll come back to this later- i'm lost
-            picture_path = f"static/inventory_pictures/{upload_picture.filename}"
-        
-        
-        db.session.add(new_product)
+        file = request.files["picture"]
+        extention = pathlib.Path(file.filename).suffix
+        filename = name.replace(' ', '_') + extention
+
+        file_path = f"inventory_pictures/{filename}"
+        # Relative paths like this are bad ...
+        file.save(f"webapp/static/{file_path}")
+
+        new_item = InventoryItem(
+                    is_available=avail, 
+                    name=name, 
+                    cost=cost, 
+                    description=desc, 
+                    picture_path=file_path
+                )
+        db.session.add(new_item)
         db.session.commit()
-        flash("Product added successfully.")
-        return redirect(url_for("admin.manage_products"))
+        return redirect(url_for('admin.products'))
 
-    return render_template("admin/add_product.html")
+    return render_template("admin/product_handling/product_add.html")
 
-@bp.route("/products/edit/<int:product_id>", methods=["GET", "POST"])
+  @bp.route("/products/edit/<int:item_id>", methods=["GET", "POST"])
 @admin_required
-def edit_product(product_id):
-    # Edit an existing product in the inventory
-    product = InventoryItem.query.get_or_404(product_id) # added get_or_404 for safety
+def edit_item(item_id: int):
+    item = InventoryItem.query.filter_by(id=item_id).first()
+    # TODO: POST action
+    return render_template("admin/product_handling/product_edit.html", prod=item)
 
-    if request.method == "POST":
-        model_name = request.form["model_name"]
-        cost = int(request.form["cost"])
-        description = request.form["description"]
-        upload_picture = request.files.get("static/inventory_pictures")
-        #category = request.form["type"] ?include this?
-
-        product.name = model_name
-        product.cost = cost
-        product.description = description
-        
-        if upload_picture and upload_picture.filename:
-            # i'll come back to this later- i'm lost
-            picture_path = f"static/inventory_pictures/{upload_picture.filename}"
-    
-        db.session.commit()
-        flash("Product updated successfully.")
-        return redirect(url_for("admin.manage_products"))
-    
-    return render_template("admin/edit_product.html", product=product)
-
-@bp.route("/products/delete/<int:product_id>", methods=["GET","POST"])
+@bp.route("/products/delete", methods=["POST"])
 @admin_required
-def delete_product(product_id):
-    # Delete a product from the inventory
-    product = InventoryItem.query.get_or_404(product_id) # added get_or_404 for safety
+def delete():
+    for item_id in request.json:
+        item = InventoryItem.query.filter_by(id=item_id).delete()
+    db.session.commit()
 
-    if request.method == "POST":
-        db.session.delete(product)
-        db.session.commit()
-        flash("Product deleted successfully.")
-        return redirect(url_for("admin.manage_products"))
-    
-    return render_template("admin/delete_product.html", product=product)
+    # Returns a success code to tell the page to reload
+    return '', 204
 
 @bp.route("/user-management", methods=["GET", "POST"])
 @admin_required

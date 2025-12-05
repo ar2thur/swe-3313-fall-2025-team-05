@@ -37,7 +37,7 @@ def seed_db():
     """Adds seed data to database after its initialized."""
 
     from webapp import create_app
-    from webapp.models import User, InventoryItem, Logistics , ShoppingCart
+    from webapp.models import User, InventoryItem, Logistics, ShoppingCart
 
     app = create_app()
 
@@ -176,3 +176,4 @@ def seed_db():
             db.session.commit()
 
             click.echo("Added all seed data to database.")
+            

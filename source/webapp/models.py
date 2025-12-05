@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import DateTime, String, Integer, Boolean, Uuid
+from sqlalchemy import String, Integer, Boolean, DateTime, Uuid
 from sqlalchemy import ForeignKey, Column
 from werkzeug.security import generate_password_hash, check_password_hash
 from webapp.db import db
@@ -20,7 +20,7 @@ class User(db.Model):
 
     def check_password(self, raw_password: str):
         # Check a raw password against the stored hashed password.
-        return check_password_hash(self.password, raw_password)    
+        return check_password_hash(self.password, raw_password)
 
     def __repr__(self):
         return f'User: {self.name}, ID: {self.id}'
@@ -28,7 +28,7 @@ class User(db.Model):
 class ShoppingCart(db.Model):
     __tablename__ ="shoppingcarts"
     id = Column(Uuid, primary_key=True, nullable=False, default=uuid.uuid4)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     is_checked_out = Column(Boolean, nullable=False, default=False)
     date_checked_out = Column(DateTime, nullable=True, default=None)
     sub_total = Column(Integer, nullable=True, default=None)
@@ -41,11 +41,9 @@ class ShoppingCart(db.Model):
 class ShoppingCartItem(db.Model):
     __tablename__ = "shoppingcartitems"
     id = Column(Integer, primary_key=True)
-    shopping_cart_id = Column(Uuid, ForeignKey('shoppingcarts.id'))
-    inventory_item_id = Column(Integer, ForeignKey('inventoryitems.id'))
+    shopping_cart_id = Column(Uuid, ForeignKey('shoppingcarts.id'), nullable=False)
+    inventory_item_id = Column(Integer, ForeignKey('inventoryitems.id'), nullable=False)
     added_to_cart = Column(DateTime, nullable=False, default=datetime.now)
-
-    inventory_item = db.relationship("InventoryItem")
 
     def __repr__(self):
         return f'Shopping cart item: {self.id}, relates to inventory item: {self.inventory_item_id}'
