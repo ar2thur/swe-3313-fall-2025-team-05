@@ -2,6 +2,7 @@ from flask import (
     Blueprint, render_template, request,
     redirect, url_for, flash, session, g, jsonify
 )
+import pathlib
 
 from webapp.auth import admin_required
 from webapp.db import db
@@ -71,7 +72,28 @@ def products():
 @bp.route("/products/add", methods=["GET", "POST"])
 @admin_required
 def add_item():
-    # TODO: Add POST action
+    if request.method == "POST":
+        name = request.form.get("name")
+        cost = request.form.get("cost")
+        desc = request.form.get("desc")
+        avail = request.form.get("avail")
+        if (avail == 'on'):
+            avail = True
+        else:
+            avail = False
+
+        file = request.files["picture"]
+        extention = pathlib.Path(file.filename).suffix
+        filename = name.replace(' ', '_') + extention
+
+        file_path = f"inventory_pictures/{filename}"
+        # Relative paths like this are bad ...
+        file.save(f"webapp/static/{file_path}")
+
+        new_item = InventoryItem(is_available=avail, name=name, cost=cost, description=desc, picture_path=file_path)
+        db.session.add(new_item)
+        db.session.commit()
+        return redirect(url_for('admin.products'))
 
     return render_template("admin/product_handling/product_add.html")
 
