@@ -3,7 +3,7 @@ from flask import (
     redirect, url_for, flash, session, g
 )
 
-from webapp.auth import login_required, admin_required
+from webapp.auth import admin_required
 from webapp.db import db
 from webapp.models import InventoryItem, User, ShoppingCart, ShoppingCartItem
 
