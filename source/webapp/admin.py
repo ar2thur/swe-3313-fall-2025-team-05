@@ -1,8 +1,10 @@
 from flask import (
     Blueprint, render_template, request,
-    redirect, url_for, flash, session, g
+    redirect, url_for, flash, session, g, Response
 )
 import pathlib
+import csv
+import datetime
 
 from webapp.auth import admin_required
 from webapp.db import db
@@ -57,7 +59,24 @@ def orders():
         cart_and_items.append((cart, inventory_list))
 
     return render_template("admin/orders.html", recent_sales=cart_and_items)
-  
+
+@bp.route("/orders/export_csv")
+@admin_required
+def export_csv():
+    bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
+
+    sales_report = "ID,CheckoutDate,Subtotal,Tax,Total\n"
+    for cart in bought_carts: # Populate sales report with cart info.
+        sales_report += f"{cart.id},{cart.date_checked_out},{cart.sub_total/100.0},{cart.tax/100.0},{cart.total_cost/100.0}\n"
+
+    now = datetime.datetime.now()
+    filename = f"lockheed_sales_{now.month}-{now.year}"
+    
+    response = Response(sales_report, content_type="text/csv")
+    response.headers["Content-Disposition"] = "attachment; filename={filename}.csv"
+
+    return response
+
 @bp.route("/products")
 @admin_required
 def products():
