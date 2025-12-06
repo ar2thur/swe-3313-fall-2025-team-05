@@ -25,7 +25,12 @@ def dashboard():
 def get_dashboard_data():
     # Loads all dashbaord data from our SQL database
     amount_of_users = db.session.query(User).count() # Total customers
-    total_cart_items = db.session.query(ShoppingCartItem).count() # All items ever added to carts
+
+    # Counts all items in carts currently, excluding already bought carts
+    total_cart_items = 0
+    for cart in ShoppingCart.query.filter_by(is_checked_out=False).all(): 
+        total_cart_items += len(ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all())
+
     orders = ShoppingCart.query.filter_by(is_checked_out=True).all() # Total orders completed (list)
     total_orders = len(orders) # Total number of orders
     total_revenue = sum(order.total_cost for order in orders) # Total revenue from all orders (sales)
