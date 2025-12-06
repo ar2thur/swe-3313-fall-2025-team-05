@@ -117,7 +117,7 @@ def add_item():
 
     return render_template("admin/product_handling/product_add.html")
 
-  @bp.route("/products/edit/<int:item_id>", methods=["GET", "POST"])
+@bp.route("/products/edit/<int:item_id>", methods=["GET", "POST"])
 @admin_required
 def edit_item(item_id: int):
     item = InventoryItem.query.filter_by(id=item_id).first()
