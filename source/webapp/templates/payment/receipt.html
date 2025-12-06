@@ -12,12 +12,12 @@
             <h2 class="card-title block text-center">Payment Successful</h2>
             <h2 class="card-title">Order Summary:</h2>
             {% for item in items %}
-                <p>{{ item.name }} - ${{ item.cost / 100.0 }}0</p>
+            <p>{{ item.name }} - ${{ "{:,.2f}".format(item.cost / 100.0) }}</p>
             {% endfor %}
-            <p class="mt-8">Subtotal: ${{ cart.sub_total / 100.0 }}0</p>
-            <p>Tax: ${{ cart.tax / 100.0 }}0</p>
-            <p>Shipping Cost: ${{ shipping_info.shipping_cost / 100.0 }}0</p>
-            <p>Total: ${{ cart.total_cost / 100.0 }}0</p>
+            <p class="mt-8">Subtotal: ${{ "{:,.2f}".format(cart.sub_total / 100.0) }}</p>
+            <p>Tax: ${{ "{:,.2f}".format(cart.tax / 100.0) }}</p>
+            <p>Shipping Cost: ${{ "{:,.2f}".format(shipping_info.shipping_cost / 100.0) }}</p>
+            <p>Total: ${{ "{:,.2f}".format(cart.total_cost / 100.0) }}</p>
             <p class="mt-8">Paid with: Card {{ shipping_info.card }}</p>
             <p>Shipping to:</p>
             <p>{{ shipping_info.address }}</p>
