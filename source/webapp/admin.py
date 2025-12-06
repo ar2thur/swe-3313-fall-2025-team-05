@@ -40,28 +40,33 @@ def get_dashboard_data():
             "total_revenue": total_revenue,
             "orders": orders
             }
+
 @bp.route("/orders")
 @admin_required
-def orders():
-    """Sends a list in format [(ShoppingCart, [(InventoryItems,date_added])]"""
+def view_orders():
+    # View all orders placed by customers
+    carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
 
-    cart_and_items = []
+    orders = []
 
-    bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
+    for cart in carts:
+        user = User.query.get(cart.user_id)
 
-    # Please find a better way to do this, this hurts
-    for cart in bought_carts:
+        cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
 
-        items_in_cart = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
-        inventory_list = []
+        for cart_item in cart_items:
+            inventory_item = InventoryItem.query.filter_by(id=cart_item.inventory_item_id)
 
-        for item in items_in_cart:
-            inventory_item = InventoryItem.query.filter_by(id=item.inventory_item_id).first()
-            inventory_list.append((inventory_item, item.added_to_cart))
+            orders.append({
+                "order_id": cart.id,
+                "user_name": user.name,
+                "model_name": inventory_item.name,
+                "date": cart.date_checked_out,
+                "cost": inventory_item.cost
+            })
+    
+    return render_template("admin/orders.html", orders=orders)
 
-        cart_and_items.append((cart, inventory_list))
-
-    return render_template("admin/orders.html", recent_sales=cart_and_items)
 
 @bp.route("/orders/export_csv")
 @admin_required
