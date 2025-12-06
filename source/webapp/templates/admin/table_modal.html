@@ -1,0 +1,22 @@
+<table class="table table-zebra">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Item Id</th>
+            <th>Name</th>
+            <th>Cost</th>
+            <th>Date Added to Cart</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item, date in sub_items %}
+        <tr>
+            <td>{{ index }}.{{ loop.index }}</td>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>${{ "{:,.2f}".format(item.cost / 100.0)}}</td>
+            <td>{{ date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

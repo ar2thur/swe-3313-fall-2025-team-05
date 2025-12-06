@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Receipt{% endblock %}
+
+{% block content %}
+<div class="flex gap-4 flex-col items-center mb-24">
+    <form method="post">
+    <h1 class="text-5xl font-bold mt-16 mb-6">Receipt</h1>
+    <div class="card w-lg mt-8 mb-6 bg-secondary text-secondary-content">
+        <div class="card-body">
+            <h2 class="card-title block text-center">Order Confirmation</h2>
+            <h2 class="card-title block text-center">Payment Successful</h2>
+            <h2 class="card-title">Order Summary:</h2>
+            {% for item in items %}
+            <p>{{ item.name }} - ${{ "{:,.2f}".format(item.cost / 100.0) }}</p>
+            {% endfor %}
+            <p class="mt-8">Subtotal: ${{ "{:,.2f}".format(cart.sub_total / 100.0) }}</p>
+            <p>Tax: ${{ "{:,.2f}".format(cart.tax / 100.0) }}</p>
+            <p>Shipping Cost: ${{ "{:,.2f}".format(shipping_info.shipping_cost / 100.0) }}</p>
+            <p>Total: ${{ "{:,.2f}".format(cart.total_cost / 100.0) }}</p>
+            <p class="mt-8">Paid with: Card {{ shipping_info.card }}</p>
+            <p>Shipping to:</p>
+            <p>{{ shipping_info.address }}</p>
+            <p>{{ shipping_info.city }}, {{ shipping_info.state }} {{ shipping_info.zip_code }}</p>
+            <p>Order date: {{ cart.date_checked_out }}</p>
+            <h2 class="card-title block text-center">Thank you for shopping with us!</h2>
+        </div>
+    </div>
+    <button class="btn btn-primary fixed bottom-5 right-5 mt-8" type="submit">Continue shopping</button>
+    </form>
+</div>
+{% endblock %}

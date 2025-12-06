@@ -22,32 +22,32 @@
 
                     <div class="flex items-center gap-4">
                         {# Image #}
-                        <img src ="{{ url_for('static', filename=item.inventory_item.picture_path) }}"
-                                alt="{{ item.inventory_item.name }}"
+                        <img src ="{{ url_for('static', filename=item.picture_path) }}"
+                                alt="{{ item.name }}"
                                 class="w-16 h-16 rounded-xl object-cover"
                                 />
     
                         {# Name + description #}
                         <div>
                             <div class ="font-semibold">
-                                {{ item.inventory_item.name }}
+                                {{ item.name }}
                             </div>
                             <div class="text-sm text-gray-600 line-clamp-2">
-                                {{ item.inventory_item.description }}
+                                {{ item.description }}
                             </div>   
 
                         {# Qty + price row #}
                         <div class="mt-2 flex items-center gap-4 text-sm text-gray-700">
                             <span>Qty: 1</span>
                             <span class="font-semibold">
-                                ${{ '{:,.2f}'.format(item.inventory_item.cost / 100) }}
+                                ${{ '{:,.2f}'.format(item.cost / 100) }}
                             </span>
                         </div>
                     </div>
                 </div>
                     
                     {# Remove button #}
-                    <form method="post" action="{{ url_for('cart.remove_from_cart', item_id=item.inventory_item_id) }}">
+                    <form method="post" action="{{ url_for('cart.remove_from_cart', item_id=item.id) }}">
                         <button type="submit" class="btn btn-error btn-sm">
                             Remove
                         </button>
@@ -65,11 +65,11 @@
                         Subtotal ({{ total_items }} {% if total_items == 1 %}item{% else %}items{% endif %})
                     </span>
                     <span class="font-semibold">
-                        ${{ '{:,.2f}'.format(subtotal_cents / 100) }}
+                        ${{ '{:,.2f}'.format(subtotal / 100) }}
                     </span>
                 </div>
 
-                <form method="post" action="{{ url_for('cart.checkout') }}">
+                <form method="post" action="{{ url_for('payment.pay') }}">
                     <button class="btn btn-primary w-full" type="submit">Pay now</button>
                 </form>
             </div>

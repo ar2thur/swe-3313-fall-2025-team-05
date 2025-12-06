@@ -3,41 +3,56 @@
 {% block title %}Confirm Order?{% endblock %}
 
 {% block content %}
-<div class="flex gap-4 items-center mt-16 mb-24">
-    <form method="post">
+<div class="mb-8 w-full">
     <h1 class="text-5xl font-bold mt-16 mb-6">Order Summary</h1>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <div role="alert" class="alert alert-error alert-soft w-full mt-4">
-              <li><span class="">{{ message }}</span></li>
-          </div>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    <div class="overflow-x-auto">
+    <div class="fixed top-20 right-5 z-50">
+        <form method="post" action="{{ url_for('payment.pay') }}">
+            <button class="btn btn-ghost" type="submit">< Back</button>
+        </form>
+    </div>
+    <form method="post" class="w-full">
+    <div class="flex gap-6 mt-16 mb-8">
+    <div class="w-1/2 overflow-y-auto border rounded-box h-96">
         <table class="table table-zebra">
         <thead>
           <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Cost</th>
+            <th class="sticky top-0 z-50 bg-base-200">Name</th>
+            <th class="sticky top-0 z-50 bg-base-200">Cost</th>
           </tr>
         </thead>
         <tbody>
         {% for item in items %}
           <tr>
             <td>{{ item.name }}</td>
-            <td>${{ item.cost / 100.0 }}0</td>
+            <td>${{ "{:,.2f}".format(item.cost / 100.0) }}</td>
           </tr>
         {% endfor %}
         </tbody>
         </table>
     </div>
-    <button class="btn btn-error" type="submit" value="cancel">Cancel order</button>
-    <button class="btn btn-primary" type="submit" value="complete">Complete order</button>
+    <div class="w-1/2">
+        <div class="flex gap-16 mb-8">
+            <h2 class="text-2xl font-bold mb-4">Subtotal:</h2>
+            <h2 class="text-2xl">${{ "{:,.2f}".format(cart.sub_total / 100.0) }}</h2>
+        </div>
+        <div class="flex gap-16 mb-8">
+            <h2 class="text-2xl font-bold mb-4">Tax ({{ tax_percent }}%):</h2>
+            <h2 class="text-2xl">${{ "{:,.2f}".format(cart.tax / 100.0) }}</h2>
+        </div>
+        <div class="flex gap-16 mb-8">
+            <h2 class="text-2xl font-bold mb-4">Shipping Cost:</h2>
+            <h2 class="text-2xl">${{ "{:,}".format(shipping_cost / 100.0) }}0</h2>
+        </div>
+    </div>
+    </div>
+    <div class="flex gap-8 border-t pt-4">
+        <h2 class="text-3xl font-bold">Total: </h2>
+        <h2 class="text-left text-3xl">${{ "{:,.2f}".format(cart.total_cost / 100) }}</h2>
+    </div>
+    <div class="flex gap-4">
+        <button class="btn btn-error ml-auto" type="submit" name="action" value="cancel">Cancel order</button>
+        <button class="btn btn-primary" type="submit" name="action" value="complete">Complete order</button>
+    </div>
     </form>
 </div>
 {% endblock %}
