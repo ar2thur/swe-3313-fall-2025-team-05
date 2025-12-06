@@ -15,9 +15,7 @@ def dashboard():
     # Admin dashboard view
     data = get_dashboard_data()
 
-    return render_template("admin/dashboard.html",
-                           data=data
-                           )
+    return render_template("admin/dashboard.html", data=data)
 
 def get_dashboard_data():
     # Loads all dashbaord data from our SQL database

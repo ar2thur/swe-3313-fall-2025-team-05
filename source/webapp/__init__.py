@@ -8,6 +8,8 @@ def create_app(test_config=None):
     app.config["SECRET_KEY"] = 'dev'
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "static", "inventory_pictures")
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
     # Creates the sql database
     db.init_app(app)
