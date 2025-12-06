@@ -67,10 +67,10 @@ def view_orders():
     
     return render_template("admin/orders.html", orders=orders)
 
-
 @bp.route("/orders/export_csv")
 @admin_required
 def export_csv():
+    # Export sales report as CSV
     bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
 
     sales_report = "ID,CheckoutDate,Subtotal,Tax,Total\n"
@@ -88,12 +88,14 @@ def export_csv():
 @bp.route("/products")
 @admin_required
 def products():
+    # View and manage inventory products
     all_items = InventoryItem.query.all()
     return render_template("admin/products.html", inventory=all_items)
 
 @bp.route("/products/add", methods=["GET", "POST"])
 @admin_required
 def add_item():
+    # Add a new product to the inventory
     if request.method == "POST":
         name = request.form.get("name")
         cost = request.form.get("cost")
@@ -121,15 +123,44 @@ def add_item():
                 )
         db.session.add(new_item)
         db.session.commit()
-        return redirect(url_for('admin.products'))
+        return redirect(url_for("admin.products"))
 
     return render_template("admin/product_handling/product_add.html")
 
 @bp.route("/products/edit/<int:item_id>", methods=["GET", "POST"])
 @admin_required
 def edit_item(item_id: int):
-    item = InventoryItem.query.filter_by(id=item_id).first()
-    # TODO: POST action
+    # Edit an existing product in the inventory
+    item = InventoryItem.query.get_or_404(item_id)
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        cost = request.form.get("cost")
+        desc = request.form.get("desc")
+        avail = request.form.get("avail")
+        if (avail == 'on'):
+            avail = True
+        else:
+            avail = False
+
+        item.name = name
+        item.cost = cost
+        item.description = desc
+        item.is_available = avail
+
+        file = request.files.get("picture")
+        if file and file.filename != "":
+            extention = pathlib.Path(file.filename).suffix
+            filename = name.replace(' ', '_') + extention
+
+            file_path = f"inventory_pictures/{filename}"
+            # Relative paths like this are bad ...
+            file.save(f"webapp/static/{file_path}")
+            item.picture_path = file_path
+
+        db.session.commit()
+        return redirect(url_for("admin.products"))
+    
     return render_template("admin/product_handling/product_edit.html", prod=item)
 
 @bp.route("/products/delete", methods=["POST"])
