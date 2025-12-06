@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="flex">
+<div class="flex-1 w-full">
+    <div class="flex w-full justify-end pb-3 gap-4">
+        <a href="{{ url_for('admin.export_csv') }}" class="btn btn-outline">Download Report</a>
+    </div>
     <div class="card card-border shadow-sm w-full flex-1 h-full">
         <div class="card-body h-full">
             <h2 class="card-title">Recent Sales</h2>
