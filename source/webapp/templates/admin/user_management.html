@@ -39,7 +39,11 @@
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.password[:50] }}...</td>
-                            <td>{{ user.is_admin }}</td>
+                            {% if user.is_admin %}
+                            <td><span class="badge badge-outline badge-success">True</span></td>
+                            {% else %}
+                            <td><span class="badge badge-outline badge-error">False</span></td>
+                            {% endif %}
                             
                         </tr>
                     {% endfor %}
