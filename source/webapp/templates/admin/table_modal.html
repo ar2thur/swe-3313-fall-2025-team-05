@@ -14,7 +14,7 @@
             <td>{{ index }}.{{ loop.index }}</td>
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
-            <td>{{ "{:,}".format(item.cost / 100.0)}}</td>
+            <td>${{ "{:,.2f}".format(item.cost / 100.0)}}</td>
             <td>{{ date }}</td>
         </tr>
         {% endfor %}

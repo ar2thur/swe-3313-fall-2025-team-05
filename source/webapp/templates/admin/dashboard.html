@@ -8,7 +8,7 @@
                 <i class="fa-solid fa-arrow-up-right-dots"></i>
             </div>
             <div class="stat-title">Total Sales</div>
-            <div class="stat-value text-primary">{{ "{:,}".format(data["total_revenue"] / 100.0)}}</div>
+            <div class="stat-value text-primary">${{ "{:,.2f}".format(data["total_revenue"] / 100.0)}}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
         <div class="stat">
@@ -55,7 +55,7 @@
                             <td>{{ loop.index }}</td>
                             <td>{{ cart.id }}</td>
                             <td>{{ cart.date_checked_out }}</td>
-                            <td>{{ "{:,}".format( cart.total_cost / 100.0) }}</td>
+                            <td>${{ "{:,.2f}".format( cart.total_cost / 100.0) }}</td>
                         </tr>
                         {% endfor %}
                     <tbody>

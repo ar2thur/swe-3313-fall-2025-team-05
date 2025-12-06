@@ -32,14 +32,16 @@
                                                 <td class="w-1/12">{{ loop.index }}</td>
                                                 <td class="w-3/12">{{ cart.id }}</td>
                                                 <td class="w-2/12">{{ cart.date_checked_out }}</td>
-                                                <td class="w-2/12">{{ "{:,}".format(cart.sub_total / 100.0) }}</td>
-                                                <td class="w-2/12">{{ "{:,}".format(cart.tax / 100.0) }}</td>
-                                                <td class="w-2/12">{{ "{:,}".format(cart.total_cost / 100.0) }}</td>
+                                                <td class="w-2/12">${{ "{:,.2f}".format(cart.sub_total / 100.0) }}</td>
+                                                <td class="w-2/12">${{ "{:,.2f}".format(cart.tax / 100.0) }}</td>
+                                                <td class="w-2/12">${{ "{:,.2f}".format(cart.total_cost / 100.0) }}</td>
                                             </tr>
                                         </table>
                                     </label>
                                     <div class="collapse-content">
-                                        {% include "admin/table_modal.html" %}
+                                        {% with index=loop.index %}
+                                            {% include "admin/table_modal.html" %}
+                                        {% endwith %}
                                     </div>
                                 </div>
                             </td>
