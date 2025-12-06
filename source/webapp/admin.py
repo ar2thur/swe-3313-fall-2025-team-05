@@ -71,9 +71,9 @@ def export_csv():
 
     now = datetime.datetime.now()
     filename = f"lockheed_sales_{now.month}-{now.year}"
-    
+
     response = Response(sales_report, content_type="text/csv")
-    response.headers["Content-Disposition"] = "attachment; filename={filename}.csv"
+    response.headers["Content-Disposition"] = f"attachment; filename={filename}.csv"
 
     return response
 
@@ -82,7 +82,7 @@ def export_csv():
 def products():
     all_items = InventoryItem.query.all()
     return render_template("admin/products.html", inventory=all_items)
-  
+
 @bp.route("/products/add", methods=["GET", "POST"])
 @admin_required
 def add_item():
@@ -105,10 +105,10 @@ def add_item():
         file.save(f"webapp/static/{file_path}")
 
         new_item = InventoryItem(
-                    is_available=avail, 
-                    name=name, 
-                    cost=cost, 
-                    description=desc, 
+                    is_available=avail,
+                    name=name,
+                    cost=cost,
+                    description=desc,
                     picture_path=file_path
                 )
         db.session.add(new_item)
