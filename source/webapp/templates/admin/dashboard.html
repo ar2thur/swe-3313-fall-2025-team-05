@@ -8,7 +8,7 @@
                 <i class="fa-solid fa-arrow-up-right-dots"></i>
             </div>
             <div class="stat-title">Total Sales</div>
-            <div class="stat-value text-primary">{{ "{:,}".format(nrevenue / 100.0)}}</div>
+            <div class="stat-value text-primary">{{ "{:,}".format(data["total_revenue"] / 100.0)}}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
         <div class="stat">
@@ -16,7 +16,7 @@
                 <i class="fa-solid fa-box"></i>
             </div>
             <div class="stat-title">Total Orders</div>
-            <div class="stat-value text-primary">{{ nsales }}</div>
+            <div class="stat-value text-primary">{{ data["total_orders"] }}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
         <div class="stat">
@@ -24,7 +24,7 @@
                 <i class="fa-solid fa-circle-user"></i>
             </div>
             <div class="stat-title">Total Customers</div>
-            <div class="stat-value text-primary">{{ nusers }}</div>
+            <div class="stat-value text-primary">{{ data["amount_of_users"] }}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
         <div class="stat">
@@ -32,7 +32,7 @@
                 <i class="fa-solid fa-shopping-cart"></i>
             </div>
             <div class="stat-title">Items in Cart</div>
-            <div class="stat-value text-primary">{{ ncarts }}</div>
+            <div class="stat-value text-primary">{{ data["total_cart_items"] }}</div>
             <div class="stat-desc">Last 30 days</div>
         </div>
     </div>
@@ -50,7 +50,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for cart in recent_sales %}
+                        {% for cart in data["orders"] %}
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td>{{ cart.id }}</td>
