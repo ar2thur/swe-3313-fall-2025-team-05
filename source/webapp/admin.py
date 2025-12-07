@@ -170,7 +170,7 @@ def edit_item(item_id: int):
 
 @bp.route("/products/delete", methods=["POST"])
 @admin_required
-def delete():
+def item_delete():
     for item_id in request.json:
         item = InventoryItem.query.filter_by(id=item_id).first()
 
@@ -181,7 +181,7 @@ def delete():
             flash(f"Failed to delete: {item.name}, as its already in someones cart", 'error')
         else:
             flash(f"Deleted: {item.name}", "success")
-            item.delete()
+            db.session.delete(item)
 
     db.session.commit()
 
@@ -194,41 +194,85 @@ def user_management():
     # View and manage all users
     users = User.query.all()
 
-    if request.method == "POST":
-        user_id = request.form.get("user_id")
-        action = request.form.get("action")
-
-        if not user_id:
-            flash("No user selected.", "error")
-            return redirect(url_for("admin.user_management"))
-
-        user = User.query.get_or_404(int(user_id))
-
-        if action == "Demote" and user.is_admin: # must be the same string in user_management.html
-            admin_count = User.query.filter_by(is_admin=True).count()
-            if admin_count == 1:
-                flash("Cannot demote the last admin user.", "error")
-                return redirect(url_for("admin.user_management"))
-        
-        if action == "Make Admin": # must be the same string in user_management.html
-            if user.is_admin:
-                flash(f"{user.name} is already an admin.", "error")
-            else:
-                user.is_admin = True
-                flash(f"{user.name} promoted to admin.", "success")
-
-        elif action == "Demote":
-            if not user.is_admin:
-                flash(f"{user.name} is already a regular user.", "error")
-            else:
-                user.is_admin = False
-                flash(f"{user.name} demoted to regular user.", "success")
-
-        db.session.commit()
-        return redirect(url_for("admin.user_management"))
-
     return render_template("admin/user_management.html", users=users)
 
+@bp.route("/user-management/delete", methods=["POST"])
+@admin_required
+def user_delete():
+    for user_id in request.json:
+        user = User.query.filter_by(id=user_id).first()
+        if user:
+            flash(f"Deleted: {user.name}", "success")
+            db.session.delete(user)
+    db.session.commit()
+    return '', 204
+
+@bp.route("/user-management/add", methods=["GET", "POST"])
+@admin_required
+def add_user():
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        is_admin = request.form.get("is_admin")
+
+        email_exists = User.query.filter_by(email=email).first()
+        if email_exists:
+            flash("This email already exists", "error")
+            return render_template("admin/user_handling/user_add.html")
+
+        if (is_admin == 'on'):
+            is_admin = True
+        else:
+            is_admin = False
+        new_user = User(
+                    name=name,
+                    email=email,
+                    is_admin=is_admin
+                )
+        new_user.set_password(password)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        new_cart = ShoppingCart(user_id=new_user.id)
+        db.session.add(new_cart)
+        db.session.commit()
+
+        flash("User added successfully", "success")
+        return redirect(url_for("admin.user_management"))
+
+    return render_template("admin/user_handling/user_add.html")
+
+@bp.route("/user-management/promote", methods=["POST"])
+@admin_required
+def user_promote():
+    for user_id in request.json:
+        user = User.query.filter_by(id=user_id).first()
+        if user:
+            user.is_admin = True
+            flash(f"Promoted: {user.name}", "success")
+            db.session.commit()
+        else:
+            flash("User does not exist", "error")
+    return '', 204
+
+@bp.route("/user-management/demote", methods=["POST"])
+@admin_required
+def user_demote():
+    admin_user_amount = User.query.filter_by(is_admin=True).count()
+    if admin_user_amount <= len(request.json):
+        flash("At least one user must be an admin", "error")
+        return '', 204
+    for user_id in request.json:
+        user = User.query.filter_by(id=user_id).first()
+        if user:
+            user.is_admin = False
+            flash(f"Demoted: {user.name}", "success")
+            db.session.commit()
+        else:
+            flash("User does not exist", "error")
+    return '', 204
 
 def filename_validation(filename: str):
     counter = 1
