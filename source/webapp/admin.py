@@ -44,28 +44,25 @@ def get_dashboard_data():
 @bp.route("/orders")
 @admin_required
 def view_orders():
-    # View all orders placed by customers
-    carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
+    """Sends a list in format [(ShoppingCart, [(InventoryItems,date_added])]"""
 
-    orders = []
+    cart_and_items = []
 
-    for cart in carts:
-        user = User.query.get(cart.user_id)
+    bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
 
-        cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+    # Please find a better way to do this, this hurts
+    for cart in bought_carts:
 
-        for cart_item in cart_items:
-            inventory_item = InventoryItem.query.filter_by(id=cart_item.inventory_item_id)
+        items_in_cart = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+        inventory_list = []
 
-            orders.append({
-                "order_id": cart.id,
-                "user_name": user.name,
-                "model_name": inventory_item.name,
-                "date": cart.date_checked_out,
-                "cost": inventory_item.cost
-            })
-    
-    return render_template("admin/orders.html", orders=orders)
+        for item in items_in_cart:
+            inventory_item = InventoryItem.query.filter_by(id=item.inventory_item_id).first()
+            inventory_list.append((inventory_item, item.added_to_cart))
+
+        cart_and_items.append((cart, inventory_list))
+
+    return render_template("admin/orders.html", recent_sales=cart_and_items)
 
 @bp.route("/orders/export_csv")
 @admin_required
@@ -167,7 +164,16 @@ def edit_item(item_id: int):
 @admin_required
 def delete():
     for item_id in request.json:
-        item = InventoryItem.query.filter_by(id=item_id).delete()
+        item = InventoryItem.query.filter_by(id=item_id).first()
+
+        # Checks if this item is in a bought shopping_cart, if so then just
+        # mark false and flash a message
+        item_if_in_cart = ShoppingCartItem.query.filter_by(inventory_item_id=item_id).first()
+        if item_if_in_cart:
+            flash(f"Failed to delete: {item.name}, as its already in someones cart", 'error')
+        else:
+            item.delete()
+
     db.session.commit()
 
     # Returns a success code to tell the page to reload
