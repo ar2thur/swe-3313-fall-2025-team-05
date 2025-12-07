@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <div class="max-w-full max-h-full card bg-base-100 card-border shadow-sm p-0">
+    <div class="card-body flex flex-col justify-between">
+        <h2 class="card-title text-2xl">Add User</h2>
+        <form method="POST" action="{{url_for('admin.add_user')}}" >
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Name</legend>
+                <input class="input" type="text" name="name" placeholder="name" required/>
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Email</legend>
+                <input class="input w-full validator" name="email" type="email" required placeholder="johndoe@example.com">
+                <p class="validator-hint hidden">Enter vaild email address</p>
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Password</legend>
+                <input class="input w-full validator" name="password" type="password" required placeholder="password"
+                                                                      minlength="6"
+                                                                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+                                                                      title="Must be at least 6 characters, including number, lowercase letter, uppercase letter"/>
+                <p class="validator-hint hidden">
+                    Must be at least 6 characters, including
+                    <br/>At least one number
+                    <br/>At least one lowercase letter
+                    <br/>At least one uppercase letter
+                </p>
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Admin</legend>
+                <input class="checkbox" name="avail" type="checkbox" checked="checked"/>
+            </fieldset>
+            <div class="card-actions justify-end">
+                <a href="{{ url_for('admin.user_management') }}" class="btn btn-error">Cancel</a>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
