@@ -80,6 +80,8 @@ def export_csv():
     response = Response(sales_report, content_type="text/csv")
     response.headers["Content-Disposition"] = f"attachment; filename={filename}.csv"
 
+    flash("Export Successful", "success")
+
     return response
 
 @bp.route("/products")
@@ -120,6 +122,7 @@ def add_item():
                 )
         db.session.add(new_item)
         db.session.commit()
+        flash("Item added successfully", "success")
         return redirect(url_for("admin.products"))
 
     return render_template("admin/product_handling/product_add.html")
@@ -156,6 +159,7 @@ def edit_item(item_id: int):
             item.picture_path = file_path
 
         db.session.commit()
+        flash("Item updated successfully", "success")
         return redirect(url_for("admin.products"))
     
     return render_template("admin/product_handling/product_edit.html", prod=item)
@@ -172,6 +176,7 @@ def delete():
         if item_if_in_cart:
             flash(f"Failed to delete: {item.name}, as its already in someones cart", 'error')
         else:
+            flash(f"Deleted: {item.name}", "success")
             item.delete()
 
     db.session.commit()
@@ -190,7 +195,7 @@ def user_management():
         action = request.form.get("action")
 
         if not user_id:
-            flash("No user selected.")
+            flash("No user selected.", "error")
             return redirect(url_for("admin.user_management"))
 
         user = User.query.get_or_404(int(user_id))
@@ -198,22 +203,22 @@ def user_management():
         if action == "Demote" and user.is_admin: # must be the same string in user_management.html
             admin_count = User.query.filter_by(is_admin=True).count()
             if admin_count == 1:
-                flash("Cannot demote the last admin user.")
+                flash("Cannot demote the last admin user.", "error")
                 return redirect(url_for("admin.user_management"))
         
         if action == "Make Admin": # must be the same string in user_management.html
             if user.is_admin:
-                flash(f"{user.name} is already an admin.")
+                flash(f"{user.name} is already an admin.", "error")
             else:
                 user.is_admin = True
-                flash(f"{user.name} promoted to admin.")
+                flash(f"{user.name} promoted to admin.", "success")
 
         elif action == "Demote":
             if not user.is_admin:
-                flash(f"{user.name} is already a regular user.")
+                flash(f"{user.name} is already a regular user.", "error")
             else:
                 user.is_admin = False
-                flash(f"{user.name} demoted to regular user.")
+                flash(f"{user.name} demoted to regular user.", "success")
 
         db.session.commit()
         return redirect(url_for("admin.user_management"))

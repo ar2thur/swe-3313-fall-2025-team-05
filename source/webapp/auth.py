@@ -45,10 +45,10 @@ def register():
             db.session.add(new_cart)
             db.session.commit()
 
-            flash("Registration successful. Please log in.")
+            flash("Registration successful. Please log in.", "success")
             return redirect(url_for("auth.login"))
 
-        flash(error)
+        flash(error, "error")
 
     # GET request or error case
     return render_template("auth/register.html")
@@ -79,7 +79,7 @@ def login():
             # change "index" if your home route has another endpoint name
             return redirect(url_for("index"))
 
-        flash(error)
+        flash(error, "error")
 
     return render_template("auth/login.html")
 
@@ -88,7 +88,7 @@ def login():
 def logout():
     # Handle user logout
     session.clear()
-    flash("You have been logged out.")
+    flash("You have been logged out.", "success")
     return redirect(url_for("index"))
     # again, change "index" if needed
 
@@ -128,7 +128,7 @@ def admin_required(view):
             return redirect(url_for("auth.login"))
 
         if not g.is_admin:
-            flash("Admin access required.")
+            flash("Admin access required.", "error")
             return redirect(url_for("index"))
         return view(**kwargs)
 
