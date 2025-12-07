@@ -3,7 +3,6 @@ from flask import (
     redirect, url_for, flash, session, g, Response
 )
 import pathlib
-import csv
 import datetime
 
 from webapp.auth import admin_required
@@ -107,7 +106,10 @@ def add_item():
 
         file = request.files["picture"]
         extention = pathlib.Path(file.filename).suffix
-        filename = name.replace(' ', '_') + extention
+        unchecked_filename = name.replace(' ', '_') + extention
+
+        # Checks if filename exists, if it does it will add a number to the end until it doesnt
+        filename = filename_validation(unchecked_filename)
 
         file_path = f"inventory_pictures/{filename}"
         # Relative paths like this are bad ...
@@ -151,7 +153,9 @@ def edit_item(item_id: int):
         file = request.files.get("picture")
         if file and file.filename != "":
             extention = pathlib.Path(file.filename).suffix
-            filename = name.replace(' ', '_') + extention
+            unchecked_filename = name.replace(' ', '_') + extention
+
+            filename = filename_validation(unchecked_filename)
 
             file_path = f"inventory_pictures/{filename}"
             # Relative paths like this are bad ...
@@ -224,3 +228,19 @@ def user_management():
         return redirect(url_for("admin.user_management"))
 
     return render_template("admin/user_management.html", users=users)
+
+
+def filename_validation(filename: str):
+    counter = 1
+    path = pathlib.Path(f"webapp/static/inventory_pictures/{filename}")
+    new_filename = filename # Just incase the filename doesnt already exist
+    print(path.exists())
+    while path.exists():
+        old_filename = pathlib.Path(filename)
+        extention = old_filename.suffix
+        name = old_filename.stem
+        new_filename = name+f"_{counter}"+extention
+        path = pathlib.Path(f"webapp/static/inventory_pictures/{new_filename}")
+        counter += 1
+    return new_filename
+
