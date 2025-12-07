@@ -58,7 +58,7 @@ def add_to_cart(item_id):
     db.session.add(new_item)
     db.session.commit()
 
-    flash("Item added to cart.")
+    flash(f"{item.name} added to cart.", "success")
     return redirect(url_for("index"))
 
 
@@ -69,6 +69,7 @@ def remove_from_cart(item_id):
     cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
 
     if cart is None:
+        flash("Your cart is empty", "error")
         return redirect(url_for("cart.view_cart"))
 
     cart_item = ShoppingCartItem.query.filter_by(
@@ -83,5 +84,7 @@ def remove_from_cart(item_id):
     if cart_item:
         db.session.delete(cart_item)
         db.session.commit()
+
+    flash(f"Removed {item.name} from cart", "success")
 
     return redirect(url_for("cart.view_cart"))

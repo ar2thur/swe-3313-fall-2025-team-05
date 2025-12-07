@@ -4,9 +4,10 @@
 <div class="flex-1 w-full">
     <div class="flex w-full justify-end pb-4 gap-4">
         <!-- 0 is a dummy placeholder for the javascript function -->
-        <a href="{{ url_for('admin.edit_item', item_id=0)}}" id="promote"  class="btn btn-accent btn-disabled">Promote</a>
+        <button onclick="send_promote_list()" id="promote"  class="btn btn-accent btn-disabled">Promote</button>
+        <button onclick="send_demote_list()" id="demote"  class="btn btn-error btn-disabled">Demote</button>
         <button onclick="send_delete_list()" id="delete" type="submit" class="btn btn-error btn-disabled">Delete</button>
-        <a href="{{ url_for('admin.add_item', action='add') }}" id="add" class="btn btn-outline">Add</a>
+        <a href="{{ url_for('admin.add_user', action='add') }}" id="add" class="btn btn-outline">Add</a>
     </div>
     <div class="card card-border shadow-sm w-full h-full">
         <div class="card-body h-full">
@@ -57,8 +58,9 @@
     const select_all = document.getElementById('all');
     const checkboxes = document.querySelectorAll('[id^="user-"]');
     const add_button = document.getElementById('add');
-    const edit_button = document.getElementById('promote');
+    const promote_button = document.getElementById('promote');
     const delete_button = document.getElementById('delete');
+    const demote_button = document.getElementById('demote');
 
     select_all.addEventListener('change', function(event) {
         if (event.target.checked) {
@@ -83,21 +85,14 @@
     
     function change_buttons(isCheck) {
         if (isCheck.length != 0) {
+            promote_button.classList.remove("btn-disabled")
             delete_button.classList.remove("btn-disabled");
-            if (isCheck.length > 1) {
-                edit_button.classList.add("btn-disabled");
-            } else {
-                edit_button.classList.remove("btn-disabled");
-            }
+            demote_button.classList.remove("btn-disabled");
         } else {
-            edit_button.classList.add("btn-disabled");
+            promote_button.classList.add("btn-disabled");
             delete_button.classList.add("btn-disabled")
+            demote_button.classList.add("btn-disabled")
         }
-    }
-
-    function update_edit(target) {
-        const cleaned_id = target.id.replace("product-","");
-        edit_button.href = "products/edit/"+cleaned_id;
     }
 
     function send_delete_list() {
@@ -108,7 +103,46 @@
             data.push(item_id);
         });
         
-        fetch("/products/delete", {
+        fetch("/user-management/delete", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function send_promote_list() {
+        const checked_checkboxes = document.querySelectorAll('input[id^="user-"]:checked');
+        const data = [];
+        checked_checkboxes.forEach(checkbox => {
+            const item_id = checkbox.id.replace("user-", "");
+            data.push(item_id);
+        });
+        
+        fetch("/user-management/promote", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }    
+    function send_demote_list() {
+        const checked_checkboxes = document.querySelectorAll('input[id^="user-"]:checked');
+        const data = [];
+        checked_checkboxes.forEach(checkbox => {
+            const item_id = checkbox.id.replace("user-", "");
+            data.push(item_id);
+        });
+        
+        fetch("/user-management/demote", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)

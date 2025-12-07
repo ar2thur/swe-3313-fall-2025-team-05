@@ -24,6 +24,16 @@
 </head>
 
 <body>
+    <div class="toast toast-end toast-top z-[9999]">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+            
     {% if g.user %}
     <nav class="navbar bg-primary shadow-sm fixed top-0 z-50">
 
@@ -123,7 +133,7 @@
                 </li>
                 <div class="divider divider-accent m-1"></div>
                 <li>
-                    <a href="{{ url_for('admin.orders') }}">
+                    <a href="{{ url_for('admin.view_orders') }}">
                         <h2 id="orders" class="text-white">Orders</h2>
                     </a>
                 </li>
@@ -209,4 +219,9 @@
             element.classList.remove("font-bold");
         }
     });
+
+    // dismisses alerts after a set time (4 seconds)
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(a => a.remove());
+    }, 4000);
 </script>
