@@ -4,17 +4,6 @@
 
 {% block content %}
 <div class="flex flex-col items-center mt-16">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <div role="alert" class="alert alert-error alert-soft w-full mt-4">
-              <li><span class="">{{ message }}</span></li>
-          </div>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
     <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Lockheed Martin" style="width:405px;height:98px;"/>
     <div class="card bg-base-100 w-lg shadow-sm mt-8">
         <div class="card-body">
