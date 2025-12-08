@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, render_template, request,
+    Blueprint, flash, render_template, request,
     session, redirect, url_for, g
 )
 from difflib import SequenceMatcher
@@ -22,6 +22,7 @@ def index():
 @bp.route("/search", methods=["POST"])
 @login_required
 def search():
+    # This function allows users to search for products by name
     search_term = request.form.get("search-term").strip()
     # Do nothing if search term is empty
     if not search_term:
@@ -30,12 +31,10 @@ def search():
     # Case-insensitive substring searcch 
     products = InventoryItem.query.filter(InventoryItem.is_available==True, InventoryItem.name.ilike(f"%{search_term}%")).all()
 
+    if not products:
+        flash(f"No products found for '{search_term}'", "error")
+
     return render_template("home.html", products=products)
-
-
-def get_similarity(this: str, other: str) -> float:
-    ans = SequenceMatcher(None, this, other).ratio()
-    return ans
 
 
 def load_session_data():
