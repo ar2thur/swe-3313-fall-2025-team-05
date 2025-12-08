@@ -1,28 +1,65 @@
 from flask import (
     Blueprint, render_template, request,
-    redirect, url_for, flash, session, g
+    session, g
 )
-
-from webapp.auth import login_required, admin_required
-from webapp.db import db
-from webapp.models import InventoryItem, User, ShoppingCart, ShoppingCartItem
+from difflib import SequenceMatcher
+from webapp.auth import login_required
+from webapp.models import InventoryItem, ShoppingCart, ShoppingCartItem
 
 bp = Blueprint("home", __name__)
+
 
 @bp.route("/")
 @login_required
 def index():
+    # This function loads all user cart data into the session
+    load_session_data()
+    products = InventoryItem.query.filter_by(is_available=True).all()
+
+    return render_template("home.html", products=products)
+
+
+@bp.route("/search", methods=["POST"])
+@login_required
+def search():
+    search_term = request.form.get("search-term").strip()
+    # Do nothing if search term is empty
+    if search_term is None:
+        return
+    products = InventoryItem.query.filter_by(is_available=True).all()
+
+    products_sorted = sorted(
+        products,
+        key=lambda x: get_similarity(x.name, search_term),
+        reverse=True
+    )
+
+    return render_template("home.html", products=products_sorted)
+
+
+def get_similarity(this: str, other: str) -> float:
+    ans = SequenceMatcher(None, this, other).ratio()
+    return ans
+
+
+def load_session_data():
     # Load all products
-    user_shopping_cart_uuid = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first().id
-    users_shopping_cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=user_shopping_cart_uuid).all()
-    
+    user_shopping_cart_uuid = ShoppingCart.query.filter_by(
+        user_id=g.user.id,
+        is_checked_out=False
+    ).first().id
+    users_shopping_cart_items = ShoppingCartItem.query.filter_by(
+        shopping_cart_id=user_shopping_cart_uuid
+    ).all()
+
     total = 0
     for cart_item in users_shopping_cart_items:
-        total += InventoryItem.query.filter_by(id=cart_item.inventory_item_id).first().cost
+        total += InventoryItem.query.filter_by(
+            id=cart_item.inventory_item_id
+        ).first().cost
 
     total /= 100  # Convert cents to dollars
-
     user_shopping_cart_length = len(users_shopping_cart_items)
 
-    products = InventoryItem.query.filter_by(is_available=True).all()
-    return render_template("home.html", products=products, item_count=user_shopping_cart_length, sub_total=total)
+    session["cart_length"] = user_shopping_cart_length
+    session["cart_total"] = total
