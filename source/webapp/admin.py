@@ -1,6 +1,6 @@
 from flask import (
     Blueprint, render_template, request,
-    redirect, url_for, flash, session, g, Response
+    redirect, url_for, flash, Response
 )
 import pathlib
 import datetime
