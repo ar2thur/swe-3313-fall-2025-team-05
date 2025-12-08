@@ -26,15 +26,11 @@ def search():
     # Do nothing if search term is empty
     if not search_term:
         return redirect(url_for('home.index'))
-    products = InventoryItem.query.filter_by(is_available=True).all()
+    
+    # Case-insensitive substring searcch 
+    products = InventoryItem.query.filter(InventoryItem.is_available==True, InventoryItem.name.ilike(f"%{search_term}%")).all()
 
-    products_sorted = sorted(
-        products,
-        key=lambda x: get_similarity(x.name, search_term),
-        reverse=True
-    )
-
-    return render_template("home.html", products=products_sorted)
+    return render_template("home.html", products=products)
 
 
 def get_similarity(this: str, other: str) -> float:
