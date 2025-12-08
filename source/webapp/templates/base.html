@@ -24,6 +24,16 @@
 </head>
 
 <body>
+    <div class="toast toast-start toast-bottom z-[9999]">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+            
     {% if g.user %}
     <nav class="navbar bg-primary shadow-sm fixed top-0 z-50">
 
@@ -40,6 +50,13 @@
               <input type="text" placeholder="Search"/>
       </div>
       <div class="navbar-end gap-3 items-center">
+        {% if g.user.is_admin %}
+        <div tabindex="0" role="anchor" class="btn btn-ghost btn-circle">
+            <a href="{{ url_for('admin.dashboard') }}">
+                <i class="fa-solid fa-gear text-2xl text-accent"></i>
+            </a>
+        </div>
+        {% endif %}
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
             <div class="indicator">
@@ -95,19 +112,44 @@
 
     <div class="drawer lg:drawer-open">
         <input id="tdrawer" type="checkbox" class="drawer-toggle"/>
-        <div class="drawer-content">
+        <div class="drawer-content pt-16">
             
             <!-- page content -->
-            <div class="flex justify-center bg-base-100 ml-6 mr-6" tabindex="0">
+            <div class="flex justify-center bg-base-100 ml-6 mr-6 mt-6" tabindex="0">
                 <!-- Every page will insert its own content here -->
                 {% block content %}{% endblock %}
             </div>
         </div>
-        <div class="drawer-side h-[calc(100vh-4rem)] top-16 is-drawer-close:overflow-visible">
+        <div class="drawer-side is-drawer-close:overflow-visible">
             <label for="tdrawer" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64">
+            <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64 pt-16">
             <!-- Sidebar content here -->
               <ul class="menu w-full grow">
+                {% if g.user.is_admin %}
+                <li>
+                    <a href="{{ url_for('admin.dashboard') }}">
+                        <h2 id="dashboard" class="text-white">Dashboard</h2>
+                    </a>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <a href="{{ url_for('admin.view_orders') }}">
+                        <h2 id="orders" class="text-white">Orders</h2>
+                    </a>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <a href="{{ url_for('admin.products') }}">
+                        <h2 id="products" class="text-white">Products</h2>
+                    </a>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <a href="{{ url_for('admin.user_management') }}">
+                        <h2 id="user-management" class="text-white">User Management</h2>
+                    </a>
+                </li>
+                {% else %}
                 <!-- List item -->
                 <li>
                     <p class="text-white">Sort by</p>
@@ -159,9 +201,27 @@
                         <input class="input input-sm w-25" placeholder="max"/>
                     </div>
                 </li>
+                {% endif %}
               </ul>
             </div>
         </div>
     </div>
 </body>
 </html>
+<script>
+    // This code determines which drawer-side element to bold based on the route
+    const route = window.location.pathname;
+    const elementsWithId = document.querySelectorAll('[id]');
+    elementsWithId.forEach(element => {
+        if (route.includes(element.id)) {
+            element.classList.add("font-bold");
+        } else {
+            element.classList.remove("font-bold");
+        }
+    });
+
+    // dismisses alerts after a set time (4 seconds)
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(a => a.remove());
+    }, 4000);
+</script>

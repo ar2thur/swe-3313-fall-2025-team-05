@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex-1 w-full">
+    <div class="flex w-full justify-end pb-4 gap-4">
+        <!-- 0 is a dummy placeholder for the javascript function -->
+        <a href="{{ url_for('admin.edit_item', item_id=0)}}" id="edit"  class="btn btn-accent btn-disabled">Edit</a>
+        <button onclick="send_delete_list()" id="delete" type="submit" class="btn btn-error btn-disabled">Delete</button>
+        <a href="{{ url_for('admin.add_item', action='add') }}" id="add" class="btn btn-outline">Add</a>
+    </div>
+    <div class="card card-border shadow-sm w-full h-full">
+        <div class="card-body h-full">
+            <h2 class="card-title">Inventory</h2>
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full h-full">
+                    <thead>
+                        <tr>
+                            <th>
+                                <label>
+                                    <input id="all" type="checkbox" class="checkbox"/>
+                                </label>
+                            </th>
+                            <th>Item Id</th>
+                            <th>Is Available</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in inventory %}
+                        <tr>
+                            <th>
+                                <label>
+                                    <input id="product-{{ item.id }}" type="checkbox" class="checkbox"/>
+                                </label>
+                            </th>
+                            <td>{{ item.id }}</td>
+                            {% if item.is_available %}
+                            <td><span class="badge badge-outline badge-success">Yes</span></td>
+                            {% else %}
+                            <td><span class="badge badge-outline badge-error">No</span></td>
+                            {% endif %}
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>${{ "{:,.2f}".format( item.cost / 100.0 )}}</td>
+                            
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const select_all = document.getElementById('all');
+    const checkboxes = document.querySelectorAll('[id^="product-"]');
+    const add_button = document.getElementById('add');
+    const edit_button = document.getElementById('edit');
+    const delete_button = document.getElementById('delete');
+
+    select_all.addEventListener('change', function(event) {
+        if (event.target.checked) {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        } else {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+    });
+
+    document.addEventListener('change', function(event) {
+        if (event.target.type == 'checkbox') {
+            // turn checkboxes NodeList to array
+            const checked_checkboxes = document.querySelectorAll('input[id^="product-"]:checked');
+            change_buttons(checked_checkboxes);
+            update_edit(event.target);
+        }
+    });
+    
+    function change_buttons(isCheck) {
+        if (isCheck.length != 0) {
+            delete_button.classList.remove("btn-disabled");
+            if (isCheck.length > 1) {
+                edit_button.classList.add("btn-disabled");
+            } else {
+                edit_button.classList.remove("btn-disabled");
+            }
+        } else {
+            edit_button.classList.add("btn-disabled");
+            delete_button.classList.add("btn-disabled")
+        }
+    }
+
+    function update_edit(target) {
+        const cleaned_id = target.id.replace("product-","");
+        edit_button.href = "products/edit/"+cleaned_id;
+    }
+
+    function send_delete_list() {
+        const checked_checkboxes = document.querySelectorAll('input[id^="product-"]:checked');
+        const data = [];
+        checked_checkboxes.forEach(checkbox => {
+            const item_id = checkbox.id.replace("product-", "");
+            data.push(item_id);
+        });
+        
+        fetch("/products/delete", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+{% endblock %}

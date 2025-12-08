@@ -4,9 +4,9 @@ from flask import (
     Blueprint, render_template, request,
     redirect, url_for, flash, session, g
 )
-from .auth import login_required
-from .models import ShoppingCart, ShoppingCartItem, InventoryItem, Logistics
-from .db import db
+from webapp.auth import login_required
+from webapp.models import ShoppingCart, ShoppingCartItem, InventoryItem, Logistics
+from webapp.db import db
 
 bp = Blueprint("payment", __name__, url_prefix="/payment")
 
@@ -76,7 +76,7 @@ def pay():
 
             return redirect(url_for("payment.confirm"))
 
-        flash(error)
+        flash(error, "error")
 
     return render_template("payment/pay.html", logistics=logistics)
 
@@ -127,7 +127,7 @@ def confirm():
                 if cart_item:
                     db.session.delete(cart_item)
             db.session.commit()
-            flash("Order cancelled successfully.")
+            flash("Order cancelled successfully.", "success")
             return redirect(url_for("home.index"))
     return render_template("payment/confirm.html", items=items, cart=cart, shipping_cost=shipping_cost, tax_percent=logistics.tax)
 

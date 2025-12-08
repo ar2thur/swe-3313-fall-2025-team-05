@@ -3,7 +3,7 @@
 {% block title %}Confirm Order?{% endblock %}
 
 {% block content %}
-<div class="mt-16 mb-8 w-full">
+<div class="mb-8 w-full">
     <h1 class="text-5xl font-bold mt-16 mb-6">Order Summary</h1>
     <div class="fixed top-20 right-5 z-50">
         <form method="post" action="{{ url_for('payment.pay') }}">
@@ -24,7 +24,7 @@
         {% for item in items %}
           <tr>
             <td>{{ item.name }}</td>
-            <td>${{ item.cost / 100.0 }}0</td>
+            <td>${{ "{:,.2f}".format(item.cost / 100.0) }}</td>
           </tr>
         {% endfor %}
         </tbody>

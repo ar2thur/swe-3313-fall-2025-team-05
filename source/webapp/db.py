@@ -12,9 +12,9 @@ def reset_db(ctx):
     app = create_app()
     with app.app_context():
         db.drop_all()
-        click.echo("database wiped clean")
+        click.echo("Database wiped clean")
     ctx.invoke(init_db)
-    ctx.invoke(seed_db)
+    ctx.invoke(seed_db)    
 
 @click.command("init-db")
 def init_db():
@@ -37,7 +37,7 @@ def seed_db():
     """Adds seed data to database after its initialized."""
 
     from webapp import create_app
-    from webapp.models import User, InventoryItem, Logistics
+    from webapp.models import User, InventoryItem, Logistics, ShoppingCart
 
     app = create_app()
 
@@ -50,6 +50,11 @@ def seed_db():
                 email="ronsemail@example.com",
                 is_admin=True
             )
+            db.session.add(ron)
+            db.session.commit()
+
+            rons_cart = ShoppingCart(user_id=ron.id)
+            db.session.add(rons_cart)
 
             inventory = [
                 InventoryItem(
@@ -165,14 +170,10 @@ def seed_db():
 
             logsitics = Logistics() # This defaults all columns to our needed seed data
 
-            db.session.add(ron)
             db.session.add(logsitics)
             db.session.add_all(inventory)
 
             db.session.commit()
 
             click.echo("Added all seed data to database.")
-
-
-
-
+            

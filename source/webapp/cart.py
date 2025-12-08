@@ -12,13 +12,19 @@ bp = Blueprint("cart", __name__, url_prefix="/cart")
 def view_cart():
     # View the contents of the shopping cart
     cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
-
+    subtotal = 0
     if cart is None:
         items = []
     else:
-        items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+        shopping_cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+        items = []
+        for cart_item in shopping_cart_items:
+            item = InventoryItem.query.filter_by(id=cart_item.inventory_item_id).first()
+            subtotal += item.cost
+            items.append(item)
 
-    return render_template("cart/view_cart.html", items=items)
+
+    return render_template("cart/view_cart.html", items=items, subtotal=subtotal)
 
 
 @bp.route("/view/<int:item_id>", methods=["GET"])
@@ -39,7 +45,7 @@ def add_to_cart(item_id):
     item = InventoryItem.query.get(item_id)
     if item is None or not item.is_available:
         return "Item not available", 404
-    
+
     item.is_available = False
 
     cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
@@ -52,23 +58,8 @@ def add_to_cart(item_id):
     db.session.add(new_item)
     db.session.commit()
 
-    flash("Item added to cart.")
-    return redirect(url_for("index"))        
-
-
-@bp.route("/checkout", methods=["POST"])
-@login_required
-def checkout():
-    # Checkout the shopping cart
-    cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
-    
-    if cart is None:
-        return redirect(url_for("cart.view_cart"))
-
-    cart.is_checked_out = True
-    db.session.commit()
-
-    return render_template("cart/checkout_success.html")
+    flash(f"{item.name} added to cart.", "success")
+    return redirect(url_for("index"))
 
 
 @bp.route("/remove/<int:item_id>", methods=["POST"])
@@ -76,8 +67,9 @@ def checkout():
 def remove_from_cart(item_id):
     # Remove an item from the shopping cart
     cart = ShoppingCart.query.filter_by(user_id=g.user.id, is_checked_out=False).first()
-    
+
     if cart is None:
+        flash("Your cart is empty", "error")
         return redirect(url_for("cart.view_cart"))
 
     cart_item = ShoppingCartItem.query.filter_by(
@@ -92,5 +84,7 @@ def remove_from_cart(item_id):
     if cart_item:
         db.session.delete(cart_item)
         db.session.commit()
+
+    flash(f"Removed {item.name} from cart", "success")
 
     return redirect(url_for("cart.view_cart"))
