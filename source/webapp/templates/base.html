@@ -47,7 +47,7 @@
       <div class="navbar-center">
           <label class="input input-bordered w-120">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <form action="{{ url_for('home.search') }}" method="POST">
+              <form action="{{ url_for('home.search') }}" method="POST" autocomplete="off">
                 <input name="search-term" type="text" placeholder="Search"/>
                 <!-- This is for when a user hits enter -->
                 <input type="submit" style="display: none;"/>
