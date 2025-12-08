@@ -165,7 +165,7 @@ def edit_item(item_id: int):
         db.session.commit()
         flash("Item updated successfully", "success")
         return redirect(url_for("admin.products"))
-    
+
     return render_template("admin/product_handling/product_edit.html", prod=item)
 
 @bp.route("/products/delete", methods=["POST"])
@@ -214,7 +214,7 @@ def add_user():
         name = request.form.get("name")
         email = request.form.get("email")
         password = request.form.get("password")
-        is_admin = request.form.get("is_admin")
+        is_admin = request.form.get("is-admin")
 
         email_exists = User.query.filter_by(email=email).first()
         if email_exists:
@@ -225,6 +225,7 @@ def add_user():
             is_admin = True
         else:
             is_admin = False
+
         new_user = User(
                     name=name,
                     email=email,
@@ -250,9 +251,12 @@ def user_promote():
     for user_id in request.json:
         user = User.query.filter_by(id=user_id).first()
         if user:
-            user.is_admin = True
-            flash(f"Promoted: {user.name}", "success")
-            db.session.commit()
+            if user.is_admin:
+                flash(f"{user.name} is already an admin", "error")
+            else:
+                user.is_admin = True
+                flash(f"Promoted: {user.name}", "success")
+                db.session.commit()
         else:
             flash("User does not exist", "error")
     return '', 204
@@ -267,9 +271,12 @@ def user_demote():
     for user_id in request.json:
         user = User.query.filter_by(id=user_id).first()
         if user:
-            user.is_admin = False
-            flash(f"Demoted: {user.name}", "success")
-            db.session.commit()
+            if not user.is_admin:
+                flash(f"{user.name} is already not an admin", "error")
+            else:
+                user.is_admin = False
+                flash(f"Demoted: {user.name}", "success")
+                db.session.commit()
         else:
             flash("User does not exist", "error")
     return '', 204
