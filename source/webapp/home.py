@@ -1,6 +1,6 @@
 from flask import (
     Blueprint, render_template, request,
-    session, g
+    session, redirect, url_for, g
 )
 from difflib import SequenceMatcher
 from webapp.auth import login_required
@@ -24,8 +24,8 @@ def index():
 def search():
     search_term = request.form.get("search-term").strip()
     # Do nothing if search term is empty
-    if search_term is None:
-        return
+    if not search_term:
+        return redirect(url_for('home.index'))
     products = InventoryItem.query.filter_by(is_available=True).all()
 
     products_sorted = sorted(
