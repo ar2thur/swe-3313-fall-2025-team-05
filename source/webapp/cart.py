@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Blueprint, flash, render_template, redirect, url_for, g
+from flask import Blueprint, flash, render_template, redirect, session, url_for, g
 from webapp.auth import login_required
 from webapp.db import db
 from webapp.models import ShoppingCart, ShoppingCartItem, InventoryItem
@@ -58,6 +58,10 @@ def add_to_cart(item_id):
     db.session.add(new_item)
     db.session.commit()
 
+    # Updates the cart in navbar
+    session["cart_length"] += 1
+    session["cart_total"] += (item.cost / 100)
+
     flash(f"{item.name} added to cart.", "success")
     return redirect(url_for("index"))
 
@@ -84,6 +88,10 @@ def remove_from_cart(item_id):
     if cart_item:
         db.session.delete(cart_item)
         db.session.commit()
+
+    # Updates the cart in navbar
+    session["cart_length"] -= 1
+    session["cart_total"] -= (item.cost / 100)
 
     flash(f"Removed {item.name} from cart", "success")
 
