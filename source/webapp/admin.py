@@ -99,6 +99,7 @@ def add_item():
         cost = request.form.get("cost")
         desc = request.form.get("desc")
         avail = request.form.get("avail")
+        category = request.form.get("category")
         if (avail == 'on'):
             avail = True
         else:
@@ -120,6 +121,7 @@ def add_item():
                     name=name,
                     cost=cost,
                     description=desc,
+                    category=category,
                     picture_path=file_path
                 )
         db.session.add(new_item)
@@ -134,12 +136,12 @@ def add_item():
 def edit_item(item_id: int):
     # Edit an existing product in the inventory
     item = InventoryItem.query.get_or_404(item_id)
-
     if request.method == "POST":
         name = request.form.get("name")
         cost = request.form.get("cost")
         desc = request.form.get("desc")
         avail = request.form.get("avail")
+        category = request.form.get("category")
         if (avail == 'on'):
             avail = True
         else:
@@ -149,6 +151,8 @@ def edit_item(item_id: int):
         item.cost = cost
         item.description = desc
         item.is_available = avail
+        item.category = category
+        print(item.category)
 
         file = request.files.get("picture")
         if file and file.filename != "":
