@@ -51,17 +51,6 @@
             </fieldset>
 
             <fieldset class="fieldset">
-                <legend class="fieldset-legend">Availability</legend>
-                <input
-                    class="checkbox"
-                    type="checkbox"
-                    name="avail"
-                    {% if prod.is_available %}checked{% endif %}
-                />
-                <span class="ml-2">Available</span>
-            </fieldset>
-
-            <fieldset class="fieldset">
                 <legend class="fieldset-legend">Picture</legend>
 
                 {% if prod.picture_path %}
