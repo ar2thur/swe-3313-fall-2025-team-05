@@ -69,9 +69,19 @@ def export_csv():
     # Export sales report as CSV
     bought_carts = ShoppingCart.query.filter_by(is_checked_out=True).all()
 
-    sales_report = "ID,CheckoutDate,Subtotal,Tax,Total\n"
+    gross_revenue = 0
+    sales_report = "ID,CheckoutDate,BoughtItems,Subtotal($),Tax($),Total($)\n"
     for cart in bought_carts: # Populate sales report with cart info.
-        sales_report += f"{cart.id},{cart.date_checked_out},{cart.sub_total/100.0},{cart.tax/100.0},{cart.total_cost/100.0}\n"
+        gross_revenue += cart.total_cost
+        cart_items = ShoppingCartItem.query.filter_by(shopping_cart_id=cart.id).all()
+        items = ""
+        for cart_item in cart_items: # Get item names.
+            item = InventoryItem.query.get(cart_item.inventory_item_id)
+            if item:
+                items += item.name + " | "
+        sales_report += f"{cart.id},{cart.date_checked_out},{items},{cart.sub_total/100.0},{cart.tax/100.0},{cart.total_cost/100.0}\n"
+
+    sales_report += f"\n\n,,,,,,GrossRevenue: ${gross_revenue/100.0}"
 
     now = datetime.datetime.now()
     filename = f"lockheed_sales_{now.month}-{now.year}"

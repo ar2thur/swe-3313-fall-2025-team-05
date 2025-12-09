@@ -2,12 +2,10 @@
 <html data-theme="nord">
 <head>
     <title>{% block title %}Lockheed Martin{% endblock %}</title>
-    <!-- DaisyUI CDN, do not delete -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
 
-    <!-- DaisyUI theme color overrides -->
     <style>
         :root {
             color-scheme: light;
@@ -20,6 +18,19 @@
             --color-accent: oklch(0.8672 0.177256 90.8474);
             --color-accent-content: white;
         }
+
+        .dropdown-content {
+            min-width: 13rem;
+        }
+
+        .navbar {
+            z-index: 1000 !important;
+        }
+
+        .dropdown-content {
+            z-index: 999 !important;
+        }
+        
     </style>
 </head>
 
@@ -34,7 +45,8 @@
     {% endwith %}
     </div>
             
-    {% if g.user %}
+    {% set is_auth_page = request.endpoint in ['auth.login', 'auth.register'] %}
+    {% if g.user and not is_auth_page %}
     <nav class="navbar bg-primary shadow-sm fixed top-0 z-50">
 
       <div class="navbar-start">
@@ -72,7 +84,7 @@
           </div>
           <div
             tabindex="0"
-            class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
+            class="card card-compact dropdown-content bg-base-100 mt-3 w-64 shadow-lg">
             <div class="card-body">
                 <span class="text-lg font-bold">{{ item_count }} Items</span>
                 <span class="text-info">Subtotal: ${{ "{:,.2f}".format(session.get("cart_total", 0)) }}</span>
@@ -84,10 +96,19 @@
         </div>
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            <div class="avatar placeholder">
+                <div class="bg-gradient-to-br from-primary to-secondary text-primary-content w-10 rounded-full">
+                    {% if g.user %}
+                        <span class="text-base font-semibold uppercase">
+                            {% set name_parts = g.user.name.split() %}
+                            {% if name_parts|length > 1 %}
+                                {{ name_parts[0][0] }}{{ name_parts[-1][0] }}
+                            {% else %}
+                                {{ name_parts[0][0] }}{{ name_parts[0][1] if name_parts[0]|length > 1 else '' }}
+                            {% endif %}
+                        </span>
+                    {% endif %}
+                </div>
             </div>
           </div>
           <ul
@@ -97,23 +118,24 @@
           </ul>
         </div>
       </div>
-      {% endif %}
     </nav>
-
+    
     <div class="drawer lg:drawer-open">
         <input id="tdrawer" type="checkbox" class="drawer-toggle"/>
         <div class="drawer-content pt-16">
-            
-            <!-- page content -->
             <div class="flex justify-center bg-base-100 ml-6 mr-6 mt-6" tabindex="0">
-                <!-- Every page will insert its own content here -->
+    {% else %}
+    <div class="min-h-screen bg-base-100">
+    {% endif %}
+
                 {% block content %}{% endblock %}
+
+    {% if g.user and not is_auth_page %}
             </div>
         </div>
         <div class="drawer-side is-drawer-close:overflow-visible">
             <label for="tdrawer" aria-label="close sidebar" class="drawer-overlay"></label>
             <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64 pt-16">
-            <!-- Sidebar content here -->
               <ul class="menu w-full grow">
                 {% if g.user.is_admin %}
                 <li>
@@ -157,7 +179,6 @@
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Aircraft">
-                    <!-- Home icon -->
                     <i class="fa-solid fa-plane-up text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Aircraft</span>
                     <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Aircraft"/>
@@ -165,7 +186,6 @@
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Missiles">
-                    <!-- Home icon -->
                     <i class="fa-solid fa-space-shuttle text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Missiles</span>
                     <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Missiles"/>
@@ -173,7 +193,6 @@
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Rotary">
-                    <!-- Home icon -->
                     <i class="fa-solid fa-helicopter text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Rotary</span>
                     <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Rotary"/>
@@ -181,7 +200,6 @@
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Space-Systems">
-                    <!-- Home icon -->
                     <i class="fa-solid fa-satellite text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Space Systems</span>
                     <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Space-Systems"/>
