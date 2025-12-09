@@ -59,7 +59,9 @@
       <div class="navbar-center">
           <label class="input input-bordered w-120">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" placeholder="Search"/>
+                <input name="search-term" type="text" placeholder="Search"/>
+                <!-- This is for when a user hits enter -->
+                <button id="search-submit" type="button" style="display: none;"></button>
           </label>
       </div>
       <div class="navbar-end gap-3 items-center">
@@ -74,9 +76,7 @@
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
             <div class="indicator">
               <i class="fa-solid fa-cart-shopping text-2xl text-white"></i>
-              {% if item_count is not defined %}
-                {% set item_count = 0 %}
-              {% endif %}
+              {% set item_count = session.get("cart_length", 0) %}
               {% if item_count != 0 %}
               <span class="badge badge-xs indicator-item badge-accent text-black">{{ item_count }}</span>
               {% endif %}
@@ -87,12 +87,7 @@
             class="card card-compact dropdown-content bg-base-100 mt-3 w-64 shadow-lg">
             <div class="card-body">
                 <span class="text-lg font-bold">{{ item_count }} Items</span>
-                {% if sub_total is not defined %}
-                    {% set sub_total = 0 %}
-                {% else %}
-                    {% set sub_total = "{:,}".format(sub_total) %}
-                {% endif %}
-                <span class="text-info">Subtotal: ${{ sub_total }}</span>
+                <span class="text-info">Subtotal: ${{ "{:,.2f}".format(session.get("cart_total", 0)) }}</span>
               <div class="card-actions">
                   <a href="{{ url_for('cart.view_cart') }}" class="btn btn-primary btn-block">View cart</a>
               </div>
@@ -118,13 +113,7 @@
           </div>
           <ul
             tabindex="-1"
-            class="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow">
-            <li>
-              <a class="justify-between">
-                Profile
-              </a>
-            </li>
-            <li><a>Settings</a></li>
+            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
             <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
           </ul>
         </div>
@@ -172,15 +161,17 @@
                         <h2 id="user-management" class="text-white">User Management</h2>
                     </a>
                 </li>
-                {% else %}
+                <div class="divider divider-accent m-1"></div>
+                {% endif %}
+                <!-- List item -->
                 <li>
                     <p class="text-white">Sort by</p>
-                    <select id="sortSelect" class="select w-full" onchange="sortProducts(this.value)">
-                        <option value="" selected>Default</option>
-                        <option value="price-high">Price: High to Low</option>
-                        <option value="price-low">Price: Low to High</option>
-                        <option value="name-az">Name: A-Z</option>
-                        <option value="name-za">Name: Z-A</option>
+                    <select name="sort-by" class="select w-full">
+                        <option selected></option>
+                        <option value="cost,desc">Price: High to Low</option>
+                        <option value="cost,asc">Price: Low to High</option>
+                        <option value="name,asc">Name: A-Z</option>
+                        <option value="name,desc">Name: Z-A</option>
                     </select>
                 </li>
                 <li>
@@ -190,45 +181,51 @@
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Aircraft">
                     <i class="fa-solid fa-plane-up text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Aircraft</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Aircraft"/>
                   </button>
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Missiles">
                     <i class="fa-solid fa-space-shuttle text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Missiles</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Missiles"/>
                   </button>
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Rotary">
                     <i class="fa-solid fa-helicopter text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Rotary</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Rotary"/>
                   </button>
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Space-Systems">
                     <i class="fa-solid fa-satellite text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Space Systems</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Space-Systems"/>
                   </button>
                 </li>
 
                 <li>
                     <p class="text-white">Price</p>
-                    <div>
-                        <input class="input input-sm w-25" placeholder="min"/>
+                    <div class="pl-0 pr-0">
+                        <input class="input input-sm w-25" type="number" name="min-price" placeholder="min"/>
                         <p class="text-white">to</p>
-                        <input class="input input-sm w-25" placeholder="max"/>
+                        <input class="input input-sm w-25" type="number" name="max-price" placeholder="max"/>
                     </div>
                 </li>
-                {% endif %}
+                <li>
+                    <input id="filters-submit" type="submit" value="Apply Filters" class="btn mt-4"/>
+                </li>
               </ul>
             </div>
         </div>
     </div>
-    {% else %}
-    </div>
-    {% endif %}
-
-    <script>
+</body>
+</html>
+<script>
+    // This code determines which drawer-side element to bold based on the route
+    document.addEventListener('DOMContentLoaded', () => {
         const route = window.location.pathname;
         const elementsWithId = document.querySelectorAll('[id]');
         elementsWithId.forEach(element => {
@@ -238,40 +235,51 @@
                 element.classList.remove("font-bold");
             }
         });
+        
+        const search_button = document.querySelector('[name^="search-term"]');
+        const applyFiltersButton = document.getElementById('filters-submit');
+        
+        function submitFilterAndSearchData(event) {
 
+            event.preventDefault();
+
+            const tempForm = document.createElement('form');
+            tempForm.action = '{{ url_for("home.search") }}';
+            tempForm.method = 'POST';
+            tempForm.style.display = 'none';
+
+            // Gather data
+            const filters = document.querySelectorAll('[name]');
+            filters.forEach(filter => {
+                tempForm.appendChild(filter);
+            });
+            
+            document.body.appendChild(tempForm);
+
+            tempForm.submit();
+
+            setTimeout(() => {
+                document.body.removeChild(tempForm);
+            }, 100);
+
+        }
+        if (applyFiltersButton) {
+            applyFiltersButton.addEventListener('click', (event) => {
+                submitFilterAndSearchData(event);
+            });
+        }
+        
+        if (search_button) {
+            search_button.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    submitFilterAndSearchData(event); // Re-use the same submit logic
+                }
+            });
+        }
+
+        // dismisses alerts after a set time (4 seconds)
         setTimeout(() => {
             document.querySelectorAll('.alert').forEach(a => a.remove());
         }, 4000);
-
-        function sortProducts(sortType) {
-            const container = document.querySelector('.grid');
-            if (!container) return;
-            
-            const cards = Array.from(container.children);
-            
-            cards.sort((a, b) => {
-                const priceA = parseFloat(a.querySelector('.card-title h4').textContent.replace(/[$,]/g, ''));
-                const priceB = parseFloat(b.querySelector('.card-title h4').textContent.replace(/[$,]/g, ''));
-                const nameA = a.querySelector('.card-title h2').textContent.trim();
-                const nameB = b.querySelector('.card-title h2').textContent.trim();
-                
-                switch(sortType) {
-                    case 'price-high':
-                        return priceB - priceA;
-                    case 'price-low':
-                        return priceA - priceB;
-                    case 'name-az':
-                        return nameA.localeCompare(nameB);
-                    case 'name-za':
-                        return nameB.localeCompare(nameA);
-                    default:
-                        return 0;
-                }
-            });
-            
-            container.innerHTML = '';
-            cards.forEach(card => container.appendChild(card));
-        }
-    </script>
-</body>
-</html>
+    });
+</script>

@@ -55,6 +55,7 @@ class InventoryItem(db.Model):
     name = Column(String, nullable=False)
     description = Column(String, nullable=False)
     cost = Column(Integer, nullable=False)
+    category = Column(String, nullable=True)
     picture_path = Column(String, nullable=False, default="static/no_picture_added.png")
 
     def __repr__(self):

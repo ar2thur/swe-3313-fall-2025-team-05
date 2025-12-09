@@ -1,6 +1,6 @@
 from flask import (
     Blueprint, render_template, request,
-    redirect, url_for, flash, session, g, Response
+    redirect, url_for, flash, Response
 )
 import pathlib
 import datetime
@@ -109,6 +109,7 @@ def add_item():
         cost = request.form.get("cost")
         desc = request.form.get("desc")
         avail = request.form.get("avail")
+        category = request.form.get("category")
         if (avail == 'on'):
             avail = True
         else:
@@ -130,6 +131,7 @@ def add_item():
                     name=name,
                     cost=cost,
                     description=desc,
+                    category=category,
                     picture_path=file_path
                 )
         db.session.add(new_item)
@@ -144,21 +146,17 @@ def add_item():
 def edit_item(item_id: int):
     # Edit an existing product in the inventory
     item = InventoryItem.query.get_or_404(item_id)
-
     if request.method == "POST":
+
         name = request.form.get("name")
         cost = request.form.get("cost")
         desc = request.form.get("desc")
-        avail = request.form.get("avail")
-        if (avail == 'on'):
-            avail = True
-        else:
-            avail = False
+        category = request.form.get("category")
 
         item.name = name
         item.cost = cost
         item.description = desc
-        item.is_available = avail
+        item.category = category
 
         file = request.files.get("picture")
         if file and file.filename != "":
@@ -275,14 +273,14 @@ def user_promote():
 @admin_required
 def user_demote():
     admin_user_amount = User.query.filter_by(is_admin=True).count()
-    if admin_user_amount <= len(request.json):
-        flash("At least one user must be an admin", "error")
-        return '', 204
+    
     for user_id in request.json:
         user = User.query.filter_by(id=user_id).first()
         if user:
             if not user.is_admin:
                 flash(f"{user.name} is already not an admin", "error")
+            elif admin_user_amount <= 1:
+                flash("At least one user must be an admin", "error")
             else:
                 user.is_admin = False
                 flash(f"Demoted: {user.name}", "success")

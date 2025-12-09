@@ -21,6 +21,16 @@
             </fieldset>
 
             <fieldset class="fieldset">
+                <legend class="fieldset-legend">Category</legend>
+                <select id="category_select" name="category" class="select" required>
+                    <option value="Aircraft">Aircraft</option>
+                    <option value="Missiles">Missiles</option>
+                    <option value="Rotary">Rotary</option>
+                    <option value="Space Systems">Space Systems</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="fieldset">
                 <legend class="fieldset-legend">Cost (cents)</legend>
                 <input
                     class="input w-full"
@@ -38,17 +48,6 @@
                     name="desc"
                     required
                 >{{ prod.description }}</textarea>
-            </fieldset>
-
-            <fieldset class="fieldset">
-                <legend class="fieldset-legend">Availability</legend>
-                <input
-                    class="checkbox"
-                    type="checkbox"
-                    name="avail"
-                    {% if prod.is_available %}checked{% endif %}
-                />
-                <span class="ml-2">Available</span>
             </fieldset>
 
             <fieldset class="fieldset">
@@ -85,4 +84,10 @@
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const select_element = document.getElementById('category_select');
+        select_element.value = "{{ prod.category }}";
+    });
+</script>
 {% endblock %}
