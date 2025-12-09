@@ -24,6 +24,7 @@
 </head>
 
 <body>
+<form action="{{ url_for('home.search') }}" method="POST" autocomplete="off">
     <div class="toast toast-start toast-bottom z-[9999]">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -47,11 +48,9 @@
       <div class="navbar-center">
           <label class="input input-bordered w-120">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <form action="{{ url_for('home.search') }}" method="POST" autocomplete="off">
                 <input name="search-term" type="text" placeholder="Search"/>
                 <!-- This is for when a user hits enter -->
-                <input type="submit" style="display: none;"/>
-              </form>
+                <input type="submit" style="display: none;" value="search"/>
           </label>
       </div>
       <div class="navbar-end gap-3 items-center">
@@ -146,12 +145,12 @@
                 <!-- List item -->
                 <li>
                     <p class="text-white">Sort by</p>
-                    <select class="select w-full">
+                    <select name="sort-by" class="select w-full">
                         <option selected></option>
-                        <option>Price: High to Low</option>
-                        <option>Price: Low to High</option>
-                        <option>Name: A-Z</option>
-                        <option>Name: Z-A</option>
+                        <option value="cost,desc">Price: High to Low</option>
+                        <option value="cost,asc">Price: Low to High</option>
+                        <option value="name,asc">Name: A-Z</option>
+                        <option value="name,desc">Name: Z-A</option>
                     </select>
                 </li>
                 <li>
@@ -162,6 +161,7 @@
                     <!-- Home icon -->
                     <i class="fa-solid fa-plane-up text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Aircraft</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Aircraft"/>
                   </button>
                 </li>
                 <li>
@@ -169,6 +169,7 @@
                     <!-- Home icon -->
                     <i class="fa-solid fa-space-shuttle text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Missiles</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Missiles"/>
                   </button>
                 </li>
                 <li>
@@ -176,6 +177,7 @@
                     <!-- Home icon -->
                     <i class="fa-solid fa-helicopter text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Rotary</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Rotary"/>
                   </button>
                 </li>
                 <li>
@@ -183,21 +185,26 @@
                     <!-- Home icon -->
                     <i class="fa-solid fa-satellite text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Space Systems</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Space-Systems"/>
                   </button>
                 </li>
 
                 <li>
                     <p class="text-white">Price</p>
-                    <div>
-                        <input class="input input-sm w-25" placeholder="min"/>
+                    <div class="pl-0 pr-0">
+                        <input class="input input-sm w-25" type="number" name="min-price" placeholder="min"/>
                         <p class="text-white">to</p>
-                        <input class="input input-sm w-25" placeholder="max"/>
+                        <input class="input input-sm w-25" type="number" name="max-price" placeholder="max"/>
                     </div>
+                </li>
+                <li>
+                    <input type="submit" value="Apply Filters" class="btn mt-4"/>
                 </li>
               </ul>
             </div>
         </div>
     </div>
+</form>
 </body>
 </html>
 <script>
