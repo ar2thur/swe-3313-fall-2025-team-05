@@ -1,34 +1,49 @@
 # Install and Setup
+There are two methods to download and run our project:
+
+### Using Build.py
+On MacOS/Linux or Windows you can use our build script to do most of the setup process.
+The build script will create a virtual environment, install all our depedencies, then initalize 
+our database. To install:
+```bash
+# Ensure you are inside our source directory
+python3 build.py
+source venv/bin/activate  # venv\Scripts\activate.bat on Windows (CMD)
+# Your all set to run the project
+flask --app webapp run
+```
+
+### Not Using Build.py
 First things first you need to create a vitrual environment, this is done by:
 ```bash
 # Creates a new virtual python environemnt
-python3 -m venv [name_of_venv]
+python3 -m venv [name_of_venv] 
 # Activates this environment
-source venv/bin/activate # for Mac/Linux
-venv\Scripts\activate # for Windows
+source venv/bin/activate  # for Mac/Linux
+# or for Windows (CMD)
+venv\Scripts\activate.bat
 # Installs all requirements from requirements.txt
 pip install -r requirements.txt
 ```
+After setting up the flask app, you should be able to run the following commands in 
+`source/`:
+```bash
+# This will build the sqlite database and load the seed data
+flask --app webapp reset-db
+```
 This will then install all the neccesary packages for our project. 
-
-# Starting a Flask app
-Once you've finished setting up, you can now run it. This is done with:
+Once you've finished setting up, you can now run it. Ensure you are in your
+virtual environment installed previously, and you are in the `source/` dir. Then:
 ```bash
 flask --app webapp run
 ```
-Make sure you are in our projects root directory when running this. Upon
-your first run, it should create a folder called instance/ this is where our
-database is. 
-
-# Intializing the Database
-After setting up the flask app, you should be able to run the following commands:
+# Database Commands
+Our `db.py` files comes with some click commands that can be used for database operations
 ```bash
-# This will ensure your database has all the correct tables
-flask --app webapp init-db
-# This will add all our seed data to your instance db
-flask --app webapp seed-db
+flask --app webapp init-db  # Sets up the SQLite data with the appropriate columns
+flask --app webapp seed-db  # Loads seed data into the database, this will duplicate data if run more than once
+flask --app webapp reset-db  # Deletes the current database instance, and rebuilds it with seed data
 ```
-
 # Making changes
 When you make changes to our depedencies or install new packages, please run:
 ```bash
