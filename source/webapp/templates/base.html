@@ -2,12 +2,10 @@
 <html data-theme="nord">
 <head>
     <title>{% block title %}Lockheed Martin{% endblock %}</title>
-    <!-- DaisyUI CDN, do not delete -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
 
-    <!-- DaisyUI theme color overrides -->
     <style>
         :root {
             color-scheme: light;
@@ -20,6 +18,19 @@
             --color-accent: oklch(0.8672 0.177256 90.8474);
             --color-accent-content: white;
         }
+
+        .dropdown-content {
+            min-width: 13rem;
+        }
+
+        .navbar {
+            z-index: 1000 !important;
+        }
+
+        .dropdown-content {
+            z-index: 999 !important;
+        }
+        
     </style>
 </head>
 
@@ -34,7 +45,8 @@
     {% endwith %}
     </div>
             
-    {% if g.user %}
+    {% set is_auth_page = request.endpoint in ['auth.login', 'auth.register'] %}
+    {% if g.user and not is_auth_page %}
     <nav class="navbar bg-primary shadow-sm fixed top-0 z-50">
 
       <div class="navbar-start">
@@ -48,6 +60,7 @@
           <label class="input input-bordered w-120">
               <i class="fa-solid fa-magnifying-glass"></i>
               <input type="text" placeholder="Search"/>
+          </label>
       </div>
       <div class="navbar-end gap-3 items-center">
         {% if g.user.is_admin %}
@@ -71,7 +84,7 @@
           </div>
           <div
             tabindex="0"
-            class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
+            class="card card-compact dropdown-content bg-base-100 mt-3 w-64 shadow-lg">
             <div class="card-body">
                 <span class="text-lg font-bold">{{ item_count }} Items</span>
                 {% if sub_total is not defined %}
@@ -88,15 +101,24 @@
         </div>
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            <div class="avatar placeholder">
+                <div class="bg-gradient-to-br from-primary to-secondary text-primary-content w-10 rounded-full">
+                    {% if g.user %}
+                        <span class="text-base font-semibold uppercase">
+                            {% set name_parts = g.user.name.split() %}
+                            {% if name_parts|length > 1 %}
+                                {{ name_parts[0][0] }}{{ name_parts[-1][0] }}
+                            {% else %}
+                                {{ name_parts[0][0] }}{{ name_parts[0][1] if name_parts[0]|length > 1 else '' }}
+                            {% endif %}
+                        </span>
+                    {% endif %}
+                </div>
             </div>
           </div>
           <ul
             tabindex="-1"
-            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+            class="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow">
             <li>
               <a class="justify-between">
                 Profile
@@ -107,23 +129,24 @@
           </ul>
         </div>
       </div>
-      {% endif %}
     </nav>
-
+    
     <div class="drawer lg:drawer-open">
         <input id="tdrawer" type="checkbox" class="drawer-toggle"/>
         <div class="drawer-content pt-16">
-            
-            <!-- page content -->
             <div class="flex justify-center bg-base-100 ml-6 mr-6 mt-6" tabindex="0">
-                <!-- Every page will insert its own content here -->
+    {% else %}
+    <div class="min-h-screen bg-base-100">
+    {% endif %}
+
                 {% block content %}{% endblock %}
+
+    {% if g.user and not is_auth_page %}
             </div>
         </div>
         <div class="drawer-side is-drawer-close:overflow-visible">
             <label for="tdrawer" aria-label="close sidebar" class="drawer-overlay"></label>
             <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64 pt-16">
-            <!-- Sidebar content here -->
               <ul class="menu w-full grow">
                 {% if g.user.is_admin %}
                 <li>
@@ -150,15 +173,14 @@
                     </a>
                 </li>
                 {% else %}
-                <!-- List item -->
                 <li>
                     <p class="text-white">Sort by</p>
-                    <select class="select w-full">
-                        <option selected></option>
-                        <option>Price: High to Low</option>
-                        <option>Price: Low to High</option>
-                        <option>Name: A-Z</option>
-                        <option>Name: Z-A</option>
+                    <select id="sortSelect" class="select w-full" onchange="sortProducts(this.value)">
+                        <option value="" selected>Default</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="name-az">Name: A-Z</option>
+                        <option value="name-za">Name: Z-A</option>
                     </select>
                 </li>
                 <li>
@@ -166,28 +188,24 @@
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Aircraft">
-                    <!-- Home icon -->
                     <i class="fa-solid fa-plane-up text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Aircraft</span>
                   </button>
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Missiles">
-                    <!-- Home icon -->
                     <i class="fa-solid fa-space-shuttle text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Missiles</span>
                   </button>
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Rotary">
-                    <!-- Home icon -->
                     <i class="fa-solid fa-helicopter text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Rotary</span>
                   </button>
                 </li>
                 <li>
                   <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Space-Systems">
-                    <!-- Home icon -->
                     <i class="fa-solid fa-satellite text-2xl text-white"></i> 
                     <span class="is-drawer-close:hidden text-white">Space Systems</span>
                   </button>
@@ -206,22 +224,54 @@
             </div>
         </div>
     </div>
+    {% else %}
+    </div>
+    {% endif %}
+
+    <script>
+        const route = window.location.pathname;
+        const elementsWithId = document.querySelectorAll('[id]');
+        elementsWithId.forEach(element => {
+            if (route.includes(element.id)) {
+                element.classList.add("font-bold");
+            } else {
+                element.classList.remove("font-bold");
+            }
+        });
+
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(a => a.remove());
+        }, 4000);
+
+        function sortProducts(sortType) {
+            const container = document.querySelector('.grid');
+            if (!container) return;
+            
+            const cards = Array.from(container.children);
+            
+            cards.sort((a, b) => {
+                const priceA = parseFloat(a.querySelector('.card-title h4').textContent.replace(/[$,]/g, ''));
+                const priceB = parseFloat(b.querySelector('.card-title h4').textContent.replace(/[$,]/g, ''));
+                const nameA = a.querySelector('.card-title h2').textContent.trim();
+                const nameB = b.querySelector('.card-title h2').textContent.trim();
+                
+                switch(sortType) {
+                    case 'price-high':
+                        return priceB - priceA;
+                    case 'price-low':
+                        return priceA - priceB;
+                    case 'name-az':
+                        return nameA.localeCompare(nameB);
+                    case 'name-za':
+                        return nameB.localeCompare(nameA);
+                    default:
+                        return 0;
+                }
+            });
+            
+            container.innerHTML = '';
+            cards.forEach(card => container.appendChild(card));
+        }
+    </script>
 </body>
 </html>
-<script>
-    // This code determines which drawer-side element to bold based on the route
-    const route = window.location.pathname;
-    const elementsWithId = document.querySelectorAll('[id]');
-    elementsWithId.forEach(element => {
-        if (route.includes(element.id)) {
-            element.classList.add("font-bold");
-        } else {
-            element.classList.remove("font-bold");
-        }
-    });
-
-    // dismisses alerts after a set time (4 seconds)
-    setTimeout(() => {
-        document.querySelectorAll('.alert').forEach(a => a.remove());
-    }, 4000);
-</script>
