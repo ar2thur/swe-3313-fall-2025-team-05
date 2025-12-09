@@ -21,6 +21,7 @@
                                 </label>
                             </th>
                             <th>Item Id</th>
+                            <th>Item Type</th>
                             <th>Is Available</th>
                             <th>Name</th>
                             <th>Description</th>
@@ -36,6 +37,7 @@
                                 </label>
                             </th>
                             <td>{{ item.id }}</td>
+                            <td>{{ item.category }}</td>
                             {% if item.is_available %}
                             <td><span class="badge badge-outline badge-success">Yes</span></td>
                             {% else %}
