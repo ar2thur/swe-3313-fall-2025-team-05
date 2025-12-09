@@ -137,6 +137,7 @@ def edit_item(item_id: int):
     # Edit an existing product in the inventory
     item = InventoryItem.query.get_or_404(item_id)
     if request.method == "POST":
+
         name = request.form.get("name")
         cost = request.form.get("cost")
         desc = request.form.get("desc")
@@ -146,6 +147,10 @@ def edit_item(item_id: int):
             avail = True
         else:
             avail = False
+
+        if (avail != item.is_available):
+            flash("This item is either in someones cart, or sold already", "error")
+            return render_template("admin/product_handling/product_edit.html", prod=item)
 
         item.name = name
         item.cost = cost
