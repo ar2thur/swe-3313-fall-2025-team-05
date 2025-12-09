@@ -69,6 +69,7 @@ def seed_db():
                         """
                     ),
                     cost=27_000_000_000,
+                    category="Aircraft",
                     picture_path="inventory_pictures/f16_viper.jpg"
                 ),
                 InventoryItem(
@@ -83,6 +84,7 @@ def seed_db():
                         """
                     ),
                     cost=35_000_000_000,
+                    category="Aircraft",
                     picture_path="inventory_pictures/f22_raptor.jpg"
                 ),
                 InventoryItem(
@@ -97,6 +99,7 @@ def seed_db():
                         """
                     ),
                     cost=8_250_000_000,
+                    category="Aircraft",
                     picture_path="inventory_pictures/f35_lightning.jpg"
                 ),
                 InventoryItem(
@@ -111,6 +114,7 @@ def seed_db():
                         """
                     ),
                     cost=900_000_000,
+                    category="Aircraft",
                     picture_path="inventory_pictures/c17_globemaster.jpg"
                 ),
                 InventoryItem(
@@ -125,6 +129,7 @@ def seed_db():
                         """
                     ),
                     cost=870_000_000,
+                    category="Aircraft",
                     picture_path="inventory_pictures/f15_strike_eagle.jpg"
                 ),
                 InventoryItem(
@@ -138,6 +143,7 @@ def seed_db():
                         """
                     ),
                     cost=100_000_000,
+                    category="Missiles",
                     picture_path="inventory_pictures/atacms.jpg"
                 ),
                 InventoryItem(
@@ -151,6 +157,7 @@ def seed_db():
                         """
                     ),
                     cost=1_100_000_000,
+                    category="Missiles",
                     picture_path="inventory_pictures/prsm.jpg"
                 ),
                 InventoryItem(
@@ -164,6 +171,7 @@ def seed_db():
                         """
                     ),
                     cost=1_000_000_000,
+                    category="Rotary",
                     picture_path="inventory_pictures/uh_60_blackhawk.jpg"
                 )
             ]
