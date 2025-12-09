@@ -141,23 +141,12 @@ def edit_item(item_id: int):
         name = request.form.get("name")
         cost = request.form.get("cost")
         desc = request.form.get("desc")
-        avail = request.form.get("avail")
         category = request.form.get("category")
-        if (avail == 'on'):
-            avail = True
-        else:
-            avail = False
-
-        if (avail != item.is_available):
-            flash("This item is either in someones cart, or sold already", "error")
-            return render_template("admin/product_handling/product_edit.html", prod=item)
 
         item.name = name
         item.cost = cost
         item.description = desc
-        item.is_available = avail
         item.category = category
-        print(item.category)
 
         file = request.files.get("picture")
         if file and file.filename != "":
