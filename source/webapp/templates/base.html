@@ -24,7 +24,6 @@
 </head>
 
 <body>
-<form action="{{ url_for('home.search') }}" method="POST" autocomplete="off">
     <div class="toast toast-start toast-bottom z-[9999]">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -50,7 +49,7 @@
               <i class="fa-solid fa-magnifying-glass"></i>
                 <input name="search-term" type="text" placeholder="Search"/>
                 <!-- This is for when a user hits enter -->
-                <input type="submit" style="display: none;" value="search"/>
+                <button id="search-submit" type="button" style="display: none;"></button>
           </label>
       </div>
       <div class="navbar-end gap-3 items-center">
@@ -198,29 +197,68 @@
                     </div>
                 </li>
                 <li>
-                    <input type="submit" value="Apply Filters" class="btn mt-4"/>
+                    <input id="filters-submit" type="submit" value="Apply Filters" class="btn mt-4"/>
                 </li>
               </ul>
             </div>
         </div>
     </div>
-</form>
 </body>
 </html>
 <script>
     // This code determines which drawer-side element to bold based on the route
-    const route = window.location.pathname;
-    const elementsWithId = document.querySelectorAll('[id]');
-    elementsWithId.forEach(element => {
-        if (route.includes(element.id)) {
-            element.classList.add("font-bold");
-        } else {
-            element.classList.remove("font-bold");
-        }
-    });
+    document.addEventListener('DOMContentLoaded', () => {
+        const route = window.location.pathname;
+        const elementsWithId = document.querySelectorAll('[id]');
+        elementsWithId.forEach(element => {
+            if (route.includes(element.id)) {
+                element.classList.add("font-bold");
+            } else {
+                element.classList.remove("font-bold");
+            }
+        });
+        
+        const search_button = document.querySelector('[name^="search-term"]');
+        const applyFiltersButton = document.getElementById('filters-submit');
+        
+        function submitFilterAndSearchData(event) {
 
-    // dismisses alerts after a set time (4 seconds)
-    setTimeout(() => {
-        document.querySelectorAll('.alert').forEach(a => a.remove());
-    }, 4000);
+            event.preventDefault();
+
+            const tempForm = document.createElement('form');
+            tempForm.action = '{{ url_for("home.search") }}';
+            tempForm.method = 'POST';
+            tempForm.style.display = 'none';
+
+            // Gather data
+            const filters = document.querySelectorAll('[name]');
+            filters.forEach(filter => {
+                tempForm.appendChild(filter);
+            });
+            
+            document.body.appendChild(tempForm);
+
+            tempForm.submit();
+
+            setTimeout(() => {
+                document.body.removeChild(tempForm);
+            }, 100);
+
+        }
+
+        applyFiltersButton.addEventListener('click', (event) => {
+            submitFilterAndSearchData(event);
+        });
+
+        search_button.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                submitFilterAndSearchData(event); // Re-use the same submit logic
+            }
+        });
+
+        // dismisses alerts after a set time (4 seconds)
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(a => a.remove());
+        }, 4000);
+    });
 </script>
