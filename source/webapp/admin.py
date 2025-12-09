@@ -269,14 +269,14 @@ def user_promote():
 @admin_required
 def user_demote():
     admin_user_amount = User.query.filter_by(is_admin=True).count()
-    if admin_user_amount <= len(request.json):
-        flash("At least one user must be an admin", "error")
-        return '', 204
+    
     for user_id in request.json:
         user = User.query.filter_by(id=user_id).first()
         if user:
             if not user.is_admin:
                 flash(f"{user.name} is already not an admin", "error")
+            elif admin_user_amount <= 1:
+                flash("At least one user must be an admin", "error")
             else:
                 user.is_admin = False
                 flash(f"Demoted: {user.name}", "success")
