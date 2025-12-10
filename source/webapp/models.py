@@ -68,7 +68,7 @@ class Logistics(db.Model):
     overnight_shipping = Column(Integer, nullable=False, default=2900)
     three_day_shipping = Column(Integer, nullable=False, default=1900)
     ground_shipping = Column(Integer, nullable=False, default=0)
-    tax = Column(Integer, nullable=False, default=7)
+    tax = Column(Integer, nullable=False, default=6)
 
 
 
