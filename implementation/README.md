@@ -1,7 +1,7 @@
 # Implementation
 
 ## Environment Setup
-Make sure that you have Python 3.11 or greater installed. See [here](https://www.python.org/downloads/) if you do no already have it installed.
+Make sure that you have Python 3.11 or greater installed. See [here](https://www.python.org/downloads/) if you do not already have it installed.
 
 There are two methods to download and run our project:
 
