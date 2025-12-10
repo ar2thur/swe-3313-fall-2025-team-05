@@ -54,4 +54,4 @@ See [here](./implementation/README.md) for how to build our site on Windows, Mac
 # Final Presentation
 See [here]() for our final presentation video comparing the initial design to the final product.
 
-See [here]() for a detailed video walkthrough on how to build and run our project.
+See [here](https://www.loom.com/share/51028b1ea12b4e25a732976742b9d2e1) for a detailed video walkthrough on how to build and run our project.
