@@ -93,6 +93,10 @@ def remove_from_cart(item_id):
     session["cart_length"] -= 1
     session["cart_total"] -= (item.cost / 100)
 
+    if session["cart_length"] == 0:
+        flash(f"Your cart is now empty, lets go shop", "error")
+        return redirect(url_for('home.index'))
+
     flash(f"Removed {item.name} from cart", "success")
 
     return redirect(url_for("cart.view_cart"))
