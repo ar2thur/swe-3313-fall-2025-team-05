@@ -52,6 +52,6 @@ as well as reasoning behind the chosen languages, frameworks, and data storage p
 See [here](./implementation/README.md) for how to build our site on Windows, MacOS, and Linux.
 
 # Final Presentation
-See [here]() for our final presentation video comparing the initial design to the final product.
+See [here](https://www.loom.com/share/96d0bb6368aa49ee91814f1e0b325cbe) for our final presentation video comparing the initial design to the final product.
 
 See [here](https://www.loom.com/share/51028b1ea12b4e25a732976742b9d2e1) for a detailed video walkthrough on how to build and run our project.
