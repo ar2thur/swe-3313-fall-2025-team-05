@@ -44,7 +44,8 @@ def search():
         filter_categories.append("Space Systems")
 
     query = db.session.query(InventoryItem)
-    print(request.form)
+    query = query.filter(InventoryItem.is_available == True)
+
     # Search term
     if search_term:
         query = query.filter(InventoryItem.name.ilike(f"%{search_term}%"))
