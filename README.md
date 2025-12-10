@@ -47,3 +47,11 @@ This includes descriptions of each entity and their relationship with one anothe
 as well as reasoning behind the chosen languages, frameworks, and data storage plans.
 
 [Techincal Design](technical-design/README.md)
+
+# Implementation
+See [here](./implementation/README.md) for how to build our site on Windows, MacOS, and Linux.
+
+# Final Presentation
+See [here]() for our final presentation video comparing the initial design to the final product.
+
+See [here]() for a detailed video walkthrough on how to build and run our project.
