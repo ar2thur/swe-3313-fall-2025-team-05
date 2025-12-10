@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html data-theme="nord">
+<head>
+    <title>{% block title %}Lockheed Martin{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            color-scheme: light;
+
+            --color-primary: oklch(0.4937 0.1402 256.77);
+            --color-primary-content: white;
+            --color-secondary: oklch(0.9612 0 0);
+            --color-secondary-content: black;
+            --color-base-100: white;
+            --color-accent: oklch(0.8672 0.177256 90.8474);
+            --color-accent-content: white;
+        }
+
+        .dropdown-content {
+            min-width: 13rem;
+        }
+
+        .navbar {
+            z-index: 1000 !important;
+        }
+
+        .dropdown-content {
+            z-index: 999 !important;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="toast toast-start toast-bottom z-[9999]">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+            
+    {% set is_auth_page = request.endpoint in ['auth.login', 'auth.register'] %}
+    {% if g.user and not is_auth_page %}
+    <nav class="navbar bg-primary shadow-sm fixed top-0 z-50">
+
+      <div class="navbar-start">
+          <a href="{{ url_for("index") }}">
+            <div class="px-3">
+                <img src="{{ url_for('static', filename="images/white_logo.png") }}" class="h-10 w-auto"/>
+            </div>
+          </a>
+      </div>
+      <div class="navbar-center">
+          <label class="input input-bordered w-120">
+              <i class="fa-solid fa-magnifying-glass"></i>
+                <input name="search-term" type="text" placeholder="Search"/>
+                <!-- This is for when a user hits enter -->
+                <button id="search-submit" type="button" style="display: none;"></button>
+          </label>
+      </div>
+      <div class="navbar-end gap-3 items-center">
+        {% if g.user.is_admin %}
+        <div tabindex="0" role="anchor" class="btn btn-ghost btn-circle">
+            <a href="{{ url_for('admin.dashboard') }}">
+                <i class="fa-solid fa-gear text-2xl text-accent"></i>
+            </a>
+        </div>
+        {% endif %}
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <div class="indicator">
+              <i class="fa-solid fa-cart-shopping text-2xl text-white"></i>
+              {% set item_count = session.get("cart_length", 0) %}
+              {% if item_count != 0 %}
+              <span class="badge badge-xs indicator-item badge-accent text-black">{{ item_count }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <div
+            tabindex="0"
+            class="card card-compact dropdown-content bg-base-100 mt-3 w-64 shadow-lg">
+            <div class="card-body">
+                <span class="text-lg font-bold">{{ item_count }} Items</span>
+                <span class="text-info">Subtotal: ${{ "{:,.2f}".format(session.get("cart_total", 0)) }}</span>
+              <div class="card-actions">
+                  <a href="{{ url_for('cart.view_cart') }}" class="btn btn-primary btn-block">View cart</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-outline btn-secondary btn-circle w-12 h-12 avatar">
+            <div class="avatar avatar-placeholder">
+                <div class="text-secondary rounded-full w-11">
+                        <span class="text-2xl">
+                            {% set name_parts = g.user.name.split() %}
+                            {% if name_parts|length > 1 %}
+                                {{ name_parts[0][0] }}{{ name_parts[-1][0] }}
+                            {% else %}
+                                {{ name_parts[0][0] }}{{ name_parts[0][1] if name_parts[0]|length > 1 else '' }}
+                            {% endif %}
+                        </span>
+                </div>
+            </div>
+          </div>
+          <ul
+            tabindex="-1"
+            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="drawer lg:drawer-open">
+        <input id="tdrawer" type="checkbox" class="drawer-toggle"/>
+        <div class="drawer-content pt-16">
+            <div class="flex justify-center bg-base-100 ml-6 mr-6 mt-6" tabindex="0">
+    {% else %}
+    <div class="min-h-screen bg-base-100">
+    {% endif %}
+
+                {% block content %}{% endblock %}
+
+            </div>
+        </div>
+
+    {% if g.user and not is_auth_page %}
+        <div class="drawer-side is-drawer-close:overflow-visible">
+            <label for="tdrawer" aria-label="close sidebar" class="drawer-overlay"></label>
+            <div class="min-h-full items-start bg-primary is-drawer-close:w-14 is-drawer-open:w-64 pt-16">
+              <ul class="menu w-full grow">
+                {% if g.user.is_admin %}
+                <li>
+                    <a href="{{ url_for('admin.dashboard') }}">
+                        <h2 id="dashboard" class="text-white">Dashboard</h2>
+                    </a>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <a href="{{ url_for('admin.view_orders') }}">
+                        <h2 id="orders" class="text-white">Orders</h2>
+                    </a>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <a href="{{ url_for('admin.products') }}">
+                        <h2 id="products" class="text-white">Products</h2>
+                    </a>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                <li>
+                    <a href="{{ url_for('admin.user_management') }}">
+                        <h2 id="user-management" class="text-white">User Management</h2>
+                    </a>
+                </li>
+                <div class="divider divider-accent m-1"></div>
+                {% endif %}
+                <!-- List item -->
+                <li>
+                    <p class="text-white">Sort by</p>
+                    <select name="sort-by" class="select w-full">
+                        <option selected></option>
+                        <option value="cost,desc">Price: High to Low</option>
+                        <option value="cost,asc">Price: Low to High</option>
+                        <option value="name,asc">Name: A-Z</option>
+                        <option value="name,desc">Name: Z-A</option>
+                    </select>
+                </li>
+                <li>
+                    <p class="text-white">Categories</p>
+                </li>
+                <li>
+                  <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Aircraft">
+                    <i class="fa-solid fa-plane-up text-2xl text-white"></i> 
+                    <span class="is-drawer-close:hidden text-white">Aircraft</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Aircraft"/>
+                  </button>
+                </li>
+                <li>
+                  <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Missiles">
+                    <i class="fa-solid fa-space-shuttle text-2xl text-white"></i> 
+                    <span class="is-drawer-close:hidden text-white">Missiles</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Missiles"/>
+                  </button>
+                </li>
+                <li>
+                  <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Rotary">
+                    <i class="fa-solid fa-helicopter text-2xl text-white"></i> 
+                    <span class="is-drawer-close:hidden text-white">Rotary</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Rotary"/>
+                  </button>
+                </li>
+                <li>
+                  <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Space-Systems">
+                    <i class="fa-solid fa-satellite text-2xl text-white"></i> 
+                    <span class="is-drawer-close:hidden text-white">Space Systems</span>
+                    <input type="checkbox" class="checkbox checkbox-accent text-primary" name="Space-Systems"/>
+                  </button>
+                </li>
+
+                <li>
+                    <p class="text-white">Price</p>
+                    <div class="pl-0 pr-0">
+                        <input class="input input-sm w-25" type="number" name="min-price" placeholder="min"/>
+                        <p class="text-white">to</p>
+                        <input class="input input-sm w-25" type="number" name="max-price" placeholder="max"/>
+                    </div>
+                </li>
+                <li>
+                    <input id="filters-submit" type="submit" value="Apply Filters" class="btn mt-4"/>
+                </li>
+              </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+<script>
+    // This code determines which drawer-side element to bold based on the route
+    document.addEventListener('DOMContentLoaded', () => {
+        const route = window.location.pathname;
+        const elementsWithId = document.querySelectorAll('[id]');
+        elementsWithId.forEach(element => {
+            if (route.includes(element.id)) {
+                element.classList.add("font-bold");
+            } else {
+                element.classList.remove("font-bold");
+            }
+        });
+        
+        const search_button = document.querySelector('[name^="search-term"]');
+        const applyFiltersButton = document.getElementById('filters-submit');
+        
+        function submitFilterAndSearchData(event) {
+
+            event.preventDefault();
+
+            const tempForm = document.createElement('form');
+            tempForm.action = '{{ url_for("home.search") }}';
+            tempForm.method = 'POST';
+            tempForm.style.display = 'none';
+
+            // Gather data
+            const filters = document.querySelectorAll('[name]');
+            filters.forEach(filter => {
+                tempForm.appendChild(filter);
+            });
+            
+            document.body.appendChild(tempForm);
+
+            tempForm.submit();
+
+            setTimeout(() => {
+                document.body.removeChild(tempForm);
+            }, 100);
+
+        }
+        if (applyFiltersButton) {
+            applyFiltersButton.addEventListener('click', (event) => {
+                submitFilterAndSearchData(event);
+            });
+        }
+        
+        if (search_button) {
+            search_button.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    submitFilterAndSearchData(event); // Re-use the same submit logic
+                }
+            });
+        }
+
+        // dismisses alerts after a set time (4 seconds)
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(a => a.remove());
+        }, 4000);
+    });
+</script>

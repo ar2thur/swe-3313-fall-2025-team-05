@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center mt-16">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Lockheed Martin" style="width:405px;height:98px;"/>
+    <div class="card bg-base-100 w-lg shadow-sm mt-8">
+        <div class="card-body">
+            <h2 class="card-title justify-center text-center">Register</h2>
+            <form method="post">
+            <fieldset class="fieldset">
+                <label>Name</label>
+                <input class="input w-full" name="name" required placeholder="John Doe"/>
+
+                <label>Email</label>
+                <input class="input w-full validator" name="email" type="email" required placeholder="johndoe@example.com">
+                <p class="validator-hint hidden">Enter vaild email address</p>
+                    
+
+                <label>Password</label>
+                <input class="input w-full validator" name="password" type="password" required placeholder="password"
+                                                                      minlength="6"
+                                                                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+                                                                      title="Must be at least 6 characters, including number, lowercase letter, uppercase letter"/>
+                <p class="validator-hint hidden">
+                    Must be at least 6 characters, including
+                    <br/>At least one number
+                    <br/>At least one lowercase letter
+                    <br/>At least one uppercase letter
+                </p>
+
+                <button class="btn btn-primary" type="submit">Create Account</button>
+                </form>
+            </fieldset>
+            <div class="text-center">
+                <p>
+                    Already have an account?
+                    <a class="link link-primary" href="{{ url_for('auth.login') }}">Login</a>
+                </p>
+            </div>
+    </div>
+</div>
+
+{% endblock %}

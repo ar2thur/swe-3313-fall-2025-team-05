@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-full max-h-full card bg-base-100 card-border shadow-sm p-0">
+    <div class="card-body flex flex-col justify-between w-full">
+        <h2 class="card-title text-2xl">Edit Product</h2>
+
+        <form method="POST"
+              action="{{ url_for('admin.edit_item', item_id=prod.id) }}"
+              enctype="multipart/form-data">
+
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Name</legend>
+                <input
+                    class="input w-full"
+                    type="text"
+                    name="name"
+                    value="{{ prod.name }}"
+                    required
+                />
+            </fieldset>
+
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Category</legend>
+                <select id="category_select" name="category" class="select" required>
+                    <option value="Aircraft">Aircraft</option>
+                    <option value="Missiles">Missiles</option>
+                    <option value="Rotary">Rotary</option>
+                    <option value="Space Systems">Space Systems</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Cost (cents)</legend>
+                <input
+                    class="input w-full"
+                    type="number"
+                    name="cost"
+                    value="{{ prod.cost }}"
+                    required
+                />
+            </fieldset>
+
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Description</legend>
+                <textarea
+                    class="textarea w-full"
+                    name="desc"
+                    required
+                >{{ prod.description }}</textarea>
+            </fieldset>
+
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Picture</legend>
+
+                {% if prod.picture_path %}
+                    <p class="mb-2 text-sm">Current picture:</p>
+                    <img
+                        src="{{ url_for('static', filename=prod.picture_path) }}"
+                        alt="Current product image"
+                        style="max-width: 200px; max-height: 200px;"
+                        class="mb-4"
+                    />
+                {% else %}
+                    <p class="mb-2 text-sm opacity-70">No picture uploaded yet.</p>
+                {% endif %}
+
+                <p class="mb-1 text-sm opacity-70">
+                    Upload a new image to replace the current one (optional):
+                </p>
+                <input
+                    class="file-input w-full"
+                    type="file"
+                    name="picture"
+                    accept="image/*"
+                />
+            </fieldset>
+
+            <div class="card-actions justify-end mt-4">
+                <a href="{{ url_for('admin.products') }}" class="btn btn-error">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const select_element = document.getElementById('category_select');
+        select_element.value = "{{ prod.category }}";
+    });
+</script>
+{% endblock %}

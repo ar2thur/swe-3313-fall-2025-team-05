@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Pay Now{% endblock %}
+
+{% block content %}
+<div class="flex gap-4 items-center">
+    <form method="post">
+    <h1 class="text-5xl font-bold mt-16 mb-6">Pay Now</h1>
+    <div class="card w-lg mt-8 mb-6 bg-secondary text-secondary-content">
+        <div class="card-body">
+            <h2 class="card-title">Shipping Information</h2>
+            <fieldset class="fieldset">
+                <div class="flex gap-4">
+                    <div class="w-2/3">
+                    <label>Street address</label>
+                    <input class="input w-full" name="address" type="text" required>
+                    </div><div class="w-1/3">
+                    <label>Apt/Suite # (optional)</label>
+                    <input class="input w-full" name="apt" type="text">
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="1/3">
+                    <label>Zip-code</label>
+                    <input class="input w-full" name="zip_code" type="text" required>
+                    </div>
+                    <div class="1/3">
+                    <label>City</label>
+                    <input class="input w-full" name="city" type="text" required>
+                    </div>
+                    <div class="1/3">
+                    <label>State</label>
+                    <input class="input w-full" name="state" type="text" required>
+                    </div>
+                </div>
+                <label>Phone number</label>
+                <input class="input w-full" name="phone" type="text" required>
+            </fieldset>
+        </div>
+    </div>
+    <div class="card w-lg mt-8 mb-6 bg-secondary text-secondary-content">
+        <div class="card-body">
+            <h2 class="card-title">Payment Information</h2>
+            <fieldset class="fieldset">
+                <label>Card number</label>
+                <input class="input w-full" name="card" type="text" required>
+                <div class="flex gap-4">
+                    <div class="w-2/3">
+                    <label>Expiration</label>
+                    <input class="input w-full" name="expiration" type="text" required placeholder="mm/yy">
+                    </div><div class="w-1/3">
+                    <label>CVV</label>
+                    <input class="input w-full" name="cvv" type="text" required>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="card w-lg mt-8 mb-6 bg-secondary text-secondary-content">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+            <h2 class="card-title">Shipping Information</h2>
+            <fieldset class="fieldset">
+                <select class="select" name="shipping" required>
+                    <option disabled selected value="">Make a selection</option>
+                    <option value="overnight">Overnight (+${{ logistics.overnight_shipping / 100 }}0)</option>
+                    <option value="three_day">3-Day (+${{ logistics.three_day_shipping / 100 }}0)</option>
+                    <option value="ground">Ground (+${{ logistics.ground_shipping / 100 }}0)</option>
+                </select>
+            </fieldset>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary fixed bottom-5 right-5" type="submit">Confirm order</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex-1 w-full">
+    <div class="flex w-full justify-end pb-4 gap-4">
+        <!-- 0 is a dummy placeholder for the javascript function -->
+        <button onclick="send_promote_list()" id="promote"  class="btn btn-accent btn-disabled">Promote</button>
+        <button onclick="send_demote_list()" id="demote"  class="btn btn-error btn-disabled">Demote</button>
+        <button onclick="send_delete_list()" id="delete" type="submit" class="btn btn-error btn-disabled">Delete</button>
+        <a href="{{ url_for('admin.add_user', action='add') }}" id="add" class="btn btn-outline">Add</a>
+    </div>
+    <div class="card card-border shadow-sm w-full h-full">
+        <div class="card-body h-full">
+            <h2 class="card-title">User Management</h2>
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full h-full">
+                    <thead>
+                        <tr>
+                            <th>
+                                <label>
+                                    <input id="all" type="checkbox" class="checkbox"/>
+                                </label>
+                            </th>
+                            <th>User Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <th>
+                                <label>
+                                    <input id="user-{{ user.id }}" type="checkbox" class="checkbox"/>
+                                </label>
+                            </th>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.password[:50] }}...</td>
+                            {% if user.is_admin %}
+                            <td><span class="badge badge-outline badge-success">Yes</span></td>
+                            {% else %}
+                            <td><span class="badge badge-outline badge-error">No</span></td>
+                            {% endif %}
+                            
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const select_all = document.getElementById('all');
+    const checkboxes = document.querySelectorAll('[id^="user-"]');
+    const add_button = document.getElementById('add');
+    const promote_button = document.getElementById('promote');
+    const delete_button = document.getElementById('delete');
+    const demote_button = document.getElementById('demote');
+
+    select_all.addEventListener('change', function(event) {
+        if (event.target.checked) {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        } else {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+    });
+
+    document.addEventListener('change', function(event) {
+        if (event.target.type == 'checkbox') {
+            // turn checkboxes NodeList to array
+            const checked_checkboxes = document.querySelectorAll('input[id^="user-"]:checked');
+            change_buttons(checked_checkboxes);
+            update_edit(event.target);
+        }
+    });
+    
+    function change_buttons(isCheck) {
+        if (isCheck.length != 0) {
+            promote_button.classList.remove("btn-disabled")
+            delete_button.classList.remove("btn-disabled");
+            demote_button.classList.remove("btn-disabled");
+        } else {
+            promote_button.classList.add("btn-disabled");
+            delete_button.classList.add("btn-disabled")
+            demote_button.classList.add("btn-disabled")
+        }
+    }
+
+    function send_delete_list() {
+        const checked_checkboxes = document.querySelectorAll('input[id^="user-"]:checked');
+        const data = [];
+        checked_checkboxes.forEach(checkbox => {
+            const item_id = checkbox.id.replace("user-", "");
+            data.push(item_id);
+        });
+        
+        fetch("/user-management/delete", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function send_promote_list() {
+        const checked_checkboxes = document.querySelectorAll('input[id^="user-"]:checked');
+        const data = [];
+        checked_checkboxes.forEach(checkbox => {
+            const item_id = checkbox.id.replace("user-", "");
+            data.push(item_id);
+        });
+        
+        fetch("/user-management/promote", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }    
+    function send_demote_list() {
+        const checked_checkboxes = document.querySelectorAll('input[id^="user-"]:checked');
+        const data = [];
+        checked_checkboxes.forEach(checkbox => {
+            const item_id = checkbox.id.replace("user-", "");
+            data.push(item_id);
+        });
+        
+        fetch("/user-management/demote", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+{% endblock %}

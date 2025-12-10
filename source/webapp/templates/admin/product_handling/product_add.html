@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <div class="max-w-full max-h-full card bg-base-100 card-border shadow-sm p-0">
+    <div class="card-body flex flex-col justify-between">
+        <h2 class="card-title text-2xl">Add Product</h2>
+        <form method="POST" action="{{url_for('admin.add_item')}}" enctype="multipart/form-data">
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Name</legend>
+                <input class="input" type="text" name="name" placeholder="Item Name" required/>
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Category</legend>
+                <select name="category" class="select" required>
+                    <option>Aircraft</option>
+                    <option>Missiles</option>
+                    <option>Rotary</option>
+                    <option>Space Systems</option>
+                </select>
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Cost (cents)</legend>
+                <input class="input" type="number" name="cost" placeholder="00" required/>
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Description</legend>
+                <textarea class="textarea" name="desc" type="text" placeholder="A good description..." required></textarea>
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Availabile</legend>
+                <input class="checkbox" name="avail" type="checkbox" checked="checked"/>
+                <label class="label">You cannot change an item's availablity after adding it</label>
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Picture</legend>
+                <input class="file-input" name="picture" type="file" accept="image/*" required/>
+            </fieldset>
+            <div class="card-actions justify-end">
+                <a href="{{ url_for('admin.products') }}" class="btn btn-error">Cancel</a>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
